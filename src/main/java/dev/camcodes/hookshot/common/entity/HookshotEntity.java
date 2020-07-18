@@ -1,5 +1,6 @@
 package dev.camcodes.hookshot.common.entity;
 
+import dev.camcodes.hookshot.common.item.HookshotItem;
 import dev.camcodes.hookshot.core.registry.ModEntities;
 import dev.camcodes.hookshot.core.util.PlayerProperties;
 import net.minecraft.block.BlockState;
@@ -9,6 +10,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
@@ -48,7 +51,9 @@ public class HookshotEntity extends PersistentProjectileEntity
 
 		if(owner == null || owner.isDead() ||
 				!((PlayerProperties) owner).hasHook() ||
-				owner.distanceTo(this) > maxRange)// ||
+				owner.distanceTo(this) > maxRange ||
+				!(owner.getMainHandStack().getItem() instanceof HookshotItem ||
+				owner.getOffHandStack().getItem() instanceof  HookshotItem))// ||
 				//(owner.distanceTo(this) < 3D && age > 10 && owner.isSneaking()))
 		{
 			kill();
@@ -64,6 +69,13 @@ public class HookshotEntity extends PersistentProjectileEntity
 				owner.velocityModified = true;
 			}
 		}
+	}
+
+	@Override
+	public Packet<?> createSpawnPacket()
+	{
+		Entity entity = getOwner();
+		return new EntitySpawnS2CPacket(this, entity == null ? 0 : entity.getEntityId());
 	}
 
 	@Override

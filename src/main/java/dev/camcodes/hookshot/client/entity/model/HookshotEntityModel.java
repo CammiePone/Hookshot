@@ -1,12 +1,12 @@
 package dev.camcodes.hookshot.client.entity.model;
 
-import dev.camcodes.hookshot.common.entity.HookshotEntity;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class HookshotEntityModel extends EntityModel<HookshotEntity>
+public class HookshotEntityModel extends Model
 {
 	private final ModelPart hookBase;
 	private final ModelPart hookTop;
@@ -14,7 +14,9 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity>
 	private final ModelPart hookLeft;
 	private final ModelPart hookRight;
 
-	public HookshotEntityModel() {
+	public HookshotEntityModel()
+	{
+		super(RenderLayer::getEntitySolid);
 		textureWidth = 16;
 		textureHeight = 16;
 
@@ -45,11 +47,6 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity>
 		hookBase.addChild(hookRight);
 		setRotationAngle(hookRight, 0.0F, 0.7854F, 0.0F);
 		hookRight.setTextureOffset(0, 7).addCuboid(-5.0F, -0.5F, 0.0F, 5.0F, 1.0F, 1.0F, 0.0F, false);
-	}
-
-	@Override
-	public void setAngles(HookshotEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
-	{
 	}
 
 	@Override

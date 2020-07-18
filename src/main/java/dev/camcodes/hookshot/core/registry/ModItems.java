@@ -14,9 +14,9 @@ public class ModItems
 	public static final LinkedHashMap<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
 	//-----Items-----//
-	public static final Item HOOKSHOT = create("hookshot", new HookshotItem(24D, 10D));
-	public static final Item LONGSHOT = create("longshot", new HookshotItem(48D, 10D));
-	public static final Item SPEEDSHOT = create("speedshot", new HookshotItem(24D, 15D));
+	public static final Item HOOKSHOT = create("hookshot", new HookshotItem(Hookshot.config.hsMaxRange, Hookshot.config.hsMaxVelocity));
+	public static final Item LONGSHOT = create("longshot", new HookshotItem(Hookshot.config.lsMaxRange, Hookshot.config.lsMaxVelocity));
+	public static final Item SPEEDSHOT = create("speedshot", new HookshotItem(Hookshot.config.ssMaxRange, Hookshot.config.ssMaxVelocity));
 
 	//-----Registry-----//
 	public static void register()
