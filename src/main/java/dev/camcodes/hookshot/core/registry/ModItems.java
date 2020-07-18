@@ -16,7 +16,7 @@ public class ModItems
 	//-----Items-----//
 	public static final Item HOOKSHOT = create("hookshot", new HookshotItem(24D, 10D));
 	public static final Item LONGSHOT = create("longshot", new HookshotItem(48D, 10D));
-	public static final Item SPEEDSHOT = create("speedshot", new HookshotItem(32D, 20D));
+	public static final Item SPEEDSHOT = create("speedshot", new HookshotItem(32D, 15D));
 
 	//-----Registry-----//
 	public static void register()

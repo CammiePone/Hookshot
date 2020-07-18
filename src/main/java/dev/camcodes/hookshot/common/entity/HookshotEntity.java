@@ -1,35 +1,33 @@
 package dev.camcodes.hookshot.common.entity;
 
-import dev.camcodes.hookshot.core.mixin.IsJumpingAccessor;
 import dev.camcodes.hookshot.core.registry.ModEntities;
+import dev.camcodes.hookshot.core.util.PlayerProperties;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.crash.CrashException;
+import net.minecraft.util.crash.CrashReport;
+import net.minecraft.util.crash.CrashReportSection;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
-public class HookshotEntity extends ThrownItemEntity
+public class HookshotEntity extends PersistentProjectileEntity
 {
 	private double maxRange = 0D;
 	private double maxVelocity = 0D;
 	private boolean isPulling = false;
 	private PlayerEntity owner = (PlayerEntity) getOwner();
 
-	public HookshotEntity(EntityType<? extends ThrownItemEntity> type, LivingEntity owner, World world)
+	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world)
 	{
 		super(type, owner, world);
 		this.setNoGravity(true);
-	}
-
-	@Override
-	protected Item getDefaultItem()
-	{
-		return null;
 	}
 
 	public HookshotEntity(World world)
@@ -42,33 +40,78 @@ public class HookshotEntity extends ThrownItemEntity
 	public void tick()
 	{
 		super.tick();
-		System.out.println(getPos());
+
+		if(owner == null || (owner != null && owner.isDead()) ||
+				!((PlayerProperties) owner).hasHook() ||
+				owner.distanceTo(this) > maxRange ||
+				(owner.distanceTo(this) < 3D && age > 10))
+		{
+			kill();
+			((PlayerProperties) owner).setHasHook(false);
+		}
 
 		if(getOwner() instanceof PlayerEntity && !world.isClient)
 		{
-			if(isPulling && ((IsJumpingAccessor) owner).isJumping())
+			if(isPulling)
 			{
-				owner.move(MovementType.SELF, new Vec3d(
-						getVelocity().getX() > 0 ? maxVelocity : -maxVelocity,
-						getVelocity().getY() > 0 ? maxVelocity : -maxVelocity,
-						getVelocity().getZ() > 0 ? maxVelocity : -maxVelocity)
-						.normalize());
-
+				owner.fallDistance = 0;
+				owner.setVelocity(getPos().subtract(owner.getPos()).normalize().multiply(maxVelocity / 6));
 				owner.velocityModified = true;
 			}
 		}
 	}
 
 	@Override
-	protected void onCollision(HitResult hitResult)
+	protected ItemStack asItemStack()
 	{
-		if(hitResult.getType() == HitResult.Type.BLOCK)
+		return ItemStack.EMPTY;
+	}
+
+	@Override
+	protected void checkBlockCollision()
+	{
+		Box box = this.getBoundingBox();
+		BlockPos positionA = new BlockPos(box.minX + 0.001D, box.minY + 0.001D, box.minZ + 0.001D);
+		BlockPos positionB = new BlockPos(box.maxX - 0.001D, box.maxY - 0.001D, box.maxZ - 0.001D);
+		BlockPos.Mutable mutable = new BlockPos.Mutable();
+
+		if (this.world.isRegionLoaded(positionA, positionB))
 		{
-			isPulling = true;
+			for (int x = positionA.getX(); x <= positionB.getX(); ++x)
+			{
+				for (int y = positionA.getY(); y <= positionB.getY(); ++y)
+				{
+					for (int z = positionA.getZ(); z <= positionB.getZ(); ++z)
+					{
+						mutable.set(x, y, z);
+						BlockState blockState = this.world.getBlockState(mutable);
+
+						try
+						{
+							blockState.onEntityCollision(this.world, mutable, this);
+						}
+						catch (Throwable oops)
+						{
+							CrashReport crashReport = CrashReport.create(oops, "Colliding entity with block");
+							CrashReportSection crashReportSection = crashReport.addElement("Block being collided with");
+							CrashReportSection.addBlockInfo(crashReportSection, mutable, blockState);
+							throw new CrashException(crashReport);
+						}
+					}
+				}
+			}
 		}
 	}
 
-	public void setProperties(Entity user, double maxRange, double maxVelocity, float pitch, float yaw, float roll, float modifierZ, float modifierXYZ)
+	@Override
+	protected void onBlockHit(BlockHitResult blockHitResult)
+	{
+		super.onBlockHit(blockHitResult);
+		isPulling = true;
+	}
+
+	public void setProperties(Entity user, double maxRange, double maxVelocity,
+							  float pitch, float yaw, float roll, float modifierZ, float modifierXYZ)
 	{
 		super.setProperties(user, pitch, yaw, roll, modifierZ, modifierXYZ);
 		this.maxRange = maxRange;

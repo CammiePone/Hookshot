@@ -4,7 +4,7 @@
   "package": "dev.camcodes.hookshot.core.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "IsJumpingAccessor"
+    "PlayerEntityMixin"
   ],
   "client": [
   ],

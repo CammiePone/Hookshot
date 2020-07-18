@@ -1,6 +1,6 @@
 package dev.camcodes.hookshot;
 
-import dev.camcodes.hookshot.client.entity.renderer.HookshotRenderer;
+import dev.camcodes.hookshot.client.entity.renderer.HookshotEntityRenderer;
 import dev.camcodes.hookshot.core.registry.ModEntities;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -13,9 +13,6 @@ public class HookshotClient implements ClientModInitializer
 	@Override
 	public void onInitializeClient()
 	{
-		EntityRendererRegistry.INSTANCE.register(ModEntities.HOOKSHOT_ENTITY, (dispatcher, context) ->
-		{
-			return new HookshotRenderer(dispatcher);
-		});
+		EntityRendererRegistry.INSTANCE.register(ModEntities.HOOKSHOT_ENTITY, HookshotEntityRenderer::new);
 	}
 }
