@@ -22,7 +22,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 	private double maxRange = 0D;
 	private double maxVelocity = 0D;
 	private boolean isPulling = false;
-	private PlayerEntity owner = (PlayerEntity) getOwner();
+	private PlayerEntity owner;
 
 	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world)
 	{
@@ -41,10 +41,15 @@ public class HookshotEntity extends PersistentProjectileEntity
 	{
 		super.tick();
 
-		if(owner == null || (owner != null && owner.isDead()) ||
+		if(getOwner() instanceof PlayerEntity)
+		{
+			owner = (PlayerEntity) getOwner();
+		}
+
+		if(owner == null || owner.isDead() ||
 				!((PlayerProperties) owner).hasHook() ||
-				owner.distanceTo(this) > maxRange ||
-				(owner.distanceTo(this) < 3D && age > 10))
+				owner.distanceTo(this) > maxRange)// ||
+				//(owner.distanceTo(this) < 3D && age > 10 && owner.isSneaking()))
 		{
 			kill();
 			((PlayerProperties) owner).setHasHook(false);
@@ -75,13 +80,13 @@ public class HookshotEntity extends PersistentProjectileEntity
 		BlockPos positionB = new BlockPos(box.maxX - 0.001D, box.maxY - 0.001D, box.maxZ - 0.001D);
 		BlockPos.Mutable mutable = new BlockPos.Mutable();
 
-		if (this.world.isRegionLoaded(positionA, positionB))
+		if(this.world.isRegionLoaded(positionA, positionB))
 		{
-			for (int x = positionA.getX(); x <= positionB.getX(); ++x)
+			for(int x = positionA.getX(); x <= positionB.getX(); ++x)
 			{
-				for (int y = positionA.getY(); y <= positionB.getY(); ++y)
+				for(int y = positionA.getY(); y <= positionB.getY(); ++y)
 				{
-					for (int z = positionA.getZ(); z <= positionB.getZ(); ++z)
+					for(int z = positionA.getZ(); z <= positionB.getZ(); ++z)
 					{
 						mutable.set(x, y, z);
 						BlockState blockState = this.world.getBlockState(mutable);
@@ -90,7 +95,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 						{
 							blockState.onEntityCollision(this.world, mutable, this);
 						}
-						catch (Throwable oops)
+						catch(Throwable oops)
 						{
 							CrashReport crashReport = CrashReport.create(oops, "Colliding entity with block");
 							CrashReportSection crashReportSection = crashReport.addElement("Block being collided with");
