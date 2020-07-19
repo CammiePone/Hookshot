@@ -26,7 +26,7 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 	{
 		stack.push();
 		stack.translate(0D, -1.1D, 0D);
-		this.MODEL.setAngles(hookshot, 0, 0.0F, -0.1F, hookshot.getYaw(tickDelta), hookshot.getPitch(tickDelta));
+		this.MODEL.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.yaw, hookshot.pitch);
 		VertexConsumer vertexConsumer = provider.getBuffer(this.MODEL.getLayer(this.getTexture(hookshot)));
 		this.MODEL.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();

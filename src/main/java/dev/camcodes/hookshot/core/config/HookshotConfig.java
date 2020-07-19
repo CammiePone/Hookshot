@@ -10,14 +10,20 @@ public class HookshotConfig
 	public double hsMaxRange = 24D;
 	@Comment(value="The maximum pulling speed the Hookshot can do.")
 	public double hsMaxVelocity = 10D;
+	@Comment(value="The durability of the Hookshot.")
+	public int hsDurability = 0;
 
 	@Comment(value="The maximum range the Longshot can reach.")
 	public double lsMaxRange = 48D;
 	@Comment(value="The maximum pulling speed the Longshot can do.")
 	public double lsMaxVelocity = 10D;
+	@Comment(value="The durability of the Longshot.")
+	public int lsDurability = 0;
 
 	@Comment(value="The maximum range the Speedshot can reach.")
 	public double ssMaxRange = 24D;
 	@Comment(value="The maximum pulling speed the Speedshot can do.")
 	public double ssMaxVelocity = 15D;
+	@Comment(value="The durability of the Speedshot.")
+	public int ssDurability = 0;
 }

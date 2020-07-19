@@ -19,9 +19,9 @@ public class HookshotItem extends Item
 	private double maxVelocity;
 	private HookshotEntity hookshot;
 
-	public HookshotItem(double maxRange, double maxVelocity)
+	public HookshotItem(double maxRange, double maxVelocity, int durability)
 	{
-		super(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1));
+		super(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1).maxDamage(durability));
 
 		this.maxRange = maxRange;
 		this.maxVelocity = maxVelocity;

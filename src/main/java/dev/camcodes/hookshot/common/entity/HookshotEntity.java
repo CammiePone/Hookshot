@@ -57,8 +57,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 							!((PlayerProperties) owner).hasHook() ||
 							owner.distanceTo(this) > maxRange ||
 							!(owner.getMainHandStack().getItem() instanceof HookshotItem ||
-									owner.getOffHandStack().getItem() instanceof HookshotItem))// ||
-					//(owner.distanceTo(this) < 3D && age > 10 && owner.isSneaking()))
+									owner.getOffHandStack().getItem() instanceof HookshotItem))
 					{
 						kill();
 						((PlayerProperties) owner).setHasHook(false);
