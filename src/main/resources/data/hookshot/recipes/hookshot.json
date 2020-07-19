@@ -1,13 +1,25 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "###",
-    "###",
-    "###"
+    " A ",
+    "LCL",
+    "RIR"
   ],
   "key": {
-    "#": {
-      "item": "minecraft:acacia_planks"
+    "A": {
+      "item": "minecraft:arrow"
+    },
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "C": {
+      "item": "minecraft:chain"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
     }
   },
   "result": {
