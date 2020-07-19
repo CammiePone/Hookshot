@@ -49,10 +49,10 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity>
 	}
 
 	@Override
-	public void setAngles(HookshotEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+	public void setAngles(HookshotEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch)
 	{
-		hookBase.pitch = entity.pitch;
-		hookBase.yaw = entity.yaw;
+		hookBase.pitch = pitch * 0.017453292F;
+		hookBase.yaw = yaw * 0.017453292F;
 	}
 
 	@Override
@@ -62,8 +62,8 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity>
 	}
 
 	public void setRotationAngle(ModelPart ModelPart, float x, float y, float z) {
-		ModelPart.pivotX = x;
-		ModelPart.pivotY = y;
-		ModelPart.pivotZ = z;
+		ModelPart.pitch = x;
+		ModelPart.yaw = y;
+		ModelPart.roll = z;
 	}
 }

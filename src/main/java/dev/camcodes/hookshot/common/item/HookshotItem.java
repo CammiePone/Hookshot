@@ -35,7 +35,7 @@ public class HookshotItem extends Item
 			if(!((PlayerProperties) user).hasHook())
 			{
 				hookshot = new HookshotEntity(ModEntities.HOOKSHOT_ENTITY, user, world);
-				hookshot.setProperties(user, maxRange, maxVelocity, user.pitch, user.yaw, 0f, 1.5f * (float) (maxVelocity / 10), 1f);
+				hookshot.setProperties(user, maxRange, maxVelocity, user.pitch, user.headYaw, 0f, 0.1f * (float) (maxVelocity / 10), 1f);
 				world.spawnEntity(hookshot);
 				((PlayerProperties) user).setHasHook(true);
 			}
