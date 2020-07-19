@@ -15,7 +15,7 @@ Hookshot is a small mod that adds 3 grappling hook-like tools for the player to 
 * Has a pull speed of 10
 
 **Speedshot:**
-* Has a maximum range of 24 blocks
+* Has a maximum range of 32 blocks
 * Has a pull speed of 15
 
 ### Join my Discord!
