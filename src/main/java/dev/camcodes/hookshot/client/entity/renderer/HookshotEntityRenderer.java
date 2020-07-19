@@ -8,7 +8,6 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
@@ -26,7 +25,9 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 	public void render(HookshotEntity hookshot, float yaw, float tickDelta, MatrixStack stack, VertexConsumerProvider provider, int light)
 	{
 		stack.push();
-		VertexConsumer vertexConsumer = ItemRenderer.getArmorVertexConsumer(provider, MODEL.getLayer(this.getTexture(hookshot)), false, false);
+		stack.translate(0D, -1.1D, 0D);
+		this.MODEL.setAngles(hookshot, 0, 0.0F, -0.1F, hookshot.getYaw(tickDelta), hookshot.getPitch(tickDelta));
+		VertexConsumer vertexConsumer = provider.getBuffer(this.MODEL.getLayer(this.getTexture(hookshot)));
 		this.MODEL.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();
 

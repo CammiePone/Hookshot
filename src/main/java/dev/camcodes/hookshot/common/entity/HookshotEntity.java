@@ -1,6 +1,7 @@
 package dev.camcodes.hookshot.common.entity;
 
 import dev.camcodes.hookshot.common.item.HookshotItem;
+import dev.camcodes.hookshot.core.packets.CreateNonLivingEntityPacket;
 import dev.camcodes.hookshot.core.registry.ModEntities;
 import dev.camcodes.hookshot.core.util.PlayerProperties;
 import net.minecraft.block.BlockState;
@@ -11,11 +12,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -47,26 +48,33 @@ public class HookshotEntity extends PersistentProjectileEntity
 		if(getOwner() instanceof PlayerEntity)
 		{
 			owner = (PlayerEntity) getOwner();
-		}
 
-		if(owner == null || owner.isDead() ||
-				!((PlayerProperties) owner).hasHook() ||
-				owner.distanceTo(this) > maxRange ||
-				!(owner.getMainHandStack().getItem() instanceof HookshotItem ||
-				owner.getOffHandStack().getItem() instanceof  HookshotItem))// ||
-				//(owner.distanceTo(this) < 3D && age > 10 && owner.isSneaking()))
-		{
-			kill();
-			((PlayerProperties) owner).setHasHook(false);
-		}
-
-		if(getOwner() instanceof PlayerEntity && !world.isClient)
-		{
-			if(isPulling)
+			if(!world.isClient)
 			{
-				owner.fallDistance = 0;
-				owner.setVelocity(getPos().subtract(owner.getPos()).normalize().multiply(maxVelocity / 6));
-				owner.velocityModified = true;
+				if(owner != null)
+				{
+					if(owner.isDead() ||
+							!((PlayerProperties) owner).hasHook() ||
+							owner.distanceTo(this) > maxRange ||
+							!(owner.getMainHandStack().getItem() instanceof HookshotItem ||
+									owner.getOffHandStack().getItem() instanceof HookshotItem))// ||
+					//(owner.distanceTo(this) < 3D && age > 10 && owner.isSneaking()))
+					{
+						kill();
+						((PlayerProperties) owner).setHasHook(false);
+					}
+				}
+				else
+				{
+					kill();
+				}
+
+				if(isPulling && owner.distanceTo(this) > 1D)
+				{
+					owner.fallDistance = 0;
+					owner.setVelocity(getPos().subtract(owner.getPos()).normalize().multiply(maxVelocity / 6));
+					owner.velocityModified = true;
+				}
 			}
 		}
 	}
@@ -74,8 +82,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 	@Override
 	public Packet<?> createSpawnPacket()
 	{
-		Entity entity = getOwner();
-		return new EntitySpawnS2CPacket(this, entity == null ? 0 : entity.getEntityId());
+		return CreateNonLivingEntityPacket.send(this);
 	}
 
 	@Override
@@ -127,10 +134,23 @@ public class HookshotEntity extends PersistentProjectileEntity
 		isPulling = true;
 	}
 
+	@Override
+	protected void onEntityHit(EntityHitResult entityHitResult)
+	{
+		super.onEntityHit(entityHitResult);
+
+		if(owner instanceof PlayerEntity)
+		{
+			((PlayerProperties) owner).setHasHook(false);
+		}
+	}
+
 	public void setProperties(Entity user, double maxRange, double maxVelocity,
 							  float pitch, float yaw, float roll, float modifierZ, float modifierXYZ)
 	{
 		super.setProperties(user, pitch, yaw, roll, modifierZ, modifierXYZ);
+		this.pitch = pitch;
+		this.yaw = yaw;
 		this.maxRange = maxRange;
 		this.maxVelocity = maxVelocity;
 	}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hookshot",
-  "version": "1.0.0",
+  "version": "0.0.2",
 
   "name": "Hookshot",
   "description": "Just a simple mod that adds Hookshots into the game.",
@@ -22,7 +22,7 @@
       "dev.camcodes.hookshot.Hookshot"
     ],
     "client": [
-      "dev.camcodes.hookshot.HookshotClient"
+      "dev.camcodes.hookshot.client.HookshotClient"
     ]
   },
   "mixins": [
@@ -32,7 +32,7 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": "1.16.x"
+    "minecraft": ">=1.16.1"
   },
   "suggests": {
     "flamingo": "*"
