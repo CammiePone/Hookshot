@@ -63,6 +63,8 @@ public class CreateNonLivingEntityPacket
 						entity.updateTrackedPosition(x, y, z);
 						entity.pitch = pitch;
 						entity.yaw = yaw;
+						entity.prevPitch = pitch;
+						entity.prevYaw = yaw;
 						entity.setEntityId(id);
 						entity.setUuid(uuid);
 						world.addEntity(id, entity);

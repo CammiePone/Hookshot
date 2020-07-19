@@ -26,24 +26,34 @@ public class HookshotEntity extends PersistentProjectileEntity
 	private double maxRange = 0D;
 	private double maxVelocity = 0D;
 	private boolean isPulling = false;
+	private float forceYaw;
+	private float forcePitch;
 	private PlayerEntity owner;
 
 	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world)
 	{
 		super(type, owner, world);
+		this.forceYaw = owner.yaw;
+		this.forcePitch = owner.pitch;
 		this.setNoGravity(true);
+		this.setDamage(0);
 	}
 
 	public HookshotEntity(World world)
 	{
 		super(ModEntities.HOOKSHOT_ENTITY, world);
 		this.setNoGravity(true);
+		this.setDamage(0);
 	}
 
 	@Override
 	public void tick()
 	{
 		super.tick();
+
+		this.prevYaw = forceYaw % 360;
+		this.prevPitch = forcePitch % 360;
+		this.setRotation(forceYaw, forcePitch);
 
 		if(getOwner() instanceof PlayerEntity)
 		{
@@ -74,6 +84,10 @@ public class HookshotEntity extends PersistentProjectileEntity
 					owner.setVelocity(getPos().subtract(owner.getPos()).normalize().multiply(maxVelocity / 6));
 					owner.velocityModified = true;
 				}
+			}
+			else
+			{
+				System.out.println(((PlayerProperties) owner).hasHook());
 			}
 		}
 	}
@@ -148,8 +162,8 @@ public class HookshotEntity extends PersistentProjectileEntity
 							  float pitch, float yaw, float roll, float modifierZ, float modifierXYZ)
 	{
 		super.setProperties(user, pitch, yaw, roll, modifierZ, modifierXYZ);
-		this.pitch = pitch;
-		this.yaw = yaw;
+		this.forcePitch = pitch;
+		this.forceYaw = yaw;
 		this.maxRange = maxRange;
 		this.maxVelocity = maxVelocity;
 	}

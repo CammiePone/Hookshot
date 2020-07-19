@@ -21,7 +21,7 @@ public class HookshotConfig
 	public int lsDurability = 0;
 
 	@Comment(value="The maximum range the Speedshot can reach.")
-	public double ssMaxRange = 24D;
+	public double ssMaxRange = 32D;
 	@Comment(value="The maximum pulling speed the Speedshot can do.")
 	public double ssMaxVelocity = 15D;
 	@Comment(value="The durability of the Speedshot.")

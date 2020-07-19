@@ -10,7 +10,6 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 
 public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 {
@@ -27,9 +26,7 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 	{
 		stack.push();
 		stack.translate(0D, -1.5D, 0D);
-		this.MODEL.setAngles(hookshot, 0F, 0F, hookshot.age,
-				MathHelper.lerpAngleDegrees(tickDelta, hookshot.prevYaw, hookshot.yaw),
-				MathHelper.lerp(tickDelta, hookshot.prevPitch, hookshot.pitch));
+		this.MODEL.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.yaw, hookshot.pitch);
 		VertexConsumer vertexConsumer = provider.getBuffer(this.MODEL.getLayer(this.getTexture(hookshot)));
 		this.MODEL.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();

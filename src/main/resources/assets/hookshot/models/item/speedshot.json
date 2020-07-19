@@ -112,7 +112,7 @@
 		{
 			"from": [7.5, 5, -4.5],
 			"to": [8.5, 6, -0.5],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 5.5, -0.5]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5.5, -0.5]},
 			"faces": {
 				"north": {"uv": [4, 4, 5, 5], "texture": "#0"},
 				"east": {"uv": [4, 4, 8, 5], "texture": "#0"},
@@ -228,6 +228,14 @@
 					"children": [8, 9, 10, 11, 12]
 				}
 			]
+		}
+	],
+	"overrides": [
+		{
+			"predicate": {
+				"hookshot:has_hook": 1
+			},
+			"model": "hookshot:item/speedshot_hookless"
 		}
 	]
 }

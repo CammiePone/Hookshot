@@ -175,6 +175,7 @@
 			}
 		}
 	],
+
 	"display": {
 		"thirdperson_righthand": {
 			"translation": [0, 0.5, 0]
@@ -228,6 +229,14 @@
 					"children": [8, 9, 10, 11, 12]
 				}
 			]
+		}
+	],
+	"overrides": [
+		{
+			"predicate": {
+				"hookshot:has_hook": 1
+			},
+			"model": "hookshot:item/longshot_hookless"
 		}
 	]
 }

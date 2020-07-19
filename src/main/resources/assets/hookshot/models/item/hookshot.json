@@ -229,5 +229,13 @@
 				}
 			]
 		}
+	],
+	"overrides": [
+		{
+			"predicate": {
+				"hookshot:has_hook": 1
+			},
+			"model": "hookshot:item/hookshot_hookless"
+		}
 	]
 }

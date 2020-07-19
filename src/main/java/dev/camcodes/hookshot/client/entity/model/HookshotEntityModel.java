@@ -14,33 +14,34 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity>
 	private final ModelPart hookLeft;
 	private final ModelPart hookRight;
 
-	public HookshotEntityModel() {
+	public HookshotEntityModel()
+	{
 		textureWidth = 16;
 		textureHeight = 16;
 
 		hookBase = new ModelPart(this);
-		hookBase.setPivot(-0.5F, 23.5F, 0.5F);
-		hookBase.setTextureOffset(1, 2).addCuboid(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 6.0F, 0.0F, false);
+		hookBase.setPivot(-0.5f, 23.5f, 0.5F);
+		hookBase.setTextureOffset(1, 2).addCuboid(-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 6.0f, 0.0f, false);
 
 		hookTop = new ModelPart(this);
-		hookTop.setPivot(0.5F, -0.5F, -0.5F);
-		setRotationAngle(hookTop, -0.7854F, 0.0F, 0.0F);
-		hookTop.setTextureOffset(0, 0).addCuboid(-1.0F, -5.0F, 0.0F, 1.0F, 5.0F, 1.0F, 0.0F, false);
+		hookTop.setPivot(0.5f, -0.5f, -0.5F);
+		setRotationAngle(hookTop, -0.7854f, 0.0f, 0.0F);
+		hookTop.setTextureOffset(0, 0).addCuboid(-1.0f, -5.0f, 0.0f, 1.0f, 5.0f, 1.0f, 0.0f, false);
 
 		hookBottom = new ModelPart(this);
-		hookBottom.setPivot(0.5F, 0.5F, -0.5F);
-		setRotationAngle(hookBottom, -2.3562F, 0.0F, 0.0F);
-		hookBottom.setTextureOffset(12, 0).addCuboid(-1.0F, -5.0F, -1.0F, 1.0F, 5.0F, 1.0F, 0.0F, false);
+		hookBottom.setPivot(0.5f, 0.5f, -0.5F);
+		setRotationAngle(hookBottom, -2.3562f, 0.0f, 0.0F);
+		hookBottom.setTextureOffset(12, 0).addCuboid(-1.0f, -5.0f, -1.0f, 1.0f, 5.0f, 1.0f, 0.0f, false);
 
 		hookLeft = new ModelPart(this);
-		hookLeft.setPivot(-0.5F, 0.5F, -0.5F);
-		setRotationAngle(hookLeft, 0.0F, 0.7854F, 0.0F);
-		hookLeft.setTextureOffset(2, 11).addCuboid(-5.0F, -1.0F, 0.0F, 5.0F, 1.0F, 1.0F, 0.0F, false);
+		hookLeft.setPivot(-0.5f, 0.5f, -0.5F);
+		setRotationAngle(hookLeft, 0.0f, 0.7854f, 0.0F);
+		hookLeft.setTextureOffset(2, 11).addCuboid(-5.0f, -1.0f, 0.0f, 5.0f, 1.0f, 1.0f, 0.0f, false);
 
 		hookRight = new ModelPart(this);
-		hookRight.setPivot(0.5F, 0.5F, -0.5F);
-		setRotationAngle(hookRight, 0.0F, -0.7854F, 0.0F);
-		hookRight.setTextureOffset(2, 14).addCuboid(0.0F, -1.0F, 0.0F, 5.0F, 1.0F, 1.0F, 0.0F, false);
+		hookRight.setPivot(0.5f, 0.5f, -0.5F);
+		setRotationAngle(hookRight, 0.0f, -0.7854f, 0.0F);
+		hookRight.setTextureOffset(2, 14).addCuboid(0.0f, -1.0f, 0.0f, 5.0f, 1.0f, 1.0f, 0.0f, false);
 
 		hookBase.addChild(hookTop);
 		hookBase.addChild(hookBottom);
@@ -51,8 +52,8 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity>
 	@Override
 	public void setAngles(HookshotEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch)
 	{
-		hookBase.pitch = pitch * 0.017453292F;
-		hookBase.yaw = yaw * 0.017453292F;
+		hookBase.yaw = yaw;
+		hookBase.pitch = pitch;
 	}
 
 	@Override
