@@ -19,9 +19,9 @@ Hookshot is a small mod that adds 3 grappling hook-like tools for the player to 
 * Has a maximum range of 32 blocks
 * Has a pull speed of 15
 
-<p align="center">
-  <h3>Join my Discord!</h3>
-</p>
+<h3 align="center">
+  Join my Discord!
+</h3>
 <p align="center">
   <a href="https://discord.gg/f5dFYWX"><img src="https://www.shareicon.net/data/2017/06/21/887435_logo_512x512.png" width="150" height="150" title="Cam's Mods N' Games Discord" alt="Cam's Mods N' Games Discord"></a>
 </p>
