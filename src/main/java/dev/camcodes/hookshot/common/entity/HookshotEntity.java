@@ -1,7 +1,7 @@
 package dev.camcodes.hookshot.common.entity;
 
 import dev.camcodes.hookshot.common.item.HookshotItem;
-import dev.camcodes.hookshot.core.packets.CreateNonLivingEntityPacket;
+import dev.camcodes.hookshot.core.packets.CreateProjectileEntityPacket;
 import dev.camcodes.hookshot.core.registry.ModEntities;
 import dev.camcodes.hookshot.core.util.PlayerProperties;
 import net.minecraft.block.BlockState;
@@ -95,7 +95,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 	@Override
 	public Packet<?> createSpawnPacket()
 	{
-		return CreateNonLivingEntityPacket.send(this);
+		return CreateProjectileEntityPacket.send(this);
 	}
 
 	@Override

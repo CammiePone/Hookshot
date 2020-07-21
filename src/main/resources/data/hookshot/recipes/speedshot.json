@@ -1,12 +1,15 @@
 {
   "type": "minecraft:smithing",
-  "base": {
+  "base":
+  {
     "item": "hookshot:hookshot"
   },
-  "addition": {
+  "addition":
+  {
     "item": "minecraft:netherite_ingot"
   },
-  "result": {
+  "result":
+  {
     "item": "hookshot:speedshot"
   }
 }

@@ -2,7 +2,7 @@ package dev.camcodes.hookshot.client;
 
 import dev.camcodes.hookshot.Hookshot;
 import dev.camcodes.hookshot.client.entity.renderer.HookshotEntityRenderer;
-import dev.camcodes.hookshot.core.packets.CreateNonLivingEntityPacket;
+import dev.camcodes.hookshot.core.packets.CreateProjectileEntityPacket;
 import dev.camcodes.hookshot.core.registry.ModEntities;
 import dev.camcodes.hookshot.core.util.PlayerProperties;
 import net.fabricmc.api.ClientModInitializer;
@@ -25,7 +25,7 @@ public class HookshotClient implements ClientModInitializer
 	public void onInitializeClient()
 	{
 		EntityRendererRegistry.INSTANCE.register(ModEntities.HOOKSHOT_ENTITY, (dispatcher, context) -> new HookshotEntityRenderer(dispatcher));
-		ClientSidePacketRegistry.INSTANCE.register(CreateNonLivingEntityPacket.ID, (packetContext, packetByteBuf) -> CreateNonLivingEntityPacket.handle(packetContext, packetByteBuf));
+		ClientSidePacketRegistry.INSTANCE.register(CreateProjectileEntityPacket.ID, (packetContext, packetByteBuf) -> CreateProjectileEntityPacket.handle(packetContext, packetByteBuf));
 
 		FabricModelPredicateProviderRegistry.register(new Identifier(Hookshot.MOD_ID, "has_hook"), new ModelPredicateProvider()
 		{

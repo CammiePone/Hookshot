@@ -1,12 +1,15 @@
 {
   "type": "minecraft:smithing",
-  "base": {
+  "base":
+  {
     "item": "hookshot:hookshot"
   },
-  "addition": {
+  "addition":
+  {
     "item": "minecraft:emerald"
   },
-  "result": {
+  "result":
+  {
     "item": "hookshot:longshot"
   }
 }

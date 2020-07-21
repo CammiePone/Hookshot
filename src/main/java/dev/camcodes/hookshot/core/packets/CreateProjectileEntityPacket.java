@@ -8,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
@@ -16,11 +17,11 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.UUID;
 
-public class CreateNonLivingEntityPacket
+public class CreateProjectileEntityPacket
 {
 	public static final Identifier ID = new Identifier(Hookshot.MOD_ID, "create_non_living_entity");
 
-	public static Packet<?> send(Entity entity)
+	public static Packet<?> send(PersistentProjectileEntity entity)
 	{
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		buf.writeString(Registry.ENTITY_TYPE.getId(entity.getType()).toString());
@@ -31,6 +32,8 @@ public class CreateNonLivingEntityPacket
 		buf.writeDouble(entity.getZ());
 		buf.writeByte(MathHelper.floor(entity.pitch * 256 / 360));
 		buf.writeByte(MathHelper.floor(entity.yaw * 256 / 360));
+		buf.writeInt(entity.getOwner().getEntityId());
+
 		return ServerSidePacketRegistry.INSTANCE.toPacket(ID, buf);
 	}
 
@@ -44,6 +47,7 @@ public class CreateNonLivingEntityPacket
 		double z = buf.readDouble();
 		float pitch = (buf.readByte() * 360) / 256f;
 		float yaw = (buf.readByte() * 360) / 256f;
+		int ownerId = buf.readInt();
 
 		//noinspection Convert2Lambda
 		context.getTaskQueue().submit(new Runnable()
@@ -57,17 +61,21 @@ public class CreateNonLivingEntityPacket
 				{
 					Entity entity = type.create(world);
 
-					if(entity != null)
+					if(entity instanceof PersistentProjectileEntity)
 					{
-						entity.updatePosition(x, y, z);
-						entity.updateTrackedPosition(x, y, z);
-						entity.pitch = pitch;
-						entity.yaw = yaw;
-						entity.prevPitch = pitch;
-						entity.prevYaw = yaw;
-						entity.setEntityId(id);
-						entity.setUuid(uuid);
-						world.addEntity(id, entity);
+						PersistentProjectileEntity projectile = (PersistentProjectileEntity) entity;
+
+						projectile.updatePosition(x, y, z);
+						projectile.updateTrackedPosition(x, y, z);
+						projectile.pitch = pitch;
+						projectile.yaw = yaw;
+						projectile.prevPitch = pitch;
+						projectile.prevYaw = yaw;
+						projectile.setEntityId(id);
+						projectile.setUuid(uuid);
+						projectile.setOwner(world.getEntityById(ownerId));
+
+						world.addEntity(id, projectile);
 					}
 				}
 			}

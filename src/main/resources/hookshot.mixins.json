@@ -3,12 +3,15 @@
   "minVersion": "0.8",
   "package": "dev.camcodes.hookshot.core.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
+  "mixins":
+  [
     "PlayerEntityMixin"
   ],
-  "client": [
+  "client":
+  [
   ],
-  "injectors": {
+  "injectors":
+  {
     "defaultRequire": 1
   }
 }
