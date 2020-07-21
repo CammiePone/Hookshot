@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hookshot",
-  "version": "r1",
+  "version": "r2",
 
   "name": "Hookshot",
   "description": "Just a simple mod that adds Hookshots into the game.",
@@ -16,7 +16,7 @@
   },
 
   "license": "GNU GPL 3.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/hookshot/icon.png",
 
   "environment": "*",
   "entrypoints":
@@ -39,7 +39,8 @@
   {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": ">=1.16.1"
+    "minecraft": ">=1.16.1",
+    "cotton": ">=1.0.5"
   },
   "suggests":
   {
