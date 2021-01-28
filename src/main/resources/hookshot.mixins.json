@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.camcodes.hookshot.core.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins":
+  [
+    "PlayerEntityMixin",
+    "SmithingRecipeAccessor"
+  ],
+  "client":
+  [
+  ],
+  "injectors":
+  {
+    "defaultRequire": 1
+  }
+}

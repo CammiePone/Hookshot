@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " A ",
+    "LCL",
+    "RIR"
+  ],
+  "key":
+  {
+    "A":
+    {
+      "item": "minecraft:arrow"
+    },
+    "L":
+    {
+      "item": "minecraft:lapis_block"
+    },
+    "C":
+    {
+      "item": "minecraft:chain"
+    },
+    "R":
+    {
+      "item": "minecraft:redstone_block"
+    },
+    "I":
+    {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result":
+  {
+    "item": "hookshot:hookshot"
+  }
+}
