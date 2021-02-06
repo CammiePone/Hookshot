@@ -7,6 +7,7 @@ import dev.camcodes.hookshot.core.registry.ModEntities;
 import dev.camcodes.hookshot.core.util.PlayerProperties;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -147,23 +148,49 @@ public class HookshotEntity extends PersistentProjectileEntity
 
 		if(!world.isClient && owner != null)
 		{
-			if(UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock()))
+			if(Hookshot.config.unhookableBlacklist)
 			{
-				((PlayerProperties) owner).setHasHook(false);
-				isPulling = false;
-				remove();
+				if(UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock()))
+				{
+					((PlayerProperties) owner).setHasHook(false);
+					isPulling = false;
+					remove();
+				}
+				else
+				{
+					if(stack.hasTag())
+					{
+						if(stack.getTag().getBoolean("hasEnder"))
+						{
+							owner.requestTeleport(getX(), getY(), getZ());
+							((PlayerProperties) owner).setHasHook(false);
+							owner.fallDistance = 0.0F;
+							isPulling = false;
+							remove();
+						}
+					}
+				}
 			}
 			else
 			{
-				if(stack.hasTag())
+				if(!UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock()))
 				{
-					if(stack.getTag().getBoolean("hasEnder"))
+					((PlayerProperties) owner).setHasHook(false);
+					isPulling = false;
+					remove();
+				}
+				else
+				{
+					if(stack.hasTag())
 					{
-						owner.requestTeleport(getX(), getY(), getZ());
-						((PlayerProperties) owner).setHasHook(false);
-						owner.fallDistance = 0.0F;
-						isPulling = false;
-						remove();
+						if(stack.getTag().getBoolean("hasEnder"))
+						{
+							owner.requestTeleport(getX(), getY(), getZ());
+							((PlayerProperties) owner).setHasHook(false);
+							owner.fallDistance = 0.0F;
+							isPulling = false;
+							remove();
+						}
 					}
 				}
 			}

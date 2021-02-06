@@ -7,6 +7,7 @@ import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
 @Config(name = Hookshot.MOD_ID)
 public class HookshotConfig implements ConfigData
 {
+	public boolean unhookableBlacklist = true;
 	public double defaultMaxRange = 24D;
 	public double defaultMaxSpeed = 10D;
 	public int durability = 0;
