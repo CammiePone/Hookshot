@@ -1,7 +1,7 @@
-package dev.camcodes.hookshot.core.registry;
+package dev.cammiescorner.hookshot.core.registry;
 
-import dev.camcodes.hookshot.Hookshot;
-import dev.camcodes.hookshot.common.entity.HookshotEntity;
+import dev.cammiescorner.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;

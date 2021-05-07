@@ -1,13 +1,12 @@
-package dev.camcodes.hookshot.common.entity;
+package dev.cammiescorner.hookshot.common.entity;
 
-import dev.camcodes.hookshot.Hookshot;
-import dev.camcodes.hookshot.common.item.HookshotItem;
-import dev.camcodes.hookshot.core.packets.CreateProjectileEntityPacket;
-import dev.camcodes.hookshot.core.registry.ModEntities;
-import dev.camcodes.hookshot.core.util.PlayerProperties;
+import dev.cammiescorner.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.common.item.HookshotItem;
+import dev.cammiescorner.hookshot.core.packets.CreateProjectileEntityPacket;
+import dev.cammiescorner.hookshot.core.registry.ModEntities;
+import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +24,8 @@ import net.minecraft.world.World;
 public class HookshotEntity extends PersistentProjectileEntity
 {
 	private static final Tag<Block> UNHOOKABLE = TagRegistry.block(new Identifier(Hookshot.MOD_ID, "unhookable"));
-	
+
+	private double distance = 0D;
 	private double maxRange = 0D;
 	private double maxSpeed = 0D;
 	private boolean isPulling = false;
@@ -79,7 +79,20 @@ public class HookshotEntity extends PersistentProjectileEntity
 				{
 					if(isPulling)
 					{
-						if(owner.distanceTo(this) > 1D)
+						if(owner.distanceTo(this) > distance)
+						{
+							owner.fallDistance = 0;
+							owner.setVelocity(getPos().subtract(owner.getPos()).normalize().multiply(maxSpeed / 6));
+							owner.velocityModified = true;
+						}
+						else
+						{
+							owner.fallDistance = 0;
+							owner.setVelocity(getPos().add(owner.getPos()).normalize().multiply(maxSpeed / 6));
+							owner.velocityModified = true;
+						}
+
+						/*if(owner.distanceTo(this) > 1D)
 						{
 							owner.fallDistance = 0;
 							owner.setVelocity(getPos().subtract(owner.getPos()).normalize().multiply(maxSpeed / 6));
@@ -93,7 +106,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 								kill();
 								((PlayerProperties) owner).setHasHook(false);
 							}
-						}
+						}*/
 					}
 				}
 				else
@@ -145,6 +158,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 	{
 		super.onBlockHit(blockHitResult);
 		isPulling = true;
+		distance = owner.distanceTo(this);
 
 		if(!world.isClient && owner != null)
 		{

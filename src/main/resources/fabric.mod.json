@@ -1,10 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "hookshot",
-  "version": "11.0",
-
+  "version": "${version}",
   "name": "Hookshot",
-  "description": "Just a simple mod that adds Hookshots into the game.",
+  "description": "Just a simple mod that adds a Hookshot into the game.",
   "authors":
   [
     "Camellias_"
@@ -15,7 +14,7 @@
     "sources": ""
   },
 
-  "license": "GNU GPL 3.0",
+  "license": "MIT",
   "icon": "assets/hookshot/icon.png",
 
   "environment": "*",
@@ -23,11 +22,11 @@
   {
     "main":
     [
-      "dev.camcodes.hookshot.Hookshot"
+      "dev.cammiescorner.hookshot.Hookshot"
     ],
     "client":
     [
-      "dev.camcodes.hookshot.client.HookshotClient"
+      "dev.cammiescorner.hookshot.client.HookshotClient"
     ]
   },
   "mixins":

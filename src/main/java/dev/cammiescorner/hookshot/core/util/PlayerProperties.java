@@ -1,4 +1,4 @@
-package dev.camcodes.hookshot.core.util;
+package dev.cammiescorner.hookshot.core.util;
 
 public interface PlayerProperties
 {

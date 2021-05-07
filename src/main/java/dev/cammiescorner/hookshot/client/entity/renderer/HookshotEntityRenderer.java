@@ -1,8 +1,8 @@
-package dev.camcodes.hookshot.client.entity.renderer;
+package dev.cammiescorner.hookshot.client.entity.renderer;
 
-import dev.camcodes.hookshot.Hookshot;
-import dev.camcodes.hookshot.client.entity.model.HookshotEntityModel;
-import dev.camcodes.hookshot.common.entity.HookshotEntity;
+import dev.cammiescorner.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
+import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;

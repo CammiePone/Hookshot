@@ -1,11 +1,11 @@
-package dev.camcodes.hookshot;
+package dev.cammiescorner.hookshot;
 
-import dev.camcodes.hookshot.core.config.HookshotConfig;
-import dev.camcodes.hookshot.core.registry.ModEntities;
-import dev.camcodes.hookshot.core.registry.ModItems;
-import dev.camcodes.hookshot.core.util.recipe.HookshotSmithingRecipe;
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.GsonConfigSerializer;
+import dev.cammiescorner.hookshot.core.config.HookshotConfig;
+import dev.cammiescorner.hookshot.core.registry.ModEntities;
+import dev.cammiescorner.hookshot.core.registry.ModItems;
+import dev.cammiescorner.hookshot.core.util.recipe.HookshotSmithingRecipe;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;

@@ -1,6 +1,6 @@
-package dev.camcodes.hookshot.core.mixin;
+package dev.cammiescorner.hookshot.core.mixin;
 
-import dev.camcodes.hookshot.core.util.PlayerProperties;
+import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;

@@ -1,9 +1,9 @@
-package dev.camcodes.hookshot.core.util.recipe;
+package dev.cammiescorner.hookshot.core.util.recipe;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-import dev.camcodes.hookshot.core.mixin.SmithingRecipeAccessor;
+import dev.cammiescorner.hookshot.core.mixin.SmithingRecipeAccessor;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

@@ -1,6 +1,6 @@
-package dev.camcodes.hookshot.core.packets;
+package dev.cammiescorner.hookshot.core.packets;
 
-import dev.camcodes.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.Hookshot;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;

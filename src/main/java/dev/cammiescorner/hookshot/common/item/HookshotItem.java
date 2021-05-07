@@ -1,9 +1,9 @@
-package dev.camcodes.hookshot.common.item;
+package dev.cammiescorner.hookshot.common.item;
 
-import dev.camcodes.hookshot.Hookshot;
-import dev.camcodes.hookshot.common.entity.HookshotEntity;
-import dev.camcodes.hookshot.core.registry.ModEntities;
-import dev.camcodes.hookshot.core.util.PlayerProperties;
+import dev.cammiescorner.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
+import dev.cammiescorner.hookshot.core.registry.ModEntities;
+import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,8 +41,8 @@ public class HookshotItem extends Item
 
 				if(stack.hasTag())
 				{
-					if(stack.getTag().getBoolean("hasRange")) maxRange *= Hookshot.config.rangeMult;
-					if(stack.getTag().getBoolean("hasQuick")) maxSpeed *= Hookshot.config.quickMult;
+					if(stack.getTag().getBoolean("hasRange")) maxRange *= Hookshot.config.rangeMultiplier;
+					if(stack.getTag().getBoolean("hasQuick")) maxSpeed *= Hookshot.config.quickMultiplier;
 				}
 
 				HookshotEntity hookshot = new HookshotEntity(ModEntities.HOOKSHOT_ENTITY, user, world);

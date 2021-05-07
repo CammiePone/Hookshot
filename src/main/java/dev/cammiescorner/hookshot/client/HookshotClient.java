@@ -1,10 +1,10 @@
-package dev.camcodes.hookshot.client;
+package dev.cammiescorner.hookshot.client;
 
-import dev.camcodes.hookshot.Hookshot;
-import dev.camcodes.hookshot.client.entity.renderer.HookshotEntityRenderer;
-import dev.camcodes.hookshot.core.packets.CreateProjectileEntityPacket;
-import dev.camcodes.hookshot.core.registry.ModEntities;
-import dev.camcodes.hookshot.core.util.PlayerProperties;
+import dev.cammiescorner.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.client.entity.renderer.HookshotEntityRenderer;
+import dev.cammiescorner.hookshot.core.packets.CreateProjectileEntityPacket;
+import dev.cammiescorner.hookshot.core.registry.ModEntities;
+import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

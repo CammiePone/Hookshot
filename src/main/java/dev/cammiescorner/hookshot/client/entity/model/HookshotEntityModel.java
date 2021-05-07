@@ -1,6 +1,6 @@
-package dev.camcodes.hookshot.client.entity.model;
+package dev.cammiescorner.hookshot.client.entity.model;
 
-import dev.camcodes.hookshot.common.entity.HookshotEntity;
+import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;

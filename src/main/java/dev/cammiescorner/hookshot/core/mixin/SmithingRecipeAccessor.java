@@ -1,4 +1,4 @@
-package dev.camcodes.hookshot.core.mixin;
+package dev.cammiescorner.hookshot.core.mixin;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
