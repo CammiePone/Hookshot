@@ -27,6 +27,10 @@
     "client":
     [
       "dev.cammiescorner.hookshot.client.HookshotClient"
+    ],
+    "modmenu":
+    [
+      "dev.cammiescorner.hookshot.core.integration.HookshotModMenu"
     ]
   },
   "mixins":

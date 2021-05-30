@@ -117,7 +117,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 
 						if(Math.abs(distance.y) < 0.1D)
 							motion = new Vec3d(motion.x, 0, motion.z);
-						if(new Vec3d(distance.x, 0, distance.z).length() < new Vec3d(owner.getWidth() / 2, 0, owner.getWidth() / 2).length() / 1.5)
+						if(new Vec3d(distance.x, 0, distance.z).length() < new Vec3d(owner.getWidth() / 2, 0, owner.getWidth() / 2).length() / 1.4)
 							motion = new Vec3d(0, motion.y, 0);
 
 						if(Hookshot.config.hookshotCancelsFallDamage)
@@ -283,7 +283,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 	public void setProperties(ItemStack stack, double maxRange, double maxVelocity,
 							  float pitch, float yaw, float roll, float modifierZ, float modifierXYZ)
 	{
-		float f = 0.0175F;
+		float f = 0.017453292F;
 		float x = -MathHelper.sin(yaw * f) * MathHelper.cos(pitch * f);
 		float y = -MathHelper.sin((pitch + roll) * f);
 		float z = MathHelper.cos(yaw * f) * MathHelper.cos(pitch * f);

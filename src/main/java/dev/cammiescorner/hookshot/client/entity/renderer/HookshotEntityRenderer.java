@@ -39,14 +39,13 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 			if(player != null)
 			{
 				stack.push();
-
-				stack.push();
 				stack.translate(0D, -1.5D, 0D);
 				MODEL.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.yaw, hookshot.pitch);
 				VertexConsumer vertexConsumer = provider.getBuffer(MODEL.getLayer(this.getTexture(hookshot)));
 				MODEL.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 				stack.pop();
 
+				stack.push();
 				double m = player.getX();
 				double n = player.getY() + player.getStandingEyeHeight() * 0.75;
 				double o = player.getZ();
