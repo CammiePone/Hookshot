@@ -2,7 +2,7 @@ package dev.cammiescorner.hookshot.client;
 
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.client.entity.renderer.HookshotEntityRenderer;
-import dev.cammiescorner.hookshot.core.packets.CreateProjectileEntityPacket;
+import dev.cammiescorner.hookshot.common.packets.CreateProjectileEntityPacket;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import net.fabricmc.api.ClientModInitializer;

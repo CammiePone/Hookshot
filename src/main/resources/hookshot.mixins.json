@@ -1,15 +1,16 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "dev.cammiescorner.hookshot.core.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "mixins": [
-    "PlayerEntityMixin",
-    "SmithingRecipeAccessor"
-  ],
-  "client": [
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+	"required": true,
+	"minVersion": "0.8",
+	"package": "dev.cammiescorner.hookshot.core.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"PlayerEntityMixin",
+		"SmithingRecipeAccessor"
+	],
+	"client": [
+		"client.ClientPlayNetworkHandlerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

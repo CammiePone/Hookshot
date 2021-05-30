@@ -2,7 +2,6 @@ package dev.cammiescorner.hookshot.common.entity;
 
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.common.item.HookshotItem;
-import dev.cammiescorner.hookshot.core.packets.CreateProjectileEntityPacket;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import dev.cammiescorner.hookshot.core.util.UpgradesHelper;
@@ -19,7 +18,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Packet;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -43,6 +41,13 @@ public class HookshotEntity extends PersistentProjectileEntity
 	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world)
 	{
 		super(type, owner, world);
+		this.setNoGravity(true);
+		this.setDamage(0);
+	}
+
+	public HookshotEntity(World world, double x, double y, double z)
+	{
+		super(ModEntities.HOOKSHOT_ENTITY, x, y, z, world);
 		this.setNoGravity(true);
 		this.setDamage(0);
 	}
@@ -167,12 +172,6 @@ public class HookshotEntity extends PersistentProjectileEntity
 	public boolean canUsePortals()
 	{
 		return false;
-	}
-
-	@Override
-	public Packet<?> createSpawnPacket()
-	{
-		return CreateProjectileEntityPacket.send(this);
 	}
 
 	@Override
