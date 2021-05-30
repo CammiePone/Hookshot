@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -89,6 +90,12 @@ public class HookshotItem extends Item
 	public int getMaxUseTime(ItemStack stack)
 	{
 		return 72000;
+	}
+
+	@Override
+	public boolean canRepair(ItemStack stack, ItemStack ingredient)
+	{
+		return ingredient.getItem() == Items.IRON_INGOT;
 	}
 
 	@Override

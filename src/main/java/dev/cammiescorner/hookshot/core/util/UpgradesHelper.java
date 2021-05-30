@@ -28,4 +28,9 @@ public class UpgradesHelper
 	{
 		return stack.hasTag() && stack.getTag().getBoolean("hasRange");
 	}
+
+	public static boolean hasSwingingUpgrade(ItemStack stack)
+	{
+		return stack.hasTag() && stack.getTag().getBoolean("hasSwing");
+	}
 }

@@ -108,13 +108,15 @@ public class HookshotEntity extends PersistentProjectileEntity
 					if(isPulling)
 					{
 						Vec3d distance = getPos().subtract(owner.getPos().add(0, owner.getHeight() / 2, 0));
-						owner.fallDistance = 0;
 						Vec3d motion = distance.normalize().multiply(distance.length() < 3D && !UpgradesHelper.hasAutomaticUpgrade(stack) ? ((maxSpeed / 6) * distance.length()) / 4D : maxSpeed / 6);
 
 						if(Math.abs(distance.y) < 0.1D)
 							motion = new Vec3d(motion.x, 0, motion.z);
 						if(new Vec3d(distance.x, 0, distance.z).length() < new Vec3d(owner.getWidth() / 2, 0, owner.getWidth() / 2).length() / 1.5)
 							motion = new Vec3d(0, motion.y, 0);
+
+						if(Hookshot.config.hookshotCancelsFallDamage)
+							owner.fallDistance = 0;
 
 						owner.setVelocity(motion);
 						owner.velocityModified = true;

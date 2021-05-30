@@ -9,9 +9,10 @@ public class HookshotConfig implements ConfigData
 {
 	public boolean useClassicHookshotLogic = false;
 	public boolean unhookableBlacklist = true;
+	public boolean hookshotCancelsFallDamage = false;
 	public double defaultMaxRange = 24D;
 	public double defaultMaxSpeed = 10D;
 	public double rangeMultiplier = 2D;
 	public double quickMultiplier = 1.5D;
-	public int durability = 0;
+	public int durability = 250;
 }
