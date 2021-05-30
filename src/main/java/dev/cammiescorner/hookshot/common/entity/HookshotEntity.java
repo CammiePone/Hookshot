@@ -9,6 +9,9 @@ import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -19,16 +22,19 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class HookshotEntity extends PersistentProjectileEntity
 {
 	private static final Tag<Block> UNHOOKABLE = TagRegistry.block(new Identifier(Hookshot.MOD_ID, "unhookable"));
+	private static final TrackedData<Integer> HOOKED_ENTITY_ID = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.INTEGER);;
 
 	private double maxRange = 0D;
 	private double maxSpeed = 0D;
 	private boolean isPulling = false;
 	private PlayerEntity owner;
+	private LivingEntity hookedEntity;
 	private ItemStack stack;
 
 	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world)
@@ -46,6 +52,13 @@ public class HookshotEntity extends PersistentProjectileEntity
 	}
 
 	@Override
+	protected void initDataTracker()
+	{
+		super.initDataTracker();
+		this.getDataTracker().startTracking(HOOKED_ENTITY_ID, 0);
+	}
+
+	@Override
 	public void tick()
 	{
 		super.tick();
@@ -56,6 +69,19 @@ public class HookshotEntity extends PersistentProjectileEntity
 
 			if(!world.isClient)
 			{
+				if(this.hookedEntity != null)
+				{
+					if(this.hookedEntity.removed)
+					{
+						this.hookedEntity = null;
+						remove();
+					}
+					else
+					{
+						this.updatePosition(this.hookedEntity.getX(), this.hookedEntity.getBodyY(0.8D), this.hookedEntity.getZ());
+					}
+				}
+
 				if(owner != null)
 				{
 					if(owner.isDead() ||
@@ -78,12 +104,17 @@ public class HookshotEntity extends PersistentProjectileEntity
 				{
 					if(isPulling)
 					{
-						if(owner.distanceTo(this) > 1D)
-						{
-							owner.fallDistance = 0;
-							owner.setVelocity(getPos().subtract(owner.getPos()).normalize().multiply(maxSpeed / 6));
-							owner.velocityModified = true;
-						}
+						Vec3d distance = getPos().subtract(owner.getPos().add(0, owner.getHeight() / 2, 0));
+						owner.fallDistance = 0;
+						Vec3d motion = distance.normalize().multiply(distance.length() < 3D && (!stack.hasTag() || !stack.getTag().getBoolean("hasAuto")) ? ((maxSpeed / 6) * distance.length()) / 4D : maxSpeed / 6);
+
+						if(Math.abs(distance.y) < 0.1D)
+							motion = new Vec3d(motion.x, 0, motion.z);
+						if(new Vec3d(distance.x, 0, distance.z).length() < new Vec3d(owner.getWidth() / 2, 0, owner.getWidth() / 2).length() / 1.5)
+							motion = new Vec3d(0, motion.y, 0);
+
+						owner.setVelocity(motion);
+						owner.velocityModified = true;
 
 						if(stack.hasTag())
 						{
@@ -102,6 +133,15 @@ public class HookshotEntity extends PersistentProjectileEntity
 				}
 			}
 		}
+	}
+
+	@Override
+	public void kill()
+	{
+		if(!world.isClient && owner != null)
+			owner.setNoGravity(false);
+
+		super.kill();
 	}
 
 	@Override
@@ -145,8 +185,10 @@ public class HookshotEntity extends PersistentProjectileEntity
 		super.onBlockHit(blockHitResult);
 		isPulling = true;
 
-		if(!world.isClient && owner != null)
+		if(!world.isClient && owner != null && hookedEntity == null)
 		{
+			owner.setNoGravity(true);
+
 			if(Hookshot.config.unhookableBlacklist)
 			{
 				if(UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock()))
@@ -199,19 +241,22 @@ public class HookshotEntity extends PersistentProjectileEntity
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult)
 	{
-		super.onEntityHit(entityHitResult);
-
-		if(!world.isClient && owner != null)
+		if(!world.isClient && owner != null && entityHitResult.getEntity() != owner)
 		{
-			((PlayerProperties) owner).setHasHook(false);
+			if(entityHitResult.getEntity() instanceof LivingEntity && hookedEntity == null)
+			{
+				hookedEntity = (LivingEntity) entityHitResult.getEntity();
+				dataTracker.set(HOOKED_ENTITY_ID, hookedEntity.getEntityId() + 1);
+				isPulling = true;
+			}
 
 			if(stack.hasTag())
 			{
 				if(stack.getTag().getBoolean("hasEnder"))
 				{
 					owner.requestTeleport(getX(), getY(), getZ());
-					((PlayerProperties) owner).setHasHook(false);
 					owner.fallDistance = 0.0F;
+					((PlayerProperties) owner).setHasHook(false);
 					isPulling = false;
 					remove();
 				}
