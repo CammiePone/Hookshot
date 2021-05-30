@@ -3,8 +3,8 @@
   "pattern":
   [
     " A ",
-    "LCL",
-    "RIR"
+    "ICI",
+    "RPR"
   ],
   "key":
   {
@@ -12,9 +12,9 @@
     {
       "item": "minecraft:arrow"
     },
-    "L":
+    "I":
     {
-      "item": "minecraft:lapis_block"
+      "item": "minecraft:iron_ingot"
     },
     "C":
     {
@@ -24,9 +24,9 @@
     {
       "item": "minecraft:redstone_block"
     },
-    "I":
+    "P":
     {
-      "item": "minecraft:iron_block"
+      "item": "minecraft:piston"
     }
   },
   "result":

@@ -15,4 +15,5 @@ public class HookshotConfig implements ConfigData
 	public double rangeMultiplier = 2D;
 	public double quickMultiplier = 1.5D;
 	public int durability = 250;
+	public String hookshotRepairItem = "minecraft:iron_ingot";
 }
