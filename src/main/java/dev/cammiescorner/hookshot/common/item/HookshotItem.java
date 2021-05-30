@@ -50,9 +50,14 @@ public class HookshotItem extends Item
 			}
 
 			if(!Hookshot.config.useClassicHookshotLogic)
+			{
+				user.setCurrentHand(hand);
 				((PlayerProperties) user).setHasHook(true);
+			}
 			else
+			{
 				((PlayerProperties) user).setHasHook(!((PlayerProperties) user).hasHook());
+			}
 		}
 
 		if(!((PlayerProperties) user).hasHook())
@@ -61,7 +66,16 @@ public class HookshotItem extends Item
 					1f, 1.0F / (RANDOM.nextFloat() * 0.4F + 1.2F) + 0.5F);
 		}
 
-		return TypedActionResult.success(stack, false);
+		return super.use(world, user, hand);
+	}
+
+	@Override
+	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user)
+	{
+		if(!Hookshot.config.useClassicHookshotLogic)
+			((PlayerProperties) user).setHasHook(false);
+
+		return super.finishUsing(stack, world, user);
 	}
 
 	@Override

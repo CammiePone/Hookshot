@@ -8,8 +8,10 @@ import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import dev.cammiescorner.hookshot.core.util.UpgradesHelper;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -35,7 +37,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 	private double maxSpeed = 0D;
 	private boolean isPulling = false;
 	private PlayerEntity owner;
-	private LivingEntity hookedEntity;
+	private Entity hookedEntity;
 	private ItemStack stack;
 
 	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world)
@@ -235,9 +237,9 @@ public class HookshotEntity extends PersistentProjectileEntity
 	{
 		if(!world.isClient && owner != null && entityHitResult.getEntity() != owner)
 		{
-			if(entityHitResult.getEntity() instanceof LivingEntity && hookedEntity == null)
+			if((entityHitResult.getEntity() instanceof LivingEntity || entityHitResult.getEntity() instanceof EnderDragonPart) && hookedEntity == null)
 			{
-				hookedEntity = (LivingEntity) entityHitResult.getEntity();
+				hookedEntity = entityHitResult.getEntity();
 				dataTracker.set(HOOKED_ENTITY_ID, hookedEntity.getEntityId() + 1);
 				isPulling = true;
 			}
