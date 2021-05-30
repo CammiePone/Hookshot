@@ -7,10 +7,11 @@ import me.shedaniel.autoconfig.annotation.Config;
 @Config(name = Hookshot.MOD_ID)
 public class HookshotConfig implements ConfigData
 {
+	public boolean useClassicHookshotLogic = false;
 	public boolean unhookableBlacklist = true;
 	public double defaultMaxRange = 24D;
 	public double defaultMaxSpeed = 10D;
-	public int durability = 0;
 	public double rangeMultiplier = 2D;
 	public double quickMultiplier = 1.5D;
+	public int durability = 0;
 }

@@ -39,7 +39,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerPr
 	@Inject(method = "initDataTracker", at = @At("TAIL"))
 	public void initTracker(CallbackInfo info)
 	{
-		dataTracker.startTracking(HOOK_TRACKER, true);
+		dataTracker.startTracking(HOOK_TRACKER, false);
 	}
 
 	@Override

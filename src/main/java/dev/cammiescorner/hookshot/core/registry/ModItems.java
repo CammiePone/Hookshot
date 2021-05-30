@@ -14,7 +14,7 @@ public class ModItems
 	public static final LinkedHashMap<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
 	//-----Items-----//
-	public static final Item HOOKSHOT = create("hookshot", new HookshotItem(Hookshot.config.durability));
+	public static final Item HOOKSHOT = create("hookshot", new HookshotItem());
 
 	//-----Registry-----//
 	public static void register()

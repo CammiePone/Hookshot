@@ -4,6 +4,7 @@ import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
+import dev.cammiescorner.hookshot.core.util.UpgradesHelper;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,75 +24,80 @@ import java.util.List;
 
 public class HookshotItem extends Item
 {
-	public HookshotItem(int durability)
+	public HookshotItem()
 	{
-		super(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1).maxDamage(durability));
+		super(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1).maxDamage(Hookshot.config.durability));
 	}
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand)
 	{
+		ItemStack stack = user.getStackInHand(hand);
+
 		if(!world.isClient)
 		{
 			if(!((PlayerProperties) user).hasHook())
 			{
-				double maxRange = Hookshot.config.defaultMaxRange;
-				double maxSpeed = Hookshot.config.defaultMaxSpeed;
-				ItemStack stack = user.getStackInHand(hand);
-
-				if(stack.hasTag())
-				{
-					if(stack.getTag().getBoolean("hasRange")) maxRange *= Hookshot.config.rangeMultiplier;
-					if(stack.getTag().getBoolean("hasQuick")) maxSpeed *= Hookshot.config.quickMultiplier;
-				}
+				double maxRange = Hookshot.config.defaultMaxRange * (UpgradesHelper.hasRangeUpgrade(stack) ? Hookshot.config.rangeMultiplier : 1);
+				double maxSpeed = Hookshot.config.defaultMaxSpeed * (UpgradesHelper.hasQuickUpgrade(stack) ? Hookshot.config.quickMultiplier : 1);
 
 				HookshotEntity hookshot = new HookshotEntity(ModEntities.HOOKSHOT_ENTITY, user, world);
 				hookshot.setProperties(stack, maxRange, maxSpeed, user.pitch, user.headYaw, 0f, 1.5f * (float) (maxSpeed / 10), 1f);
 				world.spawnEntity(hookshot);
+
+				if(stack.getMaxDamage() > 0)
+					stack.damage(1, (LivingEntity) user, (entity) -> entity.sendToolBreakStatus(user.getActiveHand()));
+			}
+
+			if(!Hookshot.config.useClassicHookshotLogic)
 				((PlayerProperties) user).setHasHook(true);
-				if(stack.getMaxDamage() > 0) stack.damage(1, (LivingEntity) user, (entity) -> entity.sendToolBreakStatus(user.getActiveHand()));
-			}
 			else
-			{
-				((PlayerProperties) user).setHasHook(false);
-			}
+				((PlayerProperties) user).setHasHook(!((PlayerProperties) user).hasHook());
 		}
 
 		if(!((PlayerProperties) user).hasHook())
 		{
 			world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS,
-					1f, 1.0f / (RANDOM.nextFloat() * 0.4f + 1.2f) + 1.0f * 0.5f);
+					1f, 1.0F / (RANDOM.nextFloat() * 0.4F + 1.2F) + 0.5F);
 		}
 
-		return super.use(world, user, hand);
+		return TypedActionResult.success(stack, false);
+	}
+
+	@Override
+	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks)
+	{
+		if(!Hookshot.config.useClassicHookshotLogic)
+			((PlayerProperties) user).setHasHook(false);
+	}
+
+	@Override
+	public int getMaxUseTime(ItemStack stack)
+	{
+		return 72000;
 	}
 
 	@Override
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context)
 	{
-		if(stack.getOrCreateTag().getBoolean("hasAqua")) tooltip.add(new TranslatableText("hookshot.modifier.aqua").formatted(Formatting.GRAY));
-		if(stack.getOrCreateTag().getBoolean("hasEnder")) tooltip.add(new TranslatableText("hookshot.modifier.ender").formatted(Formatting.GRAY));
-		if(stack.getOrCreateTag().getBoolean("hasQuick")) tooltip.add(new TranslatableText("hookshot.modifier.quick").formatted(Formatting.GRAY));
-		if(stack.getOrCreateTag().getBoolean("hasRange")) tooltip.add(new TranslatableText("hookshot.modifier.range").formatted(Formatting.GRAY));
-		if(stack.getOrCreateTag().getBoolean("hasAuto")) tooltip.add(new TranslatableText("hookshot.modifier.automatic").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasAquaticUpgrade(stack))
+			tooltip.add(new TranslatableText("hookshot.modifier.aqua").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasEndericUpgrade(stack))
+			tooltip.add(new TranslatableText("hookshot.modifier.ender").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasQuickUpgrade(stack))
+			tooltip.add(new TranslatableText("hookshot.modifier.quick").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasRangeUpgrade(stack))
+			tooltip.add(new TranslatableText("hookshot.modifier.range").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasAutomaticUpgrade(stack))
+			tooltip.add(new TranslatableText("hookshot.modifier.automatic").formatted(Formatting.GRAY));
 	}
 
 	@Override
 	public Text getName(ItemStack stack)
 	{
-		TranslatableText modifiers = new TranslatableText("");
-		TranslatableText name = new TranslatableText("item.hookshot.hookshot", modifiers);
+		boolean hasModifiers = UpgradesHelper.hasAquaticUpgrade(stack) || UpgradesHelper.hasEndericUpgrade(stack) ||
+				UpgradesHelper.hasQuickUpgrade(stack) || UpgradesHelper.hasRangeUpgrade(stack) || UpgradesHelper.hasAutomaticUpgrade(stack);
 
-		if(stack.getOrCreateTag().getBoolean("hasAuto")) modifiers.append(new TranslatableText("hookshot.modifier.auto"));
-
-		return hasModifiers(stack) ? name.formatted(Formatting.AQUA) : name;
-	}
-
-	public boolean hasModifiers(ItemStack stack)
-	{
-		assert stack.getTag() != null;
-
-		return stack.getTag().getBoolean("hasAqua") || stack.getTag().getBoolean("hasEnder") || stack.getTag().getBoolean("hasQuick") ||
-				stack.getTag().getBoolean("hasRange") || stack.getTag().getBoolean("hasAuto");
+		return hasModifiers ? super.getName(stack).copy().formatted(Formatting.AQUA) : super.getName(stack);
 	}
 }

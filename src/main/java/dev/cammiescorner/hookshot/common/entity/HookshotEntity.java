@@ -5,6 +5,7 @@ import dev.cammiescorner.hookshot.common.item.HookshotItem;
 import dev.cammiescorner.hookshot.core.packets.CreateProjectileEntityPacket;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
+import dev.cammiescorner.hookshot.core.util.UpgradesHelper;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
@@ -106,7 +107,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 					{
 						Vec3d distance = getPos().subtract(owner.getPos().add(0, owner.getHeight() / 2, 0));
 						owner.fallDistance = 0;
-						Vec3d motion = distance.normalize().multiply(distance.length() < 3D && (!stack.hasTag() || !stack.getTag().getBoolean("hasAuto")) ? ((maxSpeed / 6) * distance.length()) / 4D : maxSpeed / 6);
+						Vec3d motion = distance.normalize().multiply(distance.length() < 3D && !UpgradesHelper.hasAutomaticUpgrade(stack) ? ((maxSpeed / 6) * distance.length()) / 4D : maxSpeed / 6);
 
 						if(Math.abs(distance.y) < 0.1D)
 							motion = new Vec3d(motion.x, 0, motion.z);
@@ -116,13 +117,10 @@ public class HookshotEntity extends PersistentProjectileEntity
 						owner.setVelocity(motion);
 						owner.velocityModified = true;
 
-						if(stack.hasTag())
+						if(UpgradesHelper.hasAutomaticUpgrade(stack) && owner.distanceTo(this) <= 3D)
 						{
-							if(owner.distanceTo(this) <= 3D && stack.getTag().getBoolean("hasAuto"))
-							{
-								kill();
-								((PlayerProperties) owner).setHasHook(false);
-							}
+							kill();
+							((PlayerProperties) owner).setHasHook(false);
 						}
 					}
 				}
@@ -153,9 +151,9 @@ public class HookshotEntity extends PersistentProjectileEntity
 	@Override
 	protected float getDragInWater()
 	{
-		if(!world.isClient && stack.hasTag())
+		if(!world.isClient)
 		{
-			if(stack.getTag().getBoolean("hasAqua")) return 0.99F;
+			if(UpgradesHelper.hasAquaticUpgrade(stack)) return 0.99F;
 			else return super.getDragInWater();
 		}
 		else return super.getDragInWater();
@@ -199,16 +197,13 @@ public class HookshotEntity extends PersistentProjectileEntity
 				}
 				else
 				{
-					if(stack.hasTag())
+					if(UpgradesHelper.hasEndericUpgrade(stack))
 					{
-						if(stack.getTag().getBoolean("hasEnder"))
-						{
-							owner.requestTeleport(getX(), getY(), getZ());
-							((PlayerProperties) owner).setHasHook(false);
-							owner.fallDistance = 0.0F;
-							isPulling = false;
-							remove();
-						}
+						owner.requestTeleport(getX(), getY(), getZ());
+						((PlayerProperties) owner).setHasHook(false);
+						owner.fallDistance = 0.0F;
+						isPulling = false;
+						remove();
 					}
 				}
 			}
@@ -222,16 +217,13 @@ public class HookshotEntity extends PersistentProjectileEntity
 				}
 				else
 				{
-					if(stack.hasTag())
+					if(UpgradesHelper.hasEndericUpgrade(stack))
 					{
-						if(stack.getTag().getBoolean("hasEnder"))
-						{
-							owner.requestTeleport(getX(), getY(), getZ());
-							((PlayerProperties) owner).setHasHook(false);
-							owner.fallDistance = 0.0F;
-							isPulling = false;
-							remove();
-						}
+						owner.requestTeleport(getX(), getY(), getZ());
+						((PlayerProperties) owner).setHasHook(false);
+						owner.fallDistance = 0.0F;
+						isPulling = false;
+						remove();
 					}
 				}
 			}
@@ -250,16 +242,13 @@ public class HookshotEntity extends PersistentProjectileEntity
 				isPulling = true;
 			}
 
-			if(stack.hasTag())
+			if(UpgradesHelper.hasEndericUpgrade(stack))
 			{
-				if(stack.getTag().getBoolean("hasEnder"))
-				{
-					owner.requestTeleport(getX(), getY(), getZ());
-					owner.fallDistance = 0.0F;
-					((PlayerProperties) owner).setHasHook(false);
-					isPulling = false;
-					remove();
-				}
+				owner.requestTeleport(getX(), getY(), getZ());
+				owner.fallDistance = 0.0F;
+				((PlayerProperties) owner).setHasHook(false);
+				isPulling = false;
+				remove();
 			}
 		}
 	}
