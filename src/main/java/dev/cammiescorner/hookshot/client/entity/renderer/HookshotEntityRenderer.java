@@ -64,17 +64,17 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 
 	public void renderChain(float x, float y, float z, float tickDelta, int age, MatrixStack stack, VertexConsumerProvider provider, int light)
 	{
-		float e = MathHelper.sqrt(x * x + z * z);
-		float f = x * x + y * y + z * z;
-		float g = MathHelper.sqrt(f);
+		float lengthXY = MathHelper.sqrt(x * x + z * z);
+		float squaredLength = x * x + y * y + z * z;
+		float length = MathHelper.sqrt(squaredLength);
 
 		stack.push();
 		stack.multiply(Vector3f.POSITIVE_Y.getRadialQuaternion((float) (-Math.atan2(z, x)) - 1.5707964F));
-		stack.multiply(Vector3f.POSITIVE_X.getRadialQuaternion((float) (-Math.atan2(e, y)) - 1.5707964F));
+		stack.multiply(Vector3f.POSITIVE_X.getRadialQuaternion((float) (-Math.atan2(lengthXY, y)) - 1.5707964F));
 
 		VertexConsumer vertexConsumer = provider.getBuffer(CHAIN_LAYER);
 		float h = 0.0F - ((float) age + tickDelta) * 0.01F;
-		float i = MathHelper.sqrt(f) / 32.0F - ((float) age + tickDelta) * 0.01F;
+		float i = MathHelper.sqrt(squaredLength) / 32.0F - ((float) age + tickDelta) * 0.01F;
 		float k = 0.0F;
 		float l = 0.75F;
 		float m = 0.0F;
@@ -89,8 +89,8 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 			float q = (float) n / 8.0F;
 
 			vertexConsumer.vertex(matrix4f, k * 0.2F, l * 0.2F, 0.0F).color(0, 0, 0, 255).texture(m, h).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-			vertexConsumer.vertex(matrix4f, k, l, g).color(255, 255, 255, 255).texture(m, i).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-			vertexConsumer.vertex(matrix4f, o, p, g).color(255, 255, 255, 255).texture(q, i).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+			vertexConsumer.vertex(matrix4f, k, l, length).color(255, 255, 255, 255).texture(m, i).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+			vertexConsumer.vertex(matrix4f, o, p, length).color(255, 255, 255, 255).texture(q, i).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
 			vertexConsumer.vertex(matrix4f, o * 0.2F, p * 0.2F, 0.0F).color(0, 0, 0, 255).texture(q, h).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
 
 			k = o;

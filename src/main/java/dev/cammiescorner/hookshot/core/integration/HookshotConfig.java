@@ -23,6 +23,10 @@ public class HookshotConfig implements ConfigData
 			"\n  something? (Default: false)")
 	public boolean hookshotCancelsFallDamage = false;
 
+	@Comment("Should the Quick modifier affect the pulling speed" +
+			"\nof the Hookshot? (Default: false)")
+	public boolean quickModAffectsPullSpeed = false;
+
 	@Comment("The base maximum range of the Hookshot with no" +
 			"\n  modifiers applied. (Default: 24 blocks)")
 	public double defaultMaxRange = 24D;

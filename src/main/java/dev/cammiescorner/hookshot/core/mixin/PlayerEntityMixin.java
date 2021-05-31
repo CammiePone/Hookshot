@@ -43,12 +43,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerPr
 	}
 
 	@Override
-	public boolean isPushable()
-	{
-		return !hasHook() && super.isPushable();
-	}
-
-	@Override
 	public boolean hasHook()
 	{
 		return dataTracker.get(HOOK_TRACKER);

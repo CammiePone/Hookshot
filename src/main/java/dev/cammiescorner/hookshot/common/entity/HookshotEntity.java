@@ -116,8 +116,10 @@ public class HookshotEntity extends PersistentProjectileEntity
 				{
 					if(isPulling)
 					{
+						double brakeZone = (6D * ((Hookshot.config.quickModAffectsPullSpeed ? maxSpeed : Hookshot.config.defaultMaxSpeed) / Hookshot.config.defaultMaxSpeed));
+						double pullSpeed = (Hookshot.config.quickModAffectsPullSpeed ? maxSpeed : Hookshot.config.defaultMaxSpeed) / 6D;
 						Vec3d distance = getPos().subtract(owner.getPos().add(0, owner.getHeight() / 2, 0));
-						Vec3d motion = distance.normalize().multiply(distance.length() < 3D && !UpgradesHelper.hasAutomaticUpgrade(stack) ? ((maxSpeed / 6) * distance.length()) / 4D : maxSpeed / 6);
+						Vec3d motion = distance.normalize().multiply(distance.length() < brakeZone && !UpgradesHelper.hasAutomaticUpgrade(stack) ? (pullSpeed * distance.length()) / brakeZone : pullSpeed);
 
 						if(Math.abs(distance.y) < 0.1D)
 							motion = new Vec3d(motion.x, 0, motion.z);
@@ -242,15 +244,15 @@ public class HookshotEntity extends PersistentProjectileEntity
 	{
 		if(!world.isClient && owner != null && entityHitResult.getEntity() != owner)
 		{
-			if(UpgradesHelper.hasBleedUpgrade(stack))
-				hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
-
 			if((entityHitResult.getEntity() instanceof LivingEntity || entityHitResult.getEntity() instanceof EnderDragonPart) && hookedEntity == null)
 			{
 				hookedEntity = entityHitResult.getEntity();
 				dataTracker.set(HOOKED_ENTITY_ID, hookedEntity.getEntityId() + 1);
 				isPulling = true;
 			}
+
+			if(hookedEntity != null && UpgradesHelper.hasBleedUpgrade(stack))
+				hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
 
 			if(UpgradesHelper.hasEndericUpgrade(stack))
 			{
@@ -287,14 +289,13 @@ public class HookshotEntity extends PersistentProjectileEntity
 		tag.putInt("owner", owner.getEntityId());
 	}
 
-	public void setProperties(ItemStack stack, double maxRange, double maxVelocity,
-							  float pitch, float yaw, float roll, float modifierZ, float modifierXYZ)
+	public void setProperties(ItemStack stack, double maxRange, double maxVelocity, float pitch, float yaw, float roll, float modifierZ)
 	{
 		float f = 0.017453292F;
 		float x = -MathHelper.sin(yaw * f) * MathHelper.cos(pitch * f);
 		float y = -MathHelper.sin((pitch + roll) * f);
 		float z = MathHelper.cos(yaw * f) * MathHelper.cos(pitch * f);
-		this.setVelocity(x, y, z, modifierZ, modifierXYZ);
+		this.setVelocity(x, y, z, modifierZ, 0);
 
 		this.stack = stack;
 		this.maxRange = maxRange;
