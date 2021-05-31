@@ -116,21 +116,30 @@ public class HookshotEntity extends PersistentProjectileEntity
 				{
 					if(isPulling)
 					{
+						Entity target = owner;
+						Entity origin = this;
+
+						if(owner.isSneaking() && hookedEntity != null)
+						{
+							target = hookedEntity;
+							origin = owner;
+						}
+
 						double brakeZone = (6D * ((Hookshot.config.quickModAffectsPullSpeed ? maxSpeed : Hookshot.config.defaultMaxSpeed) / Hookshot.config.defaultMaxSpeed));
 						double pullSpeed = (Hookshot.config.quickModAffectsPullSpeed ? maxSpeed : Hookshot.config.defaultMaxSpeed) / 6D;
-						Vec3d distance = getPos().subtract(owner.getPos().add(0, owner.getHeight() / 2, 0));
+						Vec3d distance = origin.getPos().subtract(target.getPos().add(0, target.getHeight() / 2, 0));
 						Vec3d motion = distance.normalize().multiply(distance.length() < brakeZone && !UpgradesHelper.hasAutomaticUpgrade(stack) ? (pullSpeed * distance.length()) / brakeZone : pullSpeed);
 
 						if(Math.abs(distance.y) < 0.1D)
 							motion = new Vec3d(motion.x, 0, motion.z);
-						if(new Vec3d(distance.x, 0, distance.z).length() < new Vec3d(owner.getWidth() / 2, 0, owner.getWidth() / 2).length() / 1.4)
+						if(new Vec3d(distance.x, 0, distance.z).length() < new Vec3d(target.getWidth() / 2, 0, target.getWidth() / 2).length() / 1.4)
 							motion = new Vec3d(0, motion.y, 0);
 
 						if(Hookshot.config.hookshotCancelsFallDamage)
-							owner.fallDistance = 0;
+							target.fallDistance = 0;
 
-						owner.setVelocity(motion);
-						owner.velocityModified = true;
+						target.setVelocity(motion);
+						target.velocityModified = true;
 
 						if(UpgradesHelper.hasAutomaticUpgrade(stack) && owner.distanceTo(this) <= 3D)
 						{
