@@ -6,12 +6,13 @@
   "description": "Just a simple mod that adds a Hookshot into the game.",
   "authors":
   [
-    "Camellias_"
+    "Cammie"
   ],
   "contact":
   {
-    "homepage": "",
-    "sources": ""
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/hookshot",
+    "sources": "https://github.com/CammiePone/Hookshot",
+    "issues": "https://github.com/CammiePone/Hookshot/issues"
   },
   "license": "MIT",
   "icon": "assets/hookshot/icon.png",
