@@ -1,16 +1,23 @@
 package dev.cammiescorner.hookshot.core.registry;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.ProjectileDamageSource;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import org.jetbrains.annotations.Nullable;
 
 public class ModDamageSource
 {
-	public static final DamageSource BLEED = new BleedingDamageSource("hookshotBleeding");
-
-	public static class BleedingDamageSource extends DamageSource
+	public static DamageSource bleed(PersistentProjectileEntity projectile, Entity attacker)
 	{
-		protected BleedingDamageSource(String name)
+		return new BleedingDamageSource("hookshotBleeding", projectile, attacker);
+	}
+
+	public static class BleedingDamageSource extends ProjectileDamageSource
+	{
+		public BleedingDamageSource(String name, Entity projectile, @Nullable Entity attacker)
 		{
-			super(name);
+			super(name, projectile, attacker);
 			setBypassesArmor();
 			setUnblockable();
 		}

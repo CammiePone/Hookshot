@@ -88,7 +88,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 					else
 					{
 						if(UpgradesHelper.hasBleedUpgrade(stack) && age % 20 == 0)
-							hookedEntity.damage(ModDamageSource.BLEED, 1);
+							hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
 
 						this.updatePosition(this.hookedEntity.getX(), this.hookedEntity.getBodyY(0.8D), this.hookedEntity.getZ());
 					}
@@ -242,6 +242,9 @@ public class HookshotEntity extends PersistentProjectileEntity
 	{
 		if(!world.isClient && owner != null && entityHitResult.getEntity() != owner)
 		{
+			if(UpgradesHelper.hasBleedUpgrade(stack))
+				hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
+
 			if((entityHitResult.getEntity() instanceof LivingEntity || entityHitResult.getEntity() instanceof EnderDragonPart) && hookedEntity == null)
 			{
 				hookedEntity = entityHitResult.getEntity();
