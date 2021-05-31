@@ -13,10 +13,15 @@
   // Items
   "item.hookshot.hookshot": "Hookshot",
 
+  // Entities
+  "entity.hookshot.hookshot": "Hookshot",
+
   // Modifiers
-  "hookshot.modifier.aqua": "Aquatic",
-  "hookshot.modifier.ender": "Enderic",
+  "hookshot.modifier.automatic": "Automatic",
+  "hookshot.modifier.swinging": "Swinging",
+  "hookshot.modifier.aquatic": "Aquatic",
+  "hookshot.modifier.enderic": "Enderic",
   "hookshot.modifier.quick": "Quick",
-  "hookshot.modifier.range": "Long",
-  "hookshot.modifier.automatic": "Automatic"
+  "hookshot.modifier.range": "Range",
+  "hookshot.modifier.bleed": "Bleed"
 }

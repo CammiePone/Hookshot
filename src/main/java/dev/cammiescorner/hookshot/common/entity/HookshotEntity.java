@@ -2,6 +2,7 @@ package dev.cammiescorner.hookshot.common.entity;
 
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.common.item.HookshotItem;
+import dev.cammiescorner.hookshot.core.registry.ModDamageSource;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import dev.cammiescorner.hookshot.core.util.UpgradesHelper;
@@ -86,6 +87,9 @@ public class HookshotEntity extends PersistentProjectileEntity
 					}
 					else
 					{
+						if(UpgradesHelper.hasBleedUpgrade(stack) && age % 20 == 0)
+							hookedEntity.damage(ModDamageSource.BLEED, 1);
+
 						this.updatePosition(this.hookedEntity.getX(), this.hookedEntity.getBodyY(0.8D), this.hookedEntity.getZ());
 					}
 				}

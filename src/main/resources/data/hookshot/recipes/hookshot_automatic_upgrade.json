@@ -6,11 +6,11 @@
   },
   "addition":
   {
-    "item": "minecraft:ender_eye"
+    "item": "minecraft:observer"
   },
   "result":
   {
     "item": "hookshot:hookshot",
-    "nbt": "hasEnder"
+    "nbt": "hasAutomaticUpgrade"
   }
 }

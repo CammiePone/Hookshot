@@ -6,11 +6,11 @@
   },
   "addition":
   {
-    "item": "minecraft:chain"
+    "item": "minecraft:ender_eye"
   },
   "result":
   {
     "item": "hookshot:hookshot",
-    "nbt": "hasRange"
+    "nbt": "hasEndericUpgrade"
   }
 }

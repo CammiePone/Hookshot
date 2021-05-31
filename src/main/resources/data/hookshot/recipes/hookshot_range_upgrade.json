@@ -6,11 +6,11 @@
   },
   "addition":
   {
-    "item": "minecraft:prismarine_shard"
+    "item": "minecraft:chain"
   },
   "result":
   {
     "item": "hookshot:hookshot",
-    "nbt": "hasAqua"
+    "nbt": "hasRangeUpgrade"
   }
 }

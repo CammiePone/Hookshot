@@ -6,11 +6,11 @@
   },
   "addition":
   {
-    "item": "minecraft:observer"
+    "item": "minecraft:prismarine_shard"
   },
   "result":
   {
     "item": "hookshot:hookshot",
-    "nbt": "hasAuto"
+    "nbt": "hasAquaticUpgrade"
   }
 }

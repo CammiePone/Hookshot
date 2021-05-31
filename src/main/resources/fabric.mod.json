@@ -13,10 +13,8 @@
     "homepage": "",
     "sources": ""
   },
-
   "license": "MIT",
   "icon": "assets/hookshot/icon.png",
-
   "environment": "*",
   "entrypoints":
   {
@@ -37,7 +35,6 @@
   [
     "hookshot.mixins.json"
   ],
-
   "depends":
   {
     "fabricloader": ">=0.7.4",

@@ -49,8 +49,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerPr
 	}
 
 	@Override
-	public void setHasHook(boolean hasH)
+	public void setHasHook(boolean hasHook)
 	{
-		dataTracker.set(HOOK_TRACKER, hasH);
+		dataTracker.set(HOOK_TRACKER, hasHook);
 	}
 }

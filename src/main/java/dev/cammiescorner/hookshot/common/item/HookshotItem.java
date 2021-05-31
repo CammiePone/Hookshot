@@ -102,23 +102,29 @@ public class HookshotItem extends Item
 	@Override
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context)
 	{
-		if(UpgradesHelper.hasAquaticUpgrade(stack))
-			tooltip.add(new TranslatableText("hookshot.modifier.aqua").formatted(Formatting.GRAY));
-		if(UpgradesHelper.hasEndericUpgrade(stack))
-			tooltip.add(new TranslatableText("hookshot.modifier.ender").formatted(Formatting.GRAY));
-		if(UpgradesHelper.hasQuickUpgrade(stack))
-			tooltip.add(new TranslatableText("hookshot.modifier.quick").formatted(Formatting.GRAY));
-		if(UpgradesHelper.hasRangeUpgrade(stack))
-			tooltip.add(new TranslatableText("hookshot.modifier.range").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasAutomaticUpgrade(stack))
-			tooltip.add(new TranslatableText("hookshot.modifier.automatic").formatted(Formatting.GRAY));
+			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.automatic").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasSwingingUpgrade(stack))
+			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.swinging").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasAquaticUpgrade(stack))
+			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.aquatic").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasEndericUpgrade(stack))
+			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.enderic").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasQuickUpgrade(stack))
+			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.quick").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasRangeUpgrade(stack))
+			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.range").formatted(Formatting.GRAY));
+		if(UpgradesHelper.hasBleedUpgrade(stack))
+			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.bleed").formatted(Formatting.GRAY));
 	}
 
 	@Override
 	public Text getName(ItemStack stack)
 	{
 		boolean hasModifiers = UpgradesHelper.hasAquaticUpgrade(stack) || UpgradesHelper.hasEndericUpgrade(stack) ||
-				UpgradesHelper.hasQuickUpgrade(stack) || UpgradesHelper.hasRangeUpgrade(stack) || UpgradesHelper.hasAutomaticUpgrade(stack);
+				UpgradesHelper.hasQuickUpgrade(stack) || UpgradesHelper.hasRangeUpgrade(stack) ||
+				UpgradesHelper.hasAutomaticUpgrade(stack) || UpgradesHelper.hasBleedUpgrade(stack) ||
+				UpgradesHelper.hasSwingingUpgrade(stack);
 
 		return hasModifiers ? super.getName(stack).copy().formatted(Formatting.AQUA) : super.getName(stack);
 	}
