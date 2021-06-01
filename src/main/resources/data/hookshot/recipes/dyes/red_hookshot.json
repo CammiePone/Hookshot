@@ -1,0 +1,14 @@
+{
+	"type": "hookshot:crafting_shapeless",
+	"ingredients": [
+		{
+			"tag": "hookshot:hookshots"
+		},
+		{
+			"tag": "c:red_dyes"
+		}
+	],
+	"result": {
+		"item": "hookshot:red_hookshot"
+	}
+}

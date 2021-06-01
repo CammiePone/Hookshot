@@ -33,9 +33,7 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 		CompoundTag tag = inv.getStack(0).getTag();
 
 		if(tag != null && stack.hasTag())
-		{
 			stack.getTag().copyFrom(tag);
-		}
 
 		return stack;
 	}

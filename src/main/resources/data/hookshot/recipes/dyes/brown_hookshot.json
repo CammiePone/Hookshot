@@ -1,0 +1,14 @@
+{
+	"type": "hookshot:crafting_shapeless",
+	"ingredients": [
+		{
+			"tag": "hookshot:hookshots"
+		},
+		{
+			"tag": "c:brown_dyes"
+		}
+	],
+	"result": {
+		"item": "hookshot:brown_hookshot"
+	}
+}

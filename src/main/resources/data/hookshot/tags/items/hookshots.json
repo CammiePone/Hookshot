@@ -1,0 +1,21 @@
+{
+	"replace": false,
+	"values": [
+		"hookshot:white_hookshot",
+		"hookshot:orange_hookshot",
+		"hookshot:magenta_hookshot",
+		"hookshot:light_blue_hookshot",
+		"hookshot:yellow_hookshot",
+		"hookshot:lime_hookshot",
+		"hookshot:pink_hookshot",
+		"hookshot:gray_hookshot",
+		"hookshot:light_gray_hookshot",
+		"hookshot:cyan_hookshot",
+		"hookshot:purple_hookshot",
+		"hookshot:blue_hookshot",
+		"hookshot:brown_hookshot",
+		"hookshot:green_hookshot",
+		"hookshot:red_hookshot",
+		"hookshot:black_hookshot"
+	]
+}
