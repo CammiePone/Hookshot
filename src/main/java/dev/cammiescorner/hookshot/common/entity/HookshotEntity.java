@@ -4,6 +4,7 @@ import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.common.item.HookshotItem;
 import dev.cammiescorner.hookshot.core.registry.ModDamageSource;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
+import dev.cammiescorner.hookshot.core.registry.ModSoundEvents;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import dev.cammiescorner.hookshot.core.util.UpgradesHelper;
 import net.fabricmc.fabric.api.tag.TagRegistry;
@@ -19,6 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -75,6 +77,9 @@ public class HookshotEntity extends PersistentProjectileEntity
 		if(getOwner() instanceof PlayerEntity)
 		{
 			owner = (PlayerEntity) getOwner();
+
+			if(isPulling && age % 2 == 0)
+				world.playSound(null, owner.getBlockPos(), ModSoundEvents.HOOKSHOT_REEL, SoundCategory.PLAYERS, 1F, 1F);
 
 			if(!world.isClient)
 			{

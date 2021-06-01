@@ -14,7 +14,22 @@
   "text.autoconfig.hookshot.option.hookshotRepairItem": "Item to Use For Repairing Hookshot",
 
   // Items
-  "item.hookshot.hookshot": "Hookshot",
+  "item.hookshot.white_hookshot": "White Hookshot",
+  "item.hookshot.orange_hookshot": "Orange Hookshot",
+  "item.hookshot.magenta_hookshot": "Magenta Hookshot",
+  "item.hookshot.light_blue_hookshot": "Light Blue Hookshot",
+  "item.hookshot.yellow_hookshot": "Yellow Hookshot",
+  "item.hookshot.lime_hookshot": "Lime Hookshot",
+  "item.hookshot.pink_hookshot": "Pink Hookshot",
+  "item.hookshot.gray_hookshot": "Gray Hookshot",
+  "item.hookshot.light_gray_hookshot": "Light Gray Hookshot",
+  "item.hookshot.cyan_hookshot": "Cyan Hookshot",
+  "item.hookshot.purple_hookshot": "Purple Hookshot",
+  "item.hookshot.blue_hookshot": "Blue Hookshot",
+  "item.hookshot.brown_hookshot": "Brown Hookshot",
+  "item.hookshot.green_hookshot": "Green Hookshot",
+  "item.hookshot.red_hookshot": "Red Hookshot",
+  "item.hookshot.black_hookshot": "Black Hookshot",
 
   // Entities
   "entity.hookshot.hookshot": "Hookshot",
@@ -27,5 +42,8 @@
   "hookshot.modifier.enderic": "Enderic",
   "hookshot.modifier.quick": "Quick",
   "hookshot.modifier.range": "Range",
-  "hookshot.modifier.bleed": "Bleed"
+  "hookshot.modifier.bleed": "Bleed",
+
+  // Subtitles
+  "subtitles.hookshot.hookshot_reel": "Hookshot Reel"
 }

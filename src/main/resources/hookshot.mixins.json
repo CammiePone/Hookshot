@@ -9,7 +9,8 @@
 		"SmithingRecipeAccessor"
 	],
 	"client": [
-		"client.ClientPlayNetworkHandlerMixin"
+		"client.ClientPlayNetworkHandlerMixin",
+		"client.DyeColorAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

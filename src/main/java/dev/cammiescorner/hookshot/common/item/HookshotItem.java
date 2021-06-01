@@ -15,10 +15,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.*;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
@@ -26,9 +23,12 @@ import java.util.List;
 
 public class HookshotItem extends Item
 {
-	public HookshotItem()
+	private DyeColor colour;
+
+	public HookshotItem(DyeColor colour)
 	{
 		super(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1).maxDamage(Hookshot.config.defaultMaxDurability));
+		this.colour = colour;
 	}
 
 	@Override
@@ -60,10 +60,7 @@ public class HookshotItem extends Item
 		}
 
 		if(!((PlayerProperties) user).hasHook())
-		{
-			world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS,
-					1f, 1.0F / (RANDOM.nextFloat() * 0.4F + 1.2F) + 0.5F);
-		}
+			world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1F, 1F);
 
 		return super.use(world, user, hand);
 	}
@@ -132,5 +129,10 @@ public class HookshotItem extends Item
 				UpgradesHelper.hasSwingingUpgrade(stack) || UpgradesHelper.hasDurabilityUpgrade(stack);
 
 		return hasModifiers ? super.getName(stack).copy().formatted(Formatting.AQUA) : super.getName(stack);
+	}
+
+	public DyeColor getColour()
+	{
+		return colour;
 	}
 }
