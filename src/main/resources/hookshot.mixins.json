@@ -4,6 +4,7 @@
 	"package": "dev.cammiescorner.hookshot.core.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
+		"ItemStackMixin",
 		"PlayerEntityMixin",
 		"SmithingRecipeAccessor"
 	],

@@ -27,26 +27,23 @@ public class ClientPlayNetworkHandlerMixin
 		double x = packet.getX();
 		double y = packet.getY();
 		double z = packet.getZ();
-		Entity entity = null;
+		PersistentProjectileEntity entity = null;
 
 		if(type == ModEntities.HOOKSHOT_ENTITY)
 			entity = new HookshotEntity(world, x, y, z);
 
 		if(entity != null)
 		{
-			if(entity instanceof PersistentProjectileEntity)
-			{
-				Entity owner = world.getEntityById(packet.getEntityData());
+			Entity owner = world.getEntityById(packet.getEntityData());
 
-				if(owner != null)
-					((PersistentProjectileEntity) entity).setOwner(owner);
-			}
+			if(owner != null)
+				entity.setOwner(owner);
 
 			int id = packet.getId();
 			entity.updateTrackedPosition(x, y, z);
 			entity.refreshPositionAfterTeleport(x, y, z);
-			entity.pitch = (float) (packet.getPitch() * 360) / 256f;
-			entity.yaw = (float) (packet.getYaw() * 360) / 256f;
+			entity.pitch = (packet.getPitch() * 360F) / 256F;
+			entity.yaw = (packet.getYaw() * 360F) / 256F;
 			entity.setEntityId(id);
 			entity.setUuid(packet.getUuid());
 			world.addEntity(id, entity);

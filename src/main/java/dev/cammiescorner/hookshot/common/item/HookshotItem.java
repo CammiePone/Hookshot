@@ -28,7 +28,7 @@ public class HookshotItem extends Item
 {
 	public HookshotItem()
 	{
-		super(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1).maxDamage(Hookshot.config.durability));
+		super(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1).maxDamage(Hookshot.config.defaultMaxDurability));
 	}
 
 	@Override
@@ -46,9 +46,6 @@ public class HookshotItem extends Item
 				HookshotEntity hookshot = new HookshotEntity(ModEntities.HOOKSHOT_ENTITY, user, world);
 				hookshot.setProperties(stack, maxRange, maxSpeed, user.pitch, user.headYaw, 0f, 1.5f * (float) (maxSpeed / 10));
 				world.spawnEntity(hookshot);
-
-				if(stack.getMaxDamage() > 0)
-					stack.damage(1, (LivingEntity) user, (entity) -> entity.sendToolBreakStatus(user.getActiveHand()));
 			}
 
 			if(!Hookshot.config.useClassicHookshotLogic)
@@ -100,8 +97,16 @@ public class HookshotItem extends Item
 	}
 
 	@Override
+	public boolean hasGlint(ItemStack stack)
+	{
+		return false;
+	}
+
+	@Override
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context)
 	{
+		if(UpgradesHelper.hasDurabilityUpgrade(stack))
+			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.durability").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasAutomaticUpgrade(stack))
 			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.automatic").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasSwingingUpgrade(stack))
@@ -124,7 +129,7 @@ public class HookshotItem extends Item
 		boolean hasModifiers = UpgradesHelper.hasAquaticUpgrade(stack) || UpgradesHelper.hasEndericUpgrade(stack) ||
 				UpgradesHelper.hasQuickUpgrade(stack) || UpgradesHelper.hasRangeUpgrade(stack) ||
 				UpgradesHelper.hasAutomaticUpgrade(stack) || UpgradesHelper.hasBleedUpgrade(stack) ||
-				UpgradesHelper.hasSwingingUpgrade(stack);
+				UpgradesHelper.hasSwingingUpgrade(stack) || UpgradesHelper.hasDurabilityUpgrade(stack);
 
 		return hasModifiers ? super.getName(stack).copy().formatted(Formatting.AQUA) : super.getName(stack);
 	}

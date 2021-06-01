@@ -23,29 +23,33 @@ public class HookshotConfig implements ConfigData
 			"\n  something? (Default: false)")
 	public boolean hookshotCancelsFallDamage = false;
 
-	@Comment("Should the Quick modifier affect the pulling speed" +
+	@Comment("Should the Quick upgrade affect the pulling speed" +
 			"\nof the Hookshot? (Default: false)")
 	public boolean quickModAffectsPullSpeed = false;
 
 	@Comment("The base maximum range of the Hookshot with no" +
-			"\n  modifiers applied. (Default: 24 blocks)")
+			"\n  upgrades applied. (Default: 24 blocks)")
 	public double defaultMaxRange = 24D;
 
 	@Comment("The base maximum speed of the Hookshot with no" +
-			"\n  modifiers applied. (Default: 10 blocks/s)")
+			"\n  upgrade applied. (Default: 10 blocks/s)")
 	public double defaultMaxSpeed = 10D;
 
-	@Comment("The multiplier the Range modifier applies to the" +
+	@Comment("The multiplier the Range upgrade applies to the" +
 			"\n  default range. (Default: x2)")
 	public double rangeMultiplier = 2D;
 
-	@Comment("The multiplier the Quick modifier applies to the" +
+	@Comment("The multiplier the Quick upgrade applies to the" +
 			"\n  default speed. (Default: x1.5)")
 	public double quickMultiplier = 1.5D;
 
-	@Comment("The maximum durability of the Hookshot. Set to 0" +
-			"\n  to be unbreakable. (Default: 250)")
-	public int durability = 250;
+	@Comment("The multipler the Durability upgrade applies to the" +
+			"\n  default durability. (Default x2")
+	public double durabilityMultiplier = 2D;
+
+	@Comment("The base maximum durability of the Hookshot. Set to 0" +
+			"\n  to be unbreakable. (Default: 512)")
+	public int defaultMaxDurability = 512;
 
 	@Comment("The ID of the item used to repair the Hookshot." +
 			"\n  (Default: minecraft:iron_ingot)")

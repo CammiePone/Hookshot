@@ -4,14 +4,24 @@ import net.minecraft.item.ItemStack;
 
 public class UpgradesHelper
 {
-	public static boolean hasAquaticUpgrade(ItemStack stack)
+	public static boolean hasDurabilityUpgrade(ItemStack stack)
 	{
-		return stack.hasTag() && stack.getTag().getBoolean("hasAquaticUpgrade");
+		return stack.hasTag() && stack.getTag().getBoolean("hasDurabilityUpgrade");
 	}
 
 	public static boolean hasAutomaticUpgrade(ItemStack stack)
 	{
 		return stack.hasTag() && stack.getTag().getBoolean("hasAutomaticUpgrade");
+	}
+
+	public static boolean hasSwingingUpgrade(ItemStack stack)
+	{
+		return stack.hasTag() && stack.getTag().getBoolean("hasSwingingUpgrade");
+	}
+
+	public static boolean hasAquaticUpgrade(ItemStack stack)
+	{
+		return stack.hasTag() && stack.getTag().getBoolean("hasAquaticUpgrade");
 	}
 
 	public static boolean hasEndericUpgrade(ItemStack stack)
@@ -32,10 +42,5 @@ public class UpgradesHelper
 	public static boolean hasBleedUpgrade(ItemStack stack)
 	{
 		return stack.hasTag() && stack.getTag().getBoolean("hasBleedUpgrade");
-	}
-
-	public static boolean hasSwingingUpgrade(ItemStack stack)
-	{
-		return stack.hasTag() && stack.getTag().getBoolean("hasSwingingUpgrade");
 	}
 }

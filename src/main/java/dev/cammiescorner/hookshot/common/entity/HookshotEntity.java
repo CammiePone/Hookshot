@@ -146,6 +146,9 @@ public class HookshotEntity extends PersistentProjectileEntity
 							kill();
 							((PlayerProperties) owner).setHasHook(false);
 						}
+
+						if(stack.getMaxDamage() > 0 && age % 20 == 0)
+							stack.damage(1, owner, (entity) -> entity.sendToolBreakStatus(owner.getActiveHand()));
 					}
 				}
 				else

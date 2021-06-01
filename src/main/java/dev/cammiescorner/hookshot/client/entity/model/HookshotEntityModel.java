@@ -8,64 +8,68 @@ import net.minecraft.client.util.math.MatrixStack;
 
 public class HookshotEntityModel extends EntityModel<HookshotEntity>
 {
+	private final ModelPart HookshotBase;
 	private final ModelPart hookBase;
-	private final ModelPart hookTop;
-	private final ModelPart hookBottom;
-	private final ModelPart hookLeft;
-	private final ModelPart hookRight;
+	private final ModelPart hook1;
+	private final ModelPart hook2;
+	private final ModelPart hook3;
+	private final ModelPart hook4;
 
 	public HookshotEntityModel()
 	{
-		textureWidth = 16;
-		textureHeight = 16;
+		textureWidth = 32;
+		textureHeight = 32;
+
+		HookshotBase = new ModelPart(this);
+		HookshotBase.setPivot(0.0F, 0.0F, 0.0F);
 
 		hookBase = new ModelPart(this);
-		hookBase.setPivot(-0.5f, 23.5f, 0.5F);
-		hookBase.setTextureOffset(1, 2).addCuboid(-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 6.0f, 0.0f, false);
+		hookBase.setPivot(1.0F, -6.0F, 5.0F);
+		HookshotBase.addChild(hookBase);
+		hookBase.setTextureOffset(14, 0).addCuboid(-2.0F, 5.0F, -6.0F, 2.0F, 2.0F, 2.0F, 0.0F, false);
 
-		hookTop = new ModelPart(this);
-		hookTop.setPivot(0.5f, -0.5f, -0.5F);
-		setRotationAngle(hookTop, -0.7854f, 0.0f, 0.0F);
-		hookTop.setTextureOffset(0, 0).addCuboid(-1.0f, -5.0f, 0.0f, 1.0f, 5.0f, 1.0f, 0.0f, false);
+		hook2 = new ModelPart(this);
+		hook2.setPivot(-1.0F, 4.5F, -6.0F);
+		hookBase.addChild(hook2);
+		setRotationAngle(hook2, -0.3927F, 0.0F, 0.0F);
+		hook2.setTextureOffset(0, 22).addCuboid(-0.5F, -1.0F, -2.9142F, 1.0F, 2.0F, 4.0F, 0.0F, false);
 
-		hookBottom = new ModelPart(this);
-		hookBottom.setPivot(0.5f, 0.5f, -0.5F);
-		setRotationAngle(hookBottom, -2.3562f, 0.0f, 0.0F);
-		hookBottom.setTextureOffset(12, 0).addCuboid(-1.0f, -5.0f, -1.0f, 1.0f, 5.0f, 1.0f, 0.0f, false);
+		hook3 = new ModelPart(this);
+		hook3.setPivot(-1.0F, 6.5F, -5.0F);
+		hookBase.addChild(hook3);
+		setRotationAngle(hook3, 0.3927F, 0.0F, 0.0F);
+		hook3.setTextureOffset(8, 19).addCuboid(-0.5F, 0.0F, -3.9142F, 1.0F, 2.0F, 4.0F, 0.0F, false);
 
-		hookLeft = new ModelPart(this);
-		hookLeft.setPivot(-0.5f, 0.5f, -0.5F);
-		setRotationAngle(hookLeft, 0.0f, 0.7854f, 0.0F);
-		hookLeft.setTextureOffset(2, 11).addCuboid(-5.0f, -1.0f, 0.0f, 5.0f, 1.0f, 1.0f, 0.0f, false);
+		hook4 = new ModelPart(this);
+		hook4.setPivot(-0.5F, 6.0F, -6.0F);
+		hookBase.addChild(hook4);
+		setRotationAngle(hook4, 0.0F, -0.3927F, 0.0F);
+		hook4.setTextureOffset(18, 0).addCuboid(0.0F, -0.5F, -3.0F, 2.0F, 1.0F, 4.0F, 0.0F, false);
 
-		hookRight = new ModelPart(this);
-		hookRight.setPivot(0.5f, 0.5f, -0.5F);
-		setRotationAngle(hookRight, 0.0f, -0.7854f, 0.0F);
-		hookRight.setTextureOffset(2, 14).addCuboid(0.0f, -1.0f, 0.0f, 5.0f, 1.0f, 1.0f, 0.0f, false);
-
-		hookBase.addChild(hookTop);
-		hookBase.addChild(hookBottom);
-		hookBase.addChild(hookLeft);
-		hookBase.addChild(hookRight);
+		hook1 = new ModelPart(this);
+		hook1.setPivot(-1.5F, 6.0F, -6.0F);
+		hookBase.addChild(hook1);
+		setRotationAngle(hook1, 0.0F, 0.3927F, 0.0F);
+		hook1.setTextureOffset(0, 17).addCuboid(-2.0F, -0.5F, -3.0F, 2.0F, 1.0F, 4.0F, 0.0F, false);
 	}
 
 	@Override
-	public void setAngles(HookshotEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch)
+	public void setAngles(HookshotEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch)
 	{
-		hookBase.pitch = (float) Math.toRadians(pitch);
-		hookBase.yaw = (float) Math.toRadians(yaw);
+		HookshotBase.pitch = (float) Math.toRadians(-headPitch);
+		HookshotBase.yaw = (float) Math.toRadians(-headYaw);
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float r, float g, float b, float a)
+	public void render(MatrixStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
-		hookBase.render(matrixStack, buffer, packedLight, packedOverlay);
+		HookshotBase.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 
-	public void setRotationAngle(ModelPart ModelPart, float x, float y, float z)
+	public void setRotationAngle(ModelPart part, float x, float y, float z)
 	{
-		ModelPart.pitch = x;
-		ModelPart.yaw = y;
-		ModelPart.roll = z;
+		part.pitch = x;
+		part.yaw = y;
+		part.roll = z;
 	}
 }

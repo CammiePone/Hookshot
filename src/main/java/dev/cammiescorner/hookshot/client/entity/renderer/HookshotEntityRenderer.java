@@ -3,6 +3,7 @@ package dev.cammiescorner.hookshot.client.entity.renderer;
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
 import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -12,6 +13,8 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Arm;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix3f;
@@ -38,23 +41,25 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 
 			if(player != null)
 			{
-				stack.push();
-				stack.translate(0D, -1.5D, 0D);
+				Arm mainArm = MinecraftClient.getInstance().options.mainArm;
+				Hand activeHand = player.getActiveHand();
+
 				MODEL.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.yaw, hookshot.pitch);
 				VertexConsumer vertexConsumer = provider.getBuffer(MODEL.getLayer(this.getTexture(hookshot)));
 				MODEL.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
-				stack.pop();
 
 				stack.push();
-				double m = player.getX();
-				double n = player.getY() + player.getStandingEyeHeight() * 0.75;
-				double o = player.getZ();
-				float p = (float) (m - hookshot.getX());
-				float q = (float) (n - hookshot.getY());
-				float r = (float) (o - hookshot.getZ());
+				boolean rightHandIsActive = (mainArm == Arm.RIGHT && activeHand == Hand.MAIN_HAND) || (mainArm == Arm.LEFT && activeHand == Hand.OFF_HAND);
+				double bodyYawToRads = Math.toRadians(player.bodyYaw);
+				double radius = rightHandIsActive ? -0.4D : 0.4D;
+				double startX = player.getX() + radius * Math.cos(bodyYawToRads);
+				double startY = player.getY() + (player.getHeight() / 3D);
+				double startZ = player.getZ() + radius * Math.sin(bodyYawToRads);
+				float distanceX = (float) (startX - hookshot.getX());
+				float distanceY = (float) (startY - hookshot.getY());
+				float distanceZ = (float) (startZ - hookshot.getZ());
 
-				renderChain(p, q, r, tickDelta, hookshot.age, stack, provider, light);
-
+				renderChain(distanceX, distanceY, distanceZ, tickDelta, hookshot.age, stack, provider, light);
 				stack.pop();
 			}
 		}
