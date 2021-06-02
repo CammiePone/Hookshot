@@ -1,0 +1,16 @@
+{
+  "type": "hookshot:smithing",
+  "base":
+  {
+    "item": "hookshot:gray_hookshot"
+  },
+  "addition":
+  {
+    "item": "minecraft:prismarine_shard"
+  },
+  "result":
+  {
+    "item": "hookshot:gray_hookshot",
+    "nbt": "hasAquaticUpgrade"
+  }
+}

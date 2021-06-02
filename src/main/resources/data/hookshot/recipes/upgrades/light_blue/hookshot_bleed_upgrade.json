@@ -2,7 +2,7 @@
 	"type": "hookshot:smithing",
 	"base":
 	{
-		"item": "hookshot:hookshot"
+		"item": "hookshot:light_blue_hookshot"
 	},
 	"addition":
 	{
@@ -10,7 +10,7 @@
 	},
 	"result":
 	{
-		"item": "hookshot:hookshot",
+		"item": "hookshot:light_blue_hookshot",
 		"nbt": "hasBleedUpgrade"
 	}
 }

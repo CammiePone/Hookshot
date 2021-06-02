@@ -1,0 +1,16 @@
+{
+  "type": "hookshot:smithing",
+  "base":
+  {
+    "item": "hookshot:magenta_hookshot"
+  },
+  "addition":
+  {
+    "item": "minecraft:ender_eye"
+  },
+  "result":
+  {
+    "item": "hookshot:magenta_hookshot",
+    "nbt": "hasEndericUpgrade"
+  }
+}

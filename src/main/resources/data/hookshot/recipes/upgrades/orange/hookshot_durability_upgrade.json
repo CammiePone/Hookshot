@@ -1,0 +1,16 @@
+{
+  "type": "hookshot:smithing",
+  "base":
+  {
+    "item": "hookshot:orange_hookshot",
+  },
+  "addition":
+  {
+    "item": "minecraft:obsidian"
+  },
+  "result":
+  {
+    "item": "hookshot:orange_hookshot",
+    "nbt": "hasDurabilityUpgrade"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "hookshot:smithing",
+  "base":
+  {
+    "item": "hookshot:pink_hookshot"
+  },
+  "addition":
+  {
+    "item": "minecraft:piston"
+  },
+  "result":
+  {
+    "item": "hookshot:pink_hookshot",
+    "nbt": "hasQuickUpgrade"
+  }
+}

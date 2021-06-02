@@ -1,0 +1,16 @@
+{
+	"type": "hookshot:smithing",
+	"base":
+	{
+		"item": "hookshot:red_hookshot"
+	},
+	"addition":
+	{
+		"item": "minecraft:arrow"
+	},
+	"result":
+	{
+		"item": "hookshot:red_hookshot",
+		"nbt": "hasBleedUpgrade"
+	}
+}

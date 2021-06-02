@@ -1,0 +1,16 @@
+{
+  "type": "hookshot:smithing",
+  "base":
+  {
+    "item": "hookshot:green_hookshot"
+  },
+  "addition":
+  {
+    "item": "minecraft:observer"
+  },
+  "result":
+  {
+    "item": "hookshot:green_hookshot",
+    "nbt": "hasAutomaticUpgrade"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "hookshot:smithing",
+  "base":
+  {
+    "item": "hookshot:orange_hookshot"
+  },
+  "addition":
+  {
+    "item": "minecraft:chain"
+  },
+  "result":
+  {
+    "item": "hookshot:orange_hookshot",
+    "nbt": "hasRangeUpgrade"
+  }
+}
