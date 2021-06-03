@@ -2,7 +2,7 @@
   "type": "hookshot:smithing",
   "base":
   {
-    "item": "hookshot:black_hookshot",
+    "item": "hookshot:black_hookshot"
   },
   "addition":
   {
