@@ -7,7 +7,7 @@ import dev.cammiescorner.hookshot.core.mixin.SmithingRecipeAccessor;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
@@ -30,7 +30,7 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 	public ItemStack craft(Inventory inv)
 	{
 		ItemStack stack = ((SmithingRecipeAccessor) this).getResult().copy();
-		NbtCompound tag = inv.getStack(0).getTag();
+		CompoundTag tag = inv.getStack(0).getTag();
 
 		if(tag != null && stack.hasTag())
 			stack.getTag().copyFrom(tag);

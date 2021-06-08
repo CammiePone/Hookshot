@@ -1,8 +1,14 @@
 package dev.cammiescorner.hookshot.client.entity.model;
 
-public class HookshotEntityModel// extends EntityModel<HookshotEntity>
+import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
+import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.util.math.MatrixStack;
+
+public class HookshotEntityModel extends EntityModel<HookshotEntity>
 {
-	/*private final ModelPart HookshotBase;
+	private final ModelPart HookshotBase;
 	private final ModelPart hookBase;
 	private final ModelPart hook1;
 	private final ModelPart hook2;
@@ -65,5 +71,5 @@ public class HookshotEntityModel// extends EntityModel<HookshotEntity>
 		part.pitch = x;
 		part.yaw = y;
 		part.roll = z;
-	}*/
+	}
 }

@@ -44,7 +44,7 @@ public class HookshotItem extends Item
 				double maxSpeed = Hookshot.config.defaultMaxSpeed * (UpgradesHelper.hasQuickUpgrade(stack) ? Hookshot.config.quickMultiplier : 1);
 
 				HookshotEntity hookshot = new HookshotEntity(ModEntities.HOOKSHOT_ENTITY, user, world);
-				hookshot.setProperties(stack, maxRange, maxSpeed, user.getPitch(), user.headYaw, 0f, 1.5f * (float) (maxSpeed / 10));
+				hookshot.setProperties(stack, maxRange, maxSpeed, user.pitch, user.headYaw, 0f, 1.5f * (float) (maxSpeed / 10));
 				world.spawnEntity(hookshot);
 			}
 

@@ -1,15 +1,17 @@
 package dev.cammiescorner.hookshot.client.entity.renderer;
 
 import dev.cammiescorner.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
 import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
@@ -17,18 +19,17 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
 
 public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 {
-	// private static final HookshotEntityModel MODEL = new HookshotEntityModel();
+	private static final HookshotEntityModel MODEL = new HookshotEntityModel();
 	private static final Identifier TEXTURE = new Identifier(Hookshot.MOD_ID, "textures/entity/hookshot.png");
 	private static final Identifier CHAIN_TEXTURE = new Identifier(Hookshot.MOD_ID, "textures/entity/chain.png");
 	private static final RenderLayer CHAIN_LAYER = RenderLayer.getEntitySmoothCutout(CHAIN_TEXTURE);
 
-	public HookshotEntityRenderer(EntityRendererFactory.Context context)
+	public HookshotEntityRenderer(final EntityRenderDispatcher dispatcher)
 	{
-		super(context);
+		super(dispatcher);
 	}
 
 	@Override
@@ -43,9 +44,9 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 				Arm mainArm = MinecraftClient.getInstance().options.mainArm;
 				Hand activeHand = player.getActiveHand();
 
-				// MODEL.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.getYaw(), hookshot.getPitch());
-				// VertexConsumer vertexConsumer = provider.getBuffer(MODEL.getLayer(this.getTexture(hookshot)));
-				// MODEL.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+				MODEL.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.yaw, hookshot.pitch);
+				VertexConsumer vertexConsumer = provider.getBuffer(MODEL.getLayer(this.getTexture(hookshot)));
+				MODEL.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 
 				stack.push();
 				boolean rightHandIsActive = (mainArm == Arm.RIGHT && activeHand == Hand.MAIN_HAND) || (mainArm == Arm.LEFT && activeHand == Hand.OFF_HAND);
@@ -73,8 +74,8 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 		float length = MathHelper.sqrt(squaredLength);
 
 		stack.push();
-		stack.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion((float) (-Math.atan2(z, x)) - 1.5707964F));
-		stack.multiply(Vec3f.POSITIVE_X.getRadialQuaternion((float) (-Math.atan2(lengthXY, y)) - 1.5707964F));
+		stack.multiply(Vector3f.POSITIVE_Y.getRadialQuaternion((float) (-Math.atan2(z, x)) - 1.5707964F));
+		stack.multiply(Vector3f.POSITIVE_X.getRadialQuaternion((float) (-Math.atan2(lengthXY, y)) - 1.5707964F));
 
 		VertexConsumer vertexConsumer = provider.getBuffer(CHAIN_LAYER);
 		float h = 0.0F - ((float) age + tickDelta) * 0.01F;

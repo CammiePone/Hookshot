@@ -7,7 +7,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,14 +24,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerPr
 		super(entityType, world);
 	}
 
-	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-	public void readNbt(NbtCompound tag, CallbackInfo info)
+	@Inject(method = "readCustomDataFromTag", at = @At("TAIL"))
+	public void readNbt(CompoundTag tag, CallbackInfo info)
 	{
 		dataTracker.set(HOOK_TRACKER, tag.getBoolean("hasHook"));
 	}
 
-	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-	public void writeNbt(NbtCompound tag, CallbackInfo info)
+	@Inject(method = "writeCustomDataToTag", at = @At("TAIL"))
+	public void writeNbt(CompoundTag tag, CallbackInfo info)
 	{
 		tag.putBoolean("hasHook", dataTracker.get(HOOK_TRACKER));
 	}

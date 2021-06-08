@@ -19,7 +19,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
@@ -85,10 +85,10 @@ public class HookshotEntity extends PersistentProjectileEntity
 			{
 				if(this.hookedEntity != null)
 				{
-					if(this.hookedEntity.isRemoved())
+					if(this.hookedEntity.removed)
 					{
 						this.hookedEntity = null;
-						onRemoved();
+						remove();
 					}
 					else
 					{
@@ -221,7 +221,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 				{
 					((PlayerProperties) owner).setHasHook(false);
 					isPulling = false;
-					onRemoved();
+					remove();
 				}
 				else
 				{
@@ -231,7 +231,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 						((PlayerProperties) owner).setHasHook(false);
 						owner.fallDistance = 0.0F;
 						isPulling = false;
-						onRemoved();
+						remove();
 					}
 				}
 			}
@@ -241,7 +241,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 				{
 					((PlayerProperties) owner).setHasHook(false);
 					isPulling = false;
-					onRemoved();
+					remove();
 				}
 				else
 				{
@@ -251,7 +251,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 						((PlayerProperties) owner).setHasHook(false);
 						owner.fallDistance = 0.0F;
 						isPulling = false;
-						onRemoved();
+						remove();
 					}
 				}
 			}
@@ -266,7 +266,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 			if((entityHitResult.getEntity() instanceof LivingEntity || entityHitResult.getEntity() instanceof EnderDragonPart) && hookedEntity == null)
 			{
 				hookedEntity = entityHitResult.getEntity();
-				dataTracker.set(HOOKED_ENTITY_ID, hookedEntity.getId() + 1);
+				dataTracker.set(HOOKED_ENTITY_ID, hookedEntity.getEntityId() + 1);
 				isPulling = true;
 			}
 
@@ -279,33 +279,33 @@ public class HookshotEntity extends PersistentProjectileEntity
 				owner.fallDistance = 0.0F;
 				((PlayerProperties) owner).setHasHook(false);
 				isPulling = false;
-				onRemoved();
+				remove();
 			}
 		}
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound tag)
+	public void readCustomDataFromTag(CompoundTag tag)
 	{
-		super.readCustomDataFromNbt(tag);
+		super.readCustomDataFromTag(tag);
 		maxRange = tag.getDouble("maxRange");
 		maxSpeed = tag.getDouble("maxSpeed");
 		isPulling = tag.getBoolean("isPulling");
-		stack = ItemStack.fromNbt(tag.getCompound("hookshotItem"));
+		stack = ItemStack.fromTag(tag.getCompound("hookshotItem"));
 
 		if(world.getEntityById(tag.getInt("owner")) instanceof PlayerEntity)
 			owner = (PlayerEntity) world.getEntityById(tag.getInt("owner"));
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound tag)
+	public void writeCustomDataToTag(CompoundTag tag)
 	{
-		super.writeCustomDataToNbt(tag);
+		super.writeCustomDataToTag(tag);
 		tag.putDouble("maxRange", maxRange);
 		tag.putDouble("maxSpeed", maxSpeed);
 		tag.putBoolean("isPulling", isPulling);
-		tag.put("hookshotItem", stack.writeNbt(new NbtCompound()));
-		tag.putInt("owner", owner.getId());
+		tag.put("hookshotItem", stack.toTag(new CompoundTag()));
+		tag.putInt("owner", owner.getEntityId());
 	}
 
 	public void setProperties(ItemStack stack, double maxRange, double maxVelocity, float pitch, float yaw, float roll, float modifierZ)
