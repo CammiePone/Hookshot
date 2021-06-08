@@ -27,7 +27,7 @@ public class HookshotClient implements ClientModInitializer
 		EntityRendererRegistry.INSTANCE.register(ModEntities.HOOKSHOT_ENTITY, HookshotEntityRenderer::new);
 
 		// Colour Registry
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> (int) (((int) getRgb(stack)[0] << 16) + ((int) getRgb(stack)[1] << 8) + getRgb(stack)[2]),
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> (((int) (getRgb(stack)[0] * 255F) << 16) | ((int) (getRgb(stack)[1] * 255F) << 8) | (int) (getRgb(stack)[2] * 255F)),
 				WHITE_HOOKSHOT, ORANGE_HOOKSHOT, MAGENTA_HOOKSHOT, LIGHT_BLUE_HOOKSHOT, YELLOW_HOOKSHOT,
 				LIME_HOOKSHOT, PINK_HOOKSHOT, GREY_HOOKSHOT, LIGHT_GREY_HOOKSHOT, CYAN_HOOKSHOT,
 				PURPLE_HOOKSHOT, BLUE_HOOKSHOT, BROWN_HOOKSHOT, GREEN_HOOKSHOT, RED_HOOKSHOT, BLACK_HOOKSHOT);
