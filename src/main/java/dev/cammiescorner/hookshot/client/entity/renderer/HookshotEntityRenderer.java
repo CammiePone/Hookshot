@@ -1,6 +1,7 @@
 package dev.cammiescorner.hookshot.client.entity.renderer;
 
 import dev.cammiescorner.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
 import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
@@ -21,7 +22,7 @@ import net.minecraft.util.math.Vec3f;
 
 public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 {
-	// private static final HookshotEntityModel MODEL = new HookshotEntityModel();
+	private static HookshotEntityModel model;
 	private static final Identifier TEXTURE = new Identifier(Hookshot.MOD_ID, "textures/entity/hookshot.png");
 	private static final Identifier CHAIN_TEXTURE = new Identifier(Hookshot.MOD_ID, "textures/entity/chain.png");
 	private static final RenderLayer CHAIN_LAYER = RenderLayer.getEntitySmoothCutout(CHAIN_TEXTURE);
@@ -29,38 +30,35 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 	public HookshotEntityRenderer(EntityRendererFactory.Context context)
 	{
 		super(context);
+		//model = new HookshotEntityModel(context.getPart(EntityModelLayers.ARMOR_STAND));
 	}
 
 	@Override
 	public void render(HookshotEntity hookshot, float yaw, float tickDelta, MatrixStack stack, VertexConsumerProvider provider, int light)
 	{
-		if(hookshot.getOwner() instanceof PlayerEntity)
+		if(hookshot.getOwner() instanceof PlayerEntity player)
 		{
-			PlayerEntity player = (PlayerEntity) hookshot.getOwner();
 
-			if(player != null)
-			{
-				Arm mainArm = MinecraftClient.getInstance().options.mainArm;
-				Hand activeHand = player.getActiveHand();
+			Arm mainArm = MinecraftClient.getInstance().options.mainArm;
+			Hand activeHand = player.getActiveHand();
 
-				// MODEL.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.getYaw(), hookshot.getPitch());
-				// VertexConsumer vertexConsumer = provider.getBuffer(MODEL.getLayer(this.getTexture(hookshot)));
-				// MODEL.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+			//model.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.getYaw(), hookshot.getPitch());
+			//VertexConsumer vertexConsumer = provider.getBuffer(model.getLayer(this.getTexture(hookshot)));
+			//model.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 
-				stack.push();
-				boolean rightHandIsActive = (mainArm == Arm.RIGHT && activeHand == Hand.MAIN_HAND) || (mainArm == Arm.LEFT && activeHand == Hand.OFF_HAND);
-				double bodyYawToRads = Math.toRadians(player.bodyYaw);
-				double radius = rightHandIsActive ? -0.4D : 0.4D;
-				double startX = player.getX() + radius * Math.cos(bodyYawToRads);
-				double startY = player.getY() + (player.getHeight() / 3D);
-				double startZ = player.getZ() + radius * Math.sin(bodyYawToRads);
-				float distanceX = (float) (startX - hookshot.getX());
-				float distanceY = (float) (startY - hookshot.getY());
-				float distanceZ = (float) (startZ - hookshot.getZ());
+			stack.push();
+			boolean rightHandIsActive = (mainArm == Arm.RIGHT && activeHand == Hand.MAIN_HAND) || (mainArm == Arm.LEFT && activeHand == Hand.OFF_HAND);
+			double bodyYawToRads = Math.toRadians(player.bodyYaw);
+			double radius = rightHandIsActive ? -0.4D : 0.4D;
+			double startX = player.getX() + radius * Math.cos(bodyYawToRads);
+			double startY = player.getY() + (player.getHeight() / 3D);
+			double startZ = player.getZ() + radius * Math.sin(bodyYawToRads);
+			float distanceX = (float) (startX - hookshot.getX());
+			float distanceY = (float) (startY - hookshot.getY());
+			float distanceZ = (float) (startZ - hookshot.getZ());
 
-				renderChain(distanceX, distanceY, distanceZ, tickDelta, hookshot.age, stack, provider, light);
-				stack.pop();
-			}
+			renderChain(distanceX, distanceY, distanceZ, tickDelta, hookshot.age, stack, provider, light);
+			stack.pop();
 		}
 
 		super.render(hookshot, yaw, tickDelta, stack, provider, light);

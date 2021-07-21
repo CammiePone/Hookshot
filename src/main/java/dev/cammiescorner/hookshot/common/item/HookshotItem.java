@@ -3,6 +3,7 @@ package dev.cammiescorner.hookshot.common.item;
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
+import dev.cammiescorner.hookshot.core.util.Dyeable;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import dev.cammiescorner.hookshot.core.util.UpgradesHelper;
 import net.minecraft.client.item.TooltipContext;
@@ -21,9 +22,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class HookshotItem extends Item
+public class HookshotItem extends Item implements Dyeable
 {
-	private DyeColor colour;
+	private final DyeColor colour;
 
 	public HookshotItem(DyeColor colour)
 	{
@@ -131,6 +132,7 @@ public class HookshotItem extends Item
 		return hasModifiers ? super.getName(stack).copy().formatted(Formatting.AQUA) : super.getName(stack);
 	}
 
+	@Override
 	public DyeColor getColour()
 	{
 		return colour;

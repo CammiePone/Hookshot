@@ -1,69 +1,56 @@
+// Made with Model Converter by Globox_Z
+// Generate all required imports
 package dev.cammiescorner.hookshot.client.entity.model;
 
-public class HookshotEntityModel// extends EntityModel<HookshotEntity>
+import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
+import net.minecraft.client.model.*;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.util.math.MatrixStack;
+public class HookshotEntityModel extends EntityModel<HookshotEntity>
 {
-	/*private final ModelPart HookshotBase;
+	private final ModelPart hookshotBase;
 	private final ModelPart hookBase;
 	private final ModelPart hook1;
 	private final ModelPart hook2;
 	private final ModelPart hook3;
 	private final ModelPart hook4;
 
-	public HookshotEntityModel()
+	public HookshotEntityModel(ModelPart root)
 	{
-		textureWidth = 32;
-		textureHeight = 32;
+		this.hookshotBase = root.getChild("hookshotBase");
+		this.hookBase = this.hookshotBase.getChild("hookBase");
+		this.hook1 = this.hookBase.getChild("hook1");
+		this.hook4 = this.hookBase.getChild("hook4");
+		this.hook3 = this.hookBase.getChild("hook3");
+		this.hook2 = this.hookBase.getChild("hook2");
+	}
 
-		HookshotBase = new ModelPart(this);
-		HookshotBase.setPivot(0.0F, 0.0F, 0.0F);
+	public static TexturedModelData getTexturedModelData()
+	{
+		ModelData modelData = new ModelData();
+		ModelPartData modelPartData = modelData.getRoot();
+		ModelPartData modelPartData1 = modelPartData.addChild("hookshotBase", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+		ModelPartData modelPartData2 = modelPartData1.addChild("hookBase", ModelPartBuilder.create().uv(14, 0).cuboid(-2.0F, 5.0F, -6.0F, 2.0F, 2.0F, 2.0F), ModelTransform.pivot(1.0F, -6.0F, 5.0F));
+		modelPartData2.addChild("hook2", ModelPartBuilder.create().uv(0, 22).cuboid(-0.5F, -1.0F, -2.9142F, 1.0F, 2.0F, 4.0F), ModelTransform.of(-1.0F, 4.5F, -6.0F, -0.3927F, 0.0F, 0.0F));
+		modelPartData2.addChild("hook3", ModelPartBuilder.create().uv(8, 19).cuboid(-0.5F, 0.0F, -3.9142F, 1.0F, 2.0F, 4.0F), ModelTransform.of(-1.0F, 6.5F, -5.0F, 0.3927F, 0.0F, 0.0F));
+		modelPartData2.addChild("hook4", ModelPartBuilder.create().uv(18, 0).cuboid(0.0F, -0.5F, -3.0F, 2.0F, 1.0F, 4.0F), ModelTransform.of(-0.5F, 6.0F, -6.0F, 0.0F, -0.3927F, 0.0F));
+		modelPartData2.addChild("hook1", ModelPartBuilder.create().uv(0, 17).cuboid(-2.0F, -0.5F, -3.0F, 2.0F, 1.0F, 4.0F), ModelTransform.of(-1.5F, 6.0F, -6.0F, 0.0F, 0.3927F, 0.0F));
 
-		hookBase = new ModelPart(this);
-		hookBase.setPivot(1.0F, -6.0F, 5.0F);
-		HookshotBase.addChild(hookBase);
-		hookBase.setTextureOffset(14, 0).addCuboid(-2.0F, 5.0F, -6.0F, 2.0F, 2.0F, 2.0F, 0.0F, false);
-
-		hook2 = new ModelPart(this);
-		hook2.setPivot(-1.0F, 4.5F, -6.0F);
-		hookBase.addChild(hook2);
-		setRotationAngle(hook2, -0.3927F, 0.0F, 0.0F);
-		hook2.setTextureOffset(0, 22).addCuboid(-0.5F, -1.0F, -2.9142F, 1.0F, 2.0F, 4.0F, 0.0F, false);
-
-		hook3 = new ModelPart(this);
-		hook3.setPivot(-1.0F, 6.5F, -5.0F);
-		hookBase.addChild(hook3);
-		setRotationAngle(hook3, 0.3927F, 0.0F, 0.0F);
-		hook3.setTextureOffset(8, 19).addCuboid(-0.5F, 0.0F, -3.9142F, 1.0F, 2.0F, 4.0F, 0.0F, false);
-
-		hook4 = new ModelPart(this);
-		hook4.setPivot(-0.5F, 6.0F, -6.0F);
-		hookBase.addChild(hook4);
-		setRotationAngle(hook4, 0.0F, -0.3927F, 0.0F);
-		hook4.setTextureOffset(18, 0).addCuboid(0.0F, -0.5F, -3.0F, 2.0F, 1.0F, 4.0F, 0.0F, false);
-
-		hook1 = new ModelPart(this);
-		hook1.setPivot(-1.5F, 6.0F, -6.0F);
-		hookBase.addChild(hook1);
-		setRotationAngle(hook1, 0.0F, 0.3927F, 0.0F);
-		hook1.setTextureOffset(0, 17).addCuboid(-2.0F, -0.5F, -3.0F, 2.0F, 1.0F, 4.0F, 0.0F, false);
+		return TexturedModelData.of(modelData, 32, 32);
 	}
 
 	@Override
-	public void setAngles(HookshotEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch)
+	public void setAngles (HookshotEntity entity,float limbAngle, float limbDistance, float animationProgress,
+						   float headYaw, float headPitch)
 	{
-		HookshotBase.pitch = (float) Math.toRadians(-headPitch);
-		HookshotBase.yaw = (float) Math.toRadians(-headYaw);
+		hookshotBase.pitch = (float) Math.toRadians(-headPitch);
+		hookshotBase.yaw = (float) Math.toRadians(-headYaw);
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+	public void render (MatrixStack matrices, VertexConsumer vertices,int light, int overlay, float red, float green, float blue, float alpha)
 	{
-		HookshotBase.render(matrixStack, buffer, packedLight, packedOverlay);
+		hookshotBase.render(matrices, vertices, light, overlay);
 	}
-
-	public void setRotationAngle(ModelPart part, float x, float y, float z)
-	{
-		part.pitch = x;
-		part.yaw = y;
-		part.roll = z;
-	}*/
 }
