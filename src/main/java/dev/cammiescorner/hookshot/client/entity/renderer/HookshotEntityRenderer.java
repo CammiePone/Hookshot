@@ -1,6 +1,7 @@
 package dev.cammiescorner.hookshot.client.entity.renderer;
 
 import dev.cammiescorner.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.client.HookshotClient;
 import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
 import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import net.minecraft.client.MinecraftClient;
@@ -30,7 +31,7 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 	public HookshotEntityRenderer(EntityRendererFactory.Context context)
 	{
 		super(context);
-		//model = new HookshotEntityModel(context.getPart(EntityModelLayers.ARMOR_STAND));
+		model = new HookshotEntityModel(context.getPart(HookshotClient.HOOKSHOT));
 	}
 
 	@Override
@@ -38,13 +39,12 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 	{
 		if(hookshot.getOwner() instanceof PlayerEntity player)
 		{
-
 			Arm mainArm = MinecraftClient.getInstance().options.mainArm;
 			Hand activeHand = player.getActiveHand();
 
-			//model.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.getYaw(), hookshot.getPitch());
-			//VertexConsumer vertexConsumer = provider.getBuffer(model.getLayer(this.getTexture(hookshot)));
-			//model.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+			model.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.getYaw(), hookshot.getPitch());
+			VertexConsumer vertexConsumer = provider.getBuffer(model.getLayer(this.getTexture(hookshot)));
+			model.render(stack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 
 			stack.push();
 			boolean rightHandIsActive = (mainArm == Arm.RIGHT && activeHand == Hand.MAIN_HAND) || (mainArm == Arm.LEFT && activeHand == Hand.OFF_HAND);

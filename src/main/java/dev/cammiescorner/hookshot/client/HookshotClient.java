@@ -1,6 +1,7 @@
 package dev.cammiescorner.hookshot.client;
 
 import dev.cammiescorner.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
 import dev.cammiescorner.hookshot.client.entity.renderer.HookshotEntityRenderer;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.util.ColourHelper;
@@ -9,9 +10,11 @@ import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -20,11 +23,13 @@ import static dev.cammiescorner.hookshot.core.registry.ModItems.*;
 @Environment(EnvType.CLIENT)
 public class HookshotClient implements ClientModInitializer
 {
+	public static final EntityModelLayer HOOKSHOT = new EntityModelLayer(new Identifier(Hookshot.MOD_ID, "hookshot"), "hookshot");
 	@Override
 	public void onInitializeClient()
 	{
 		// Entity Renderer Registry
 		EntityRendererRegistry.INSTANCE.register(ModEntities.HOOKSHOT_ENTITY, HookshotEntityRenderer::new);
+		EntityModelLayerRegistry.registerModelLayer(HOOKSHOT, HookshotEntityModel::getTexturedModelData);
 
 		// Colour Registry
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ColourHelper.dyeableToDecimal((Dyeable) stack.getItem()),
