@@ -73,13 +73,15 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 		stack.push();
 		stack.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion((float) (-Math.atan2(z, x)) - 1.5707964F));
 		stack.multiply(Vec3f.POSITIVE_X.getRadialQuaternion((float) (-Math.atan2(lengthXY, y)) - 1.5707964F));
-		stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(30));
+		stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(25));
 		stack.push();
-		stack.translate(0, -0.2, 0);
+		stack.translate(0.015, -0.2, 0);
 
 		VertexConsumer vertexConsumer = provider.getBuffer(CHAIN_LAYER);
-		float vertX = 0F;
-		float vertY = 0.25F;
+		float vertX1 = 0F;
+		float vertY1 = 0.25F;
+		float vertX2 = MathHelper.sin(6.2831855F) * 0.125F;
+		float vertY2 = MathHelper.cos(6.2831855F) * 0.125F;
 		float minU = 0F;
 		float maxU = 0.1875F;
 		float minV = 0.0F - ((float) age + tickDelta) * 0.01F;
@@ -88,27 +90,23 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 		Matrix4f matrix4f = entry.getModel();
 		Matrix3f matrix3f = entry.getNormal();
 
-		float o = MathHelper.sin(6.2831855F) * 0.125F;
-		float p = MathHelper.cos(6.2831855F) * 0.125F;
-
-		vertexConsumer.vertex(matrix4f, vertX, vertY, 0F).color(0, 0, 0, 255).texture(minU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-		vertexConsumer.vertex(matrix4f, vertX, vertY, length).color(255, 255, 255, 255).texture(minU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-		vertexConsumer.vertex(matrix4f, o, p, length).color(255, 255, 255, 255).texture(maxU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-		vertexConsumer.vertex(matrix4f, o, p, 0F).color(0, 0, 0, 255).texture(maxU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX1, vertY1, 0F).color(0, 0, 0, 255).texture(minU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX1, vertY1, length).color(255, 255, 255, 255).texture(minU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX2, vertY2, length).color(255, 255, 255, 255).texture(maxU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX2, vertY2, 0F).color(0, 0, 0, 255).texture(maxU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
 
 		stack.pop();
-
 		stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90));
-		stack.translate(0, -0.2, 0);
+		stack.translate(-0.015, -0.2, 0);
 
 		entry = stack.peek();
 		matrix4f = entry.getModel();
 		matrix3f = entry.getNormal();
 
-		vertexConsumer.vertex(matrix4f, vertX, vertY, 0F).color(0, 0, 0, 255).texture(minU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-		vertexConsumer.vertex(matrix4f, vertX, vertY, length).color(255, 255, 255, 255).texture(minU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-		vertexConsumer.vertex(matrix4f, o, p, length).color(255, 255, 255, 255).texture(maxU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-		vertexConsumer.vertex(matrix4f, o, p, 0F).color(0, 0, 0, 255).texture(maxU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX1, vertY1, 0F).color(0, 0, 0, 255).texture(minU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX1, vertY1, length).color(255, 255, 255, 255).texture(minU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX2, vertY2, length).color(255, 255, 255, 255).texture(maxU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX2, vertY2, 0F).color(0, 0, 0, 255).texture(maxU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
 
 		stack.pop();
 	}
