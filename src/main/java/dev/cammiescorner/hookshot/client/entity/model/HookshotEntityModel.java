@@ -41,8 +41,7 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity>
 	}
 
 	@Override
-	public void setAngles (HookshotEntity entity,float limbAngle, float limbDistance, float animationProgress,
-						   float headYaw, float headPitch)
+	public void setAngles (HookshotEntity entity,float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch)
 	{
 		hookshotBase.pitch = (float) Math.toRadians(-headPitch);
 		hookshotBase.yaw = (float) Math.toRadians(-headYaw);

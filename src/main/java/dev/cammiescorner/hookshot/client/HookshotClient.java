@@ -43,13 +43,9 @@ public class HookshotClient implements ClientModInitializer
 			if(entity instanceof PlayerEntity)
 			{
 				if(((PlayerProperties) entity).hasHook())
-				{
 					return 1;
-				}
 				else
-				{
 					return 0;
-				}
 			}
 
 			return 0;

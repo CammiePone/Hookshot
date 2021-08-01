@@ -73,32 +73,42 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 		stack.push();
 		stack.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion((float) (-Math.atan2(z, x)) - 1.5707964F));
 		stack.multiply(Vec3f.POSITIVE_X.getRadialQuaternion((float) (-Math.atan2(lengthXY, y)) - 1.5707964F));
+		stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(30));
+		stack.push();
+		stack.translate(0, -0.2, 0);
 
 		VertexConsumer vertexConsumer = provider.getBuffer(CHAIN_LAYER);
-		float h = 0.0F - ((float) age + tickDelta) * 0.01F;
-		float i = MathHelper.sqrt(squaredLength) / 32.0F - ((float) age + tickDelta) * 0.01F;
-		float k = 0.0F;
-		float l = 0.75F;
-		float m = 0.0F;
+		float vertX = 0F;
+		float vertY = 0.25F;
+		float minU = 0F;
+		float maxU = 0.1875F;
+		float minV = 0.0F - ((float) age + tickDelta) * 0.01F;
+		float maxV = MathHelper.sqrt(squaredLength) / 8F - ((float) age + tickDelta) * 0.01F;
 		MatrixStack.Entry entry = stack.peek();
 		Matrix4f matrix4f = entry.getModel();
 		Matrix3f matrix3f = entry.getNormal();
 
-		for(int n = 1; n <= 8; ++n)
-		{
-			float o = MathHelper.sin((float) n * 6.2831855F / 8.0F) * 0.125F;
-			float p = MathHelper.cos((float) n * 6.2831855F / 8.0F) * 0.125F;
-			float q = (float) n / 8.0F;
+		float o = MathHelper.sin(6.2831855F) * 0.125F;
+		float p = MathHelper.cos(6.2831855F) * 0.125F;
 
-			vertexConsumer.vertex(matrix4f, k * 0.2F, l * 0.2F, 0.0F).color(0, 0, 0, 255).texture(m, h).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-			vertexConsumer.vertex(matrix4f, k, l, length).color(255, 255, 255, 255).texture(m, i).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-			vertexConsumer.vertex(matrix4f, o, p, length).color(255, 255, 255, 255).texture(q, i).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-			vertexConsumer.vertex(matrix4f, o * 0.2F, p * 0.2F, 0.0F).color(0, 0, 0, 255).texture(q, h).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX, vertY, 0F).color(0, 0, 0, 255).texture(minU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX, vertY, length).color(255, 255, 255, 255).texture(minU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, o, p, length).color(255, 255, 255, 255).texture(maxU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, o, p, 0F).color(0, 0, 0, 255).texture(maxU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
 
-			k = o;
-			l = p;
-			m = q;
-		}
+		stack.pop();
+
+		stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90));
+		stack.translate(0, -0.2, 0);
+
+		entry = stack.peek();
+		matrix4f = entry.getModel();
+		matrix3f = entry.getNormal();
+
+		vertexConsumer.vertex(matrix4f, vertX, vertY, 0F).color(0, 0, 0, 255).texture(minU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, vertX, vertY, length).color(255, 255, 255, 255).texture(minU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, o, p, length).color(255, 255, 255, 255).texture(maxU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+		vertexConsumer.vertex(matrix4f, o, p, 0F).color(0, 0, 0, 255).texture(maxU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
 
 		stack.pop();
 	}
