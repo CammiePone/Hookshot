@@ -3,6 +3,7 @@ package dev.cammiescorner.hookshot;
 import dev.cammiescorner.hookshot.core.integration.HookshotConfig;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.registry.ModItems;
+import dev.cammiescorner.hookshot.core.registry.ModSoundEvents;
 import dev.cammiescorner.hookshot.core.util.recipe.HookshotShapelessRecipe;
 import dev.cammiescorner.hookshot.core.util.recipe.HookshotSmithingRecipe;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -26,6 +27,7 @@ public class Hookshot implements ModInitializer
 		// Objects
 		ModItems.register();
 		ModEntities.register();
+		ModSoundEvents.register();
 
 		// Recipes
 		Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MOD_ID, "smithing"), new HookshotSmithingRecipe.Serializer());
