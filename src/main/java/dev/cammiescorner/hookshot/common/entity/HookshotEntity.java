@@ -32,8 +32,9 @@ import net.minecraft.world.World;
 public class HookshotEntity extends PersistentProjectileEntity
 {
 	private static final Tag<Block> UNHOOKABLE = TagRegistry.block(new Identifier(Hookshot.MOD_ID, "unhookable"));
-	private static final TrackedData<Integer> HOOKED_ENTITY_ID = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.INTEGER);;
-
+	private static final TrackedData<Integer> HOOKED_ENTITY_ID = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.INTEGER);
+	public static final TrackedData<Float> FORCED_YAW = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.FLOAT);
+	
 	private double maxRange = 0D;
 	private double maxSpeed = 0D;
 	private boolean isPulling = false;
@@ -67,12 +68,15 @@ public class HookshotEntity extends PersistentProjectileEntity
 	{
 		super.initDataTracker();
 		this.getDataTracker().startTracking(HOOKED_ENTITY_ID, 0);
+		this.getDataTracker().startTracking(FORCED_YAW, 0f);
 	}
 
 	@Override
 	public void tick()
 	{
 		super.tick();
+		
+		setYaw(dataTracker.get(FORCED_YAW));
 
 		if(getOwner() instanceof PlayerEntity)
 		{
@@ -288,6 +292,8 @@ public class HookshotEntity extends PersistentProjectileEntity
 	public void readCustomDataFromNbt(NbtCompound tag)
 	{
 		super.readCustomDataFromNbt(tag);
+		dataTracker.set(FORCED_YAW, tag.getFloat("ForcedYaw"));
+		
 		maxRange = tag.getDouble("maxRange");
 		maxSpeed = tag.getDouble("maxSpeed");
 		isPulling = tag.getBoolean("isPulling");
@@ -301,6 +307,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 	public void writeCustomDataToNbt(NbtCompound tag)
 	{
 		super.writeCustomDataToNbt(tag);
+		tag.putFloat("ForcedYaw", dataTracker.get(FORCED_YAW));
 		tag.putDouble("maxRange", maxRange);
 		tag.putDouble("maxSpeed", maxSpeed);
 		tag.putBoolean("isPulling", isPulling);
