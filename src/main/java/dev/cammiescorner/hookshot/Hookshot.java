@@ -9,17 +9,20 @@ import dev.cammiescorner.hookshot.core.util.recipe.HookshotSmithingRecipe;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class Hookshot implements ModInitializer
-{
+public class Hookshot implements ModInitializer {
 	public static final String MOD_ID = "hookshot";
 	public static HookshotConfig config;
 
 	@Override
-	public void onInitialize()
-	{
+	public void onInitialize() {
+		DataTrackers.HOOK_TRACKER.getId();
 		// Config
 		AutoConfig.register(HookshotConfig.class, JanksonConfigSerializer::new);
 		config = AutoConfig.getConfigHolder(HookshotConfig.class).getConfig();
@@ -32,5 +35,9 @@ public class Hookshot implements ModInitializer
 		// Recipes
 		Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MOD_ID, "smithing"), new HookshotSmithingRecipe.Serializer());
 		Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MOD_ID, "crafting_shapeless"), new HookshotShapelessRecipe.Serializer());
+	}
+
+	public static class DataTrackers {
+		public static final TrackedData<Boolean> HOOK_TRACKER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	}
 }
