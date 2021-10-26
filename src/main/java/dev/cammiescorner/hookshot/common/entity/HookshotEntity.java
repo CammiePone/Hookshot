@@ -29,12 +29,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class HookshotEntity extends PersistentProjectileEntity
-{
+public class HookshotEntity extends PersistentProjectileEntity {
 	private static final Tag<Block> UNHOOKABLE = TagRegistry.block(new Identifier(Hookshot.MOD_ID, "unhookable"));
 	private static final TrackedData<Integer> HOOKED_ENTITY_ID = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	public static final TrackedData<Float> FORCED_YAW = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.FLOAT);
-	
+
 	private double maxRange = 0D;
 	private double maxSpeed = 0D;
 	private boolean isPulling = false;
@@ -42,60 +41,51 @@ public class HookshotEntity extends PersistentProjectileEntity
 	private Entity hookedEntity;
 	private ItemStack stack;
 
-	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world)
-	{
+	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
 		super(type, owner, world);
 		this.setNoGravity(true);
 		this.setDamage(0);
 	}
 
-	public HookshotEntity(World world, double x, double y, double z)
-	{
+	public HookshotEntity(World world, double x, double y, double z) {
 		super(ModEntities.HOOKSHOT_ENTITY, x, y, z, world);
 		this.setNoGravity(true);
 		this.setDamage(0);
 	}
 
-	public HookshotEntity(World world)
-	{
+	public HookshotEntity(World world) {
 		super(ModEntities.HOOKSHOT_ENTITY, world);
 		this.setNoGravity(true);
 		this.setDamage(0);
 	}
 
 	@Override
-	protected void initDataTracker()
-	{
+	protected void initDataTracker() {
 		super.initDataTracker();
 		this.getDataTracker().startTracking(HOOKED_ENTITY_ID, 0);
 		this.getDataTracker().startTracking(FORCED_YAW, 0f);
 	}
 
 	@Override
-	public void tick()
-	{
+	public void tick() {
 		super.tick();
-		
+
 		setYaw(dataTracker.get(FORCED_YAW));
 
-		if(getOwner() instanceof PlayerEntity)
-		{
-			owner = (PlayerEntity) getOwner();
-
+		if(getOwner() instanceof PlayerEntity owner) {
 			if(isPulling && age % 2 == 0)
 				world.playSound(null, owner.getBlockPos(), ModSoundEvents.HOOKSHOT_REEL, SoundCategory.PLAYERS, 1F, 1F);
 
-			if(!world.isClient)
-			{
-				if(this.hookedEntity != null)
-				{
-					if(this.hookedEntity.isRemoved())
-					{
+			if(!world.isClient) {
+				if(owner.isDead() || !((PlayerProperties) owner).hasHook() || !((PlayerProperties) owner).hasHook() || owner.distanceTo(this) > maxRange || !(owner.getMainHandStack().getItem() instanceof HookshotItem || owner.getOffHandStack().getItem() instanceof HookshotItem) || !((PlayerProperties) owner).hasHook())
+					kill();
+
+				if(this.hookedEntity != null) {
+					if(this.hookedEntity.isRemoved()) {
 						this.hookedEntity = null;
 						onRemoved();
 					}
-					else
-					{
+					else {
 						if(UpgradesHelper.hasBleedUpgrade(stack) && age % 20 == 0)
 							hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
 
@@ -103,32 +93,12 @@ public class HookshotEntity extends PersistentProjectileEntity
 					}
 				}
 
-				if(owner != null)
-				{
-					if(owner.isDead() || !((PlayerProperties) owner).hasHook() ||
-							!((PlayerProperties) owner).hasHook() ||
-							owner.distanceTo(this) > maxRange ||
-							!(owner.getMainHandStack().getItem() instanceof HookshotItem ||
-							owner.getOffHandStack().getItem() instanceof HookshotItem) ||
-							!((PlayerProperties) owner).hasHook())
-					{
-						kill();
-					}
-				}
-				else
-				{
-					kill();
-				}
-
-				if(owner.getMainHandStack() == stack || owner.getOffHandStack() == stack)
-				{
-					if(isPulling)
-					{
+				if(owner.getMainHandStack() == stack || owner.getOffHandStack() == stack) {
+					if(isPulling) {
 						Entity target = owner;
 						Entity origin = this;
 
-						if(owner.isSneaking() && hookedEntity != null)
-						{
+						if(owner.isSneaking() && hookedEntity != null) {
 							target = hookedEntity;
 							origin = owner;
 						}
@@ -150,29 +120,25 @@ public class HookshotEntity extends PersistentProjectileEntity
 						target.velocityModified = true;
 
 						if(UpgradesHelper.hasAutomaticUpgrade(stack) && owner.distanceTo(this) <= 3D)
-						{
 							kill();
-							((PlayerProperties) owner).setHasHook(false);
-						}
 
 						if(stack.getMaxDamage() > 0 && age % 20 == 0)
 							stack.damage(1, owner, (entity) -> entity.sendToolBreakStatus(owner.getActiveHand()));
 					}
 				}
-				else
-				{
+				else {
 					kill();
-					((PlayerProperties) owner).setHasHook(false);
 				}
 			}
+		}
+		else {
+			kill();
 		}
 	}
 
 	@Override
-	public void kill()
-	{
-		if(!world.isClient && owner != null)
-		{
+	public void kill() {
+		if(!world.isClient && owner != null) {
 			((PlayerProperties) owner).setHasHook(false);
 			owner.setNoGravity(false);
 		}
@@ -181,56 +147,48 @@ public class HookshotEntity extends PersistentProjectileEntity
 	}
 
 	@Override
-	public boolean shouldRender(double distance)
-	{
+	public boolean shouldRender(double distance) {
 		return true;
 	}
 
 	@Override
-	protected float getDragInWater()
-	{
-		if(!world.isClient)
-		{
-			if(UpgradesHelper.hasAquaticUpgrade(stack)) return 0.99F;
-			else return super.getDragInWater();
+	protected float getDragInWater() {
+		if(!world.isClient) {
+			if(UpgradesHelper.hasAquaticUpgrade(stack))
+				return 0.99F;
+			else
+				return super.getDragInWater();
 		}
-		else return super.getDragInWater();
+		else
+			return super.getDragInWater();
 	}
 
 	@Override
-	public boolean canUsePortals()
-	{
+	public boolean canUsePortals() {
 		return false;
 	}
 
 	@Override
-	protected ItemStack asItemStack()
-	{
+	protected ItemStack asItemStack() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	protected void onBlockHit(BlockHitResult blockHitResult)
-	{
+	protected void onBlockHit(BlockHitResult blockHitResult) {
 		super.onBlockHit(blockHitResult);
 		isPulling = true;
 
-		if(!world.isClient && owner != null && hookedEntity == null)
-		{
+		if(!world.isClient && owner != null && hookedEntity == null) {
 			owner.setNoGravity(true);
 
-			if(Hookshot.config.unhookableBlacklist)
-			{
-				if(UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock()))
-				{
+			if(Hookshot.config.unhookableBlacklist) {
+				if(UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock())) {
 					((PlayerProperties) owner).setHasHook(false);
 					isPulling = false;
 					onRemoved();
 				}
-				else
-				{
-					if(UpgradesHelper.hasEndericUpgrade(stack))
-					{
+				else {
+					if(UpgradesHelper.hasEndericUpgrade(stack)) {
 						owner.requestTeleport(getX(), getY(), getZ());
 						((PlayerProperties) owner).setHasHook(false);
 						owner.fallDistance = 0.0F;
@@ -239,18 +197,14 @@ public class HookshotEntity extends PersistentProjectileEntity
 					}
 				}
 			}
-			else
-			{
-				if(!UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock()))
-				{
+			else {
+				if(!UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock())) {
 					((PlayerProperties) owner).setHasHook(false);
 					isPulling = false;
 					onRemoved();
 				}
-				else
-				{
-					if(UpgradesHelper.hasEndericUpgrade(stack))
-					{
+				else {
+					if(UpgradesHelper.hasEndericUpgrade(stack)) {
 						owner.requestTeleport(getX(), getY(), getZ());
 						((PlayerProperties) owner).setHasHook(false);
 						owner.fallDistance = 0.0F;
@@ -263,12 +217,9 @@ public class HookshotEntity extends PersistentProjectileEntity
 	}
 
 	@Override
-	protected void onEntityHit(EntityHitResult entityHitResult)
-	{
-		if(!world.isClient && owner != null && entityHitResult.getEntity() != owner)
-		{
-			if((entityHitResult.getEntity() instanceof LivingEntity || entityHitResult.getEntity() instanceof EnderDragonPart) && hookedEntity == null)
-			{
+	protected void onEntityHit(EntityHitResult entityHitResult) {
+		if(!world.isClient && owner != null && entityHitResult.getEntity() != owner) {
+			if((entityHitResult.getEntity() instanceof LivingEntity || entityHitResult.getEntity() instanceof EnderDragonPart) && hookedEntity == null) {
 				hookedEntity = entityHitResult.getEntity();
 				dataTracker.set(HOOKED_ENTITY_ID, hookedEntity.getId() + 1);
 				isPulling = true;
@@ -277,8 +228,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 			if(hookedEntity != null && UpgradesHelper.hasBleedUpgrade(stack))
 				hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
 
-			if(UpgradesHelper.hasEndericUpgrade(stack))
-			{
+			if(UpgradesHelper.hasEndericUpgrade(stack)) {
 				owner.requestTeleport(getX(), getY(), getZ());
 				owner.fallDistance = 0.0F;
 				((PlayerProperties) owner).setHasHook(false);
@@ -289,11 +239,10 @@ public class HookshotEntity extends PersistentProjectileEntity
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound tag)
-	{
+	public void readCustomDataFromNbt(NbtCompound tag) {
 		super.readCustomDataFromNbt(tag);
 		dataTracker.set(FORCED_YAW, tag.getFloat("ForcedYaw"));
-		
+
 		maxRange = tag.getDouble("maxRange");
 		maxSpeed = tag.getDouble("maxSpeed");
 		isPulling = tag.getBoolean("isPulling");
@@ -304,8 +253,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound tag)
-	{
+	public void writeCustomDataToNbt(NbtCompound tag) {
 		super.writeCustomDataToNbt(tag);
 		tag.putFloat("ForcedYaw", dataTracker.get(FORCED_YAW));
 		tag.putDouble("maxRange", maxRange);
@@ -315,8 +263,7 @@ public class HookshotEntity extends PersistentProjectileEntity
 		tag.putInt("owner", owner.getId());
 	}
 
-	public void setProperties(ItemStack stack, double maxRange, double maxVelocity, float pitch, float yaw, float roll, float modifierZ)
-	{
+	public void setProperties(ItemStack stack, double maxRange, double maxVelocity, float pitch, float yaw, float roll, float modifierZ) {
 		float f = 0.017453292F;
 		float x = -MathHelper.sin(yaw * f) * MathHelper.cos(pitch * f);
 		float y = -MathHelper.sin((pitch + roll) * f);

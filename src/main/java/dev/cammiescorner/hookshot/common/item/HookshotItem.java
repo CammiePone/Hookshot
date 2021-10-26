@@ -22,25 +22,20 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class HookshotItem extends Item implements Dyeable
-{
+public class HookshotItem extends Item implements Dyeable {
 	private final DyeColor colour;
 
-	public HookshotItem(DyeColor colour)
-	{
+	public HookshotItem(DyeColor colour) {
 		super(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1).maxDamage(Hookshot.config.defaultMaxDurability));
 		this.colour = colour;
 	}
 
 	@Override
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand)
-	{
+	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
 
-		if(!world.isClient)
-		{
-			if(!((PlayerProperties) user).hasHook())
-			{
+		if(!world.isClient) {
+			if(!((PlayerProperties) user).hasHook()) {
 				double maxRange = Hookshot.config.defaultMaxRange * (UpgradesHelper.hasRangeUpgrade(stack) ? Hookshot.config.rangeMultiplier : 1);
 				double maxSpeed = Hookshot.config.defaultMaxSpeed * (UpgradesHelper.hasQuickUpgrade(stack) ? Hookshot.config.quickMultiplier : 1);
 
@@ -50,13 +45,11 @@ public class HookshotItem extends Item implements Dyeable
 				world.spawnEntity(hookshot);
 			}
 
-			if(!Hookshot.config.useClassicHookshotLogic)
-			{
+			if(!Hookshot.config.useClassicHookshotLogic) {
 				user.setCurrentHand(hand);
 				((PlayerProperties) user).setHasHook(true);
 			}
-			else
-			{
+			else {
 				((PlayerProperties) user).setHasHook(!((PlayerProperties) user).hasHook());
 			}
 		}
@@ -68,8 +61,7 @@ public class HookshotItem extends Item implements Dyeable
 	}
 
 	@Override
-	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user)
-	{
+	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		if(!Hookshot.config.useClassicHookshotLogic)
 			((PlayerProperties) user).setHasHook(false);
 
@@ -77,33 +69,28 @@ public class HookshotItem extends Item implements Dyeable
 	}
 
 	@Override
-	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks)
-	{
+	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
 		if(!Hookshot.config.useClassicHookshotLogic)
 			((PlayerProperties) user).setHasHook(false);
 	}
 
 	@Override
-	public int getMaxUseTime(ItemStack stack)
-	{
+	public int getMaxUseTime(ItemStack stack) {
 		return 72000;
 	}
 
 	@Override
-	public boolean canRepair(ItemStack stack, ItemStack ingredient)
-	{
+	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
 		return ingredient.getItem() == Registry.ITEM.get(new Identifier(Hookshot.config.hookshotRepairItem));
 	}
 
 	@Override
-	public boolean hasGlint(ItemStack stack)
-	{
+	public boolean hasGlint(ItemStack stack) {
 		return false;
 	}
 
 	@Override
-	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context)
-	{
+	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		if(UpgradesHelper.hasDurabilityUpgrade(stack))
 			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.durability").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasAutomaticUpgrade(stack))
@@ -123,19 +110,14 @@ public class HookshotItem extends Item implements Dyeable
 	}
 
 	@Override
-	public Text getName(ItemStack stack)
-	{
-		boolean hasModifiers = UpgradesHelper.hasAquaticUpgrade(stack) || UpgradesHelper.hasEndericUpgrade(stack) ||
-				UpgradesHelper.hasQuickUpgrade(stack) || UpgradesHelper.hasRangeUpgrade(stack) ||
-				UpgradesHelper.hasAutomaticUpgrade(stack) || UpgradesHelper.hasBleedUpgrade(stack) ||
-				UpgradesHelper.hasSwingingUpgrade(stack) || UpgradesHelper.hasDurabilityUpgrade(stack);
+	public Text getName(ItemStack stack) {
+		boolean hasModifiers = UpgradesHelper.hasAquaticUpgrade(stack) || UpgradesHelper.hasEndericUpgrade(stack) || UpgradesHelper.hasQuickUpgrade(stack) || UpgradesHelper.hasRangeUpgrade(stack) || UpgradesHelper.hasAutomaticUpgrade(stack) || UpgradesHelper.hasBleedUpgrade(stack) || UpgradesHelper.hasSwingingUpgrade(stack) || UpgradesHelper.hasDurabilityUpgrade(stack);
 
 		return hasModifiers ? super.getName(stack).copy().formatted(Formatting.AQUA) : super.getName(stack);
 	}
 
 	@Override
-	public DyeColor getColour()
-	{
+	public DyeColor getColour() {
 		return colour;
 	}
 }
