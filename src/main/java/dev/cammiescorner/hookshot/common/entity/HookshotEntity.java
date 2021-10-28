@@ -260,7 +260,9 @@ public class HookshotEntity extends PersistentProjectileEntity {
 		tag.putDouble("maxSpeed", maxSpeed);
 		tag.putBoolean("isPulling", isPulling);
 		tag.put("hookshotItem", stack.writeNbt(new NbtCompound()));
-		tag.putInt("owner", owner.getId());
+
+		if(owner != null)
+			tag.putInt("owner", owner.getId());
 	}
 
 	public void setProperties(ItemStack stack, double maxRange, double maxVelocity, float pitch, float yaw, float roll, float modifierZ) {
