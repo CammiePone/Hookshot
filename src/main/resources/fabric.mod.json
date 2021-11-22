@@ -14,7 +14,7 @@
     "sources": "https://github.com/CammiePone/Hookshot",
     "issues": "https://github.com/CammiePone/Hookshot/issues"
   },
-  "license": "MIT",
+  "license": "Custom License",
   "icon": "assets/hookshot/icon.png",
   "environment": "*",
   "entrypoints":
