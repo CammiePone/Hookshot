@@ -87,8 +87,8 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 		float minV = 0.0F - ((float) age + tickDelta) * 0.01F;
 		float maxV = MathHelper.sqrt(squaredLength) / 8F - ((float) age + tickDelta) * 0.01F;
 		MatrixStack.Entry entry = stack.peek();
-		Matrix4f matrix4f = entry.getModel();
-		Matrix3f matrix3f = entry.getNormal();
+		Matrix4f matrix4f = entry.getPositionMatrix();
+		Matrix3f matrix3f = entry.getNormalMatrix();
 
 		vertexConsumer.vertex(matrix4f, vertX1, vertY1, 0F).color(0, 0, 0, 255).texture(minU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
 		vertexConsumer.vertex(matrix4f, vertX1, vertY1, length).color(255, 255, 255, 255).texture(minU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
@@ -100,8 +100,8 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 		stack.translate(-0.015, -0.2, 0);
 
 		entry = stack.peek();
-		matrix4f = entry.getModel();
-		matrix3f = entry.getNormal();
+		matrix4f = entry.getPositionMatrix();
+		matrix3f = entry.getNormalMatrix();
 
 		vertexConsumer.vertex(matrix4f, vertX1, vertY1, 0F).color(0, 0, 0, 255).texture(minU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
 		vertexConsumer.vertex(matrix4f, vertX1, vertY1, length).color(255, 255, 255, 255).texture(minU, maxV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();

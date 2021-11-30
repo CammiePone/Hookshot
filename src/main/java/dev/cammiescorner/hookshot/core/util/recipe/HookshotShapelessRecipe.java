@@ -34,11 +34,11 @@ public class HookshotShapelessRecipe extends ShapelessRecipe
 			ItemStack stacks = inv.getStack(i);
 
 			if(stacks.getItem() instanceof HookshotItem)
-				tag = stacks.getTag();
+				tag = stacks.getNbt();
 		}
 
-		if(tag != null && stack.hasTag())
-			stack.getTag().copyFrom(tag);
+		if(tag != null && stack.hasNbt())
+			tag.copyFrom(tag);
 
 		return stack;
 	}

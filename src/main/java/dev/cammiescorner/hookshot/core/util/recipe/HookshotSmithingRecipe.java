@@ -30,10 +30,10 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 	public ItemStack craft(Inventory inv)
 	{
 		ItemStack stack = ((SmithingRecipeAccessor) this).getResult().copy();
-		NbtCompound tag = inv.getStack(0).getTag();
+		NbtCompound tag = inv.getStack(0).getNbt();
 
-		if(tag != null && stack.hasTag())
-			stack.getTag().copyFrom(tag);
+		if(tag != null && stack.hasNbt())
+			tag.copyFrom(tag);
 
 		return stack;
 	}
@@ -55,7 +55,7 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 			String nbt = JsonHelper.getString(json, "nbt");
 			ItemStack stack = new ItemStack(item, count);
 
-			stack.getOrCreateTag().putBoolean(nbt, true);
+			stack.getOrCreateNbt().putBoolean(nbt, true);
 
 			return stack;
 		}
