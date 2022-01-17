@@ -14,6 +14,13 @@ public class HookshotConfig implements ConfigData
 			"\n  again to retract\" (Classic) system. (Default: false)")
 	public boolean useClassicHookshotLogic = false;
 
+	@Comment("Allows you to swing around. May not work well" +
+			"\n with certain upgrades.")
+	public boolean useSwingingHookshot = false;
+
+	@Comment("Toggle hookshot gravity.")
+	public boolean useHookshotGravity = false;
+
 	@Comment("Should the Unhookable Tag act as a blacklist (true) or" +
 			"\n  a whitelist (false)? (Default: true)")
 	public boolean unhookableBlacklist = true;
