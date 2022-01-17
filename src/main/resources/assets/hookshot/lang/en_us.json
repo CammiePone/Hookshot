@@ -2,6 +2,8 @@
   // ModMenu
   "text.autoconfig.hookshot.title": "Hookshot",
   "text.autoconfig.hookshot.option.useClassicHookshotLogic": "Use Old Hookshot Fire/Retract Logic",
+  "text.autoconfig.hookshot.option.useSwingingHookshot": "Use Swinging Hookshot Logic",
+  "text.autoconfig.hookshot.option.useHookshotGravity": "Apply Gravity to Hookshot",
   "text.autoconfig.hookshot.option.unhookableBlacklist": "Unhookable Tag Acts Like Blacklist",
   "text.autoconfig.hookshot.option.hookshotCancelsFallDamage": "Hookshot Cancels Fall Damage",
   "text.autoconfig.hookshot.option.quickModAffectsPullSpeed": "Quick Upgrade Affects Hookshot Pull Speed",

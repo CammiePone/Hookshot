@@ -43,19 +43,22 @@ public class HookshotEntity extends PersistentProjectileEntity {
 
 	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
 		super(type, owner, world);
-		this.setNoGravity(true);
+		if (!Hookshot.config.useHookshotGravity)
+			this.setNoGravity(true);
 		this.setDamage(0);
 	}
 
 	public HookshotEntity(World world, double x, double y, double z) {
 		super(ModEntities.HOOKSHOT_ENTITY, x, y, z, world);
-		this.setNoGravity(true);
+		if (!Hookshot.config.useHookshotGravity)
+			this.setNoGravity(true);
 		this.setDamage(0);
 	}
 
 	public HookshotEntity(World world) {
 		super(ModEntities.HOOKSHOT_ENTITY, world);
-		this.setNoGravity(true);
+		if (!Hookshot.config.useHookshotGravity)
+			this.setNoGravity(true);
 		this.setDamage(0);
 	}
 
@@ -103,21 +106,47 @@ public class HookshotEntity extends PersistentProjectileEntity {
 							origin = owner;
 						}
 
-						double brakeZone = (6D * ((Hookshot.config.quickModAffectsPullSpeed ? maxSpeed : Hookshot.config.defaultMaxSpeed) / Hookshot.config.defaultMaxSpeed));
-						double pullSpeed = (Hookshot.config.quickModAffectsPullSpeed ? maxSpeed : Hookshot.config.defaultMaxSpeed) / 6D;
-						Vec3d distance = origin.getPos().subtract(target.getPos().add(0, target.getHeight() / 2, 0));
-						Vec3d motion = distance.normalize().multiply(distance.length() < brakeZone && !UpgradesHelper.hasAutomaticUpgrade(stack) ? (pullSpeed * distance.length()) / brakeZone : pullSpeed);
+						Vec3d motion;
+						if (Hookshot.config.useSwingingHookshot) {
+							float currentDistance = target.distanceTo(origin);
+							boolean belowHookshot = target.getY() < origin.getY();
+							double ySpringStiffness, xzSpringStiffness;
+							ySpringStiffness = xzSpringStiffness = 0.25D;
 
-						if(Math.abs(distance.y) < 0.1D)
-							motion = new Vec3d(motion.x, 0, motion.z);
-						if(new Vec3d(distance.x, 0, distance.z).length() < new Vec3d(target.getWidth() / 2, 0, target.getWidth() / 2).length() / 1.4)
-							motion = new Vec3d(0, motion.y, 0);
+							// Slow down players once close to the hook
+							if (currentDistance < 4) {
+								ySpringStiffness = xzSpringStiffness = 0.09D;
+							}
+							// increase Y stiffness when descending at large speeds
+							if (belowHookshot && target.getVelocity().getY() < -1.5) {
+								ySpringStiffness = 1.5D;
+							}
+							if (belowHookshot && target.getVelocity().getY() < -2) {
+								ySpringStiffness = 4.0D;
+							}
+							// Copied from lead code, same result as attaching a lead from hookshot to player
+							double xDis = (origin.getX() - target.getX()) / (double)currentDistance;
+							double yDis = (origin.getY() - target.getY()) / (double)currentDistance;
+							double zDis = (origin.getZ() - target.getZ()) / (double)currentDistance;
+							motion = target.getVelocity().add(Math.copySign(xDis * xDis * xzSpringStiffness, xDis), Math.copySign(yDis * yDis * ySpringStiffness, yDis), Math.copySign(zDis * zDis * xzSpringStiffness, zDis));
+						}
+						else {
+							double brakeZone = (6D * ((Hookshot.config.quickModAffectsPullSpeed ? maxSpeed : Hookshot.config.defaultMaxSpeed) / Hookshot.config.defaultMaxSpeed));
+							double pullSpeed = (Hookshot.config.quickModAffectsPullSpeed ? maxSpeed : Hookshot.config.defaultMaxSpeed) / 6D;
+							Vec3d distance = origin.getPos().subtract(target.getPos().add(0, target.getHeight() / 2, 0));
+							motion = distance.normalize().multiply(distance.length() < brakeZone && !UpgradesHelper.hasAutomaticUpgrade(stack) ? (pullSpeed * distance.length()) / brakeZone : pullSpeed);
 
-						if(Hookshot.config.hookshotCancelsFallDamage)
-							target.fallDistance = 0;
+							if(Math.abs(distance.y) < 0.1D)
+								motion = new Vec3d(motion.x, 0, motion.z);
+							if(new Vec3d(distance.x, 0, distance.z).length() < new Vec3d(target.getWidth() / 2, 0, target.getWidth() / 2).length() / 1.4)
+								motion = new Vec3d(0, motion.y, 0);
+						}
 
 						target.setVelocity(motion);
 						target.velocityModified = true;
+
+						if(Hookshot.config.hookshotCancelsFallDamage)
+							target.fallDistance = 0;
 
 						if(UpgradesHelper.hasAutomaticUpgrade(stack) && owner.distanceTo(this) <= 3D)
 							kill();
@@ -179,7 +208,8 @@ public class HookshotEntity extends PersistentProjectileEntity {
 		isPulling = true;
 
 		if(!world.isClient && owner != null && hookedEntity == null) {
-			owner.setNoGravity(true);
+			if (!Hookshot.config.useSwingingHookshot)
+				owner.setNoGravity(true);
 
 			if(Hookshot.config.unhookableBlacklist) {
 				if(UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock())) {
