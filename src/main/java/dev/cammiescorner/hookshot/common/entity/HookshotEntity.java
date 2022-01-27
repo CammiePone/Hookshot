@@ -37,11 +37,10 @@ public class HookshotEntity extends PersistentProjectileEntity {
 	private double maxRange = 0D;
 	private double maxSpeed = 0D;
 	private boolean isPulling = false;
-	private PlayerEntity owner;
 	private Entity hookedEntity;
 	private ItemStack stack;
 
-	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
+	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, PlayerEntity owner, World world) {
 		super(type, owner, world);
 		this.setNoGravity(true);
 		this.setDamage(0);
@@ -70,11 +69,11 @@ public class HookshotEntity extends PersistentProjectileEntity {
 	public void tick() {
 		super.tick();
 
-		setYaw(dataTracker.get(FORCED_YAW));
-
 		if(getOwner() instanceof PlayerEntity owner) {
+			setYaw(dataTracker.get(FORCED_YAW));
+
 			if(isPulling && age % 2 == 0)
-				world.playSound(null, owner.getBlockPos(), ModSoundEvents.HOOKSHOT_REEL, SoundCategory.PLAYERS, 1F, 1F);
+				world.playSound(null, getOwner().getBlockPos(), ModSoundEvents.HOOKSHOT_REEL, SoundCategory.PLAYERS, 1F, 1F);
 
 			if(!world.isClient) {
 				if(owner.isDead() || !((PlayerProperties) owner).hasHook() || !((PlayerProperties) owner).hasHook() || owner.distanceTo(this) > maxRange || !(owner.getMainHandStack().getItem() instanceof HookshotItem || owner.getOffHandStack().getItem() instanceof HookshotItem) || !((PlayerProperties) owner).hasHook())
@@ -138,7 +137,7 @@ public class HookshotEntity extends PersistentProjectileEntity {
 
 	@Override
 	public void kill() {
-		if(!world.isClient && owner != null) {
+		if(!world.isClient && getOwner() instanceof PlayerEntity owner) {
 			((PlayerProperties) owner).setHasHook(false);
 			owner.setNoGravity(false);
 		}
@@ -178,7 +177,7 @@ public class HookshotEntity extends PersistentProjectileEntity {
 		super.onBlockHit(blockHitResult);
 		isPulling = true;
 
-		if(!world.isClient && owner != null && hookedEntity == null) {
+		if(!world.isClient && getOwner() instanceof PlayerEntity owner && hookedEntity == null) {
 			owner.setNoGravity(true);
 
 			if(Hookshot.config.unhookableBlacklist) {
@@ -218,7 +217,7 @@ public class HookshotEntity extends PersistentProjectileEntity {
 
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
-		if(!world.isClient && owner != null && entityHitResult.getEntity() != owner) {
+		if(!world.isClient && getOwner() instanceof PlayerEntity owner && entityHitResult.getEntity() != owner) {
 			if((entityHitResult.getEntity() instanceof LivingEntity || entityHitResult.getEntity() instanceof EnderDragonPart) && hookedEntity == null) {
 				hookedEntity = entityHitResult.getEntity();
 				dataTracker.set(HOOKED_ENTITY_ID, hookedEntity.getId() + 1);
@@ -248,8 +247,8 @@ public class HookshotEntity extends PersistentProjectileEntity {
 		isPulling = tag.getBoolean("isPulling");
 		stack = ItemStack.fromNbt(tag.getCompound("hookshotItem"));
 
-		if(world.getEntityById(tag.getInt("owner")) instanceof PlayerEntity)
-			owner = (PlayerEntity) world.getEntityById(tag.getInt("owner"));
+		if(world.getEntityById(tag.getInt("owner")) instanceof PlayerEntity owner)
+			setOwner(owner);
 	}
 
 	@Override
@@ -261,7 +260,7 @@ public class HookshotEntity extends PersistentProjectileEntity {
 		tag.putBoolean("isPulling", isPulling);
 		tag.put("hookshotItem", stack.writeNbt(new NbtCompound()));
 
-		if(owner != null)
+		if(getOwner() instanceof PlayerEntity owner)
 			tag.putInt("owner", owner.getId());
 	}
 

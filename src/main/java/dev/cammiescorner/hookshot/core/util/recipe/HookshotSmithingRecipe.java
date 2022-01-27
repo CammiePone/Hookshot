@@ -32,8 +32,8 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 		ItemStack stack = ((SmithingRecipeAccessor) this).getResult().copy();
 		NbtCompound tag = inv.getStack(0).getNbt();
 
-		if(tag != null && stack.hasNbt())
-			tag.copyFrom(tag);
+		if(tag != null)
+			stack.getOrCreateNbt().copyFrom(tag);
 
 		return stack;
 	}
