@@ -7,7 +7,6 @@ import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.registry.ModSoundEvents;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import dev.cammiescorner.hookshot.core.util.UpgradesHelper;
-import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -21,16 +20,17 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class HookshotEntity extends PersistentProjectileEntity {
-	private static final Tag<Block> UNHOOKABLE = TagRegistry.block(new Identifier(Hookshot.MOD_ID, "unhookable"));
+	private static final TagKey<Block> UNHOOKABLE = TagKey.of(Registry.BLOCK_KEY, new Identifier(Hookshot.MOD_ID, "unhookable"));
 	private static final TrackedData<Integer> HOOKED_ENTITY_ID = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	public static final TrackedData<Float> FORCED_YAW = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
@@ -181,7 +181,7 @@ public class HookshotEntity extends PersistentProjectileEntity {
 			owner.setNoGravity(true);
 
 			if(Hookshot.config.unhookableBlacklist) {
-				if(UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock())) {
+				if(world.getBlockState(blockHitResult.getBlockPos()).isIn(UNHOOKABLE)) {
 					((PlayerProperties) owner).setHasHook(false);
 					isPulling = false;
 					onRemoved();
@@ -197,7 +197,7 @@ public class HookshotEntity extends PersistentProjectileEntity {
 				}
 			}
 			else {
-				if(!UNHOOKABLE.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock())) {
+				if(!world.getBlockState(blockHitResult.getBlockPos()).isIn(UNHOOKABLE)) {
 					((PlayerProperties) owner).setHasHook(false);
 					isPulling = false;
 					onRemoved();
