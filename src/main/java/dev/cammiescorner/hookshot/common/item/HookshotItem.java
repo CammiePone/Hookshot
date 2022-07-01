@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -92,21 +91,21 @@ public class HookshotItem extends Item implements Dyeable {
 	@Override
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		if(UpgradesHelper.hasDurabilityUpgrade(stack))
-			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.durability").formatted(Formatting.GRAY));
+			tooltip.add(Text.translatable(Hookshot.MOD_ID + ".modifier.durability").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasAutomaticUpgrade(stack))
-			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.automatic").formatted(Formatting.GRAY));
+			tooltip.add(Text.translatable(Hookshot.MOD_ID + ".modifier.automatic").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasSwingingUpgrade(stack))
-			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.swinging").formatted(Formatting.GRAY));
+			tooltip.add(Text.translatable(Hookshot.MOD_ID + ".modifier.swinging").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasAquaticUpgrade(stack))
-			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.aquatic").formatted(Formatting.GRAY));
+			tooltip.add(Text.translatable(Hookshot.MOD_ID + ".modifier.aquatic").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasEndericUpgrade(stack))
-			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.enderic").formatted(Formatting.GRAY));
+			tooltip.add(Text.translatable(Hookshot.MOD_ID + ".modifier.enderic").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasQuickUpgrade(stack))
-			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.quick").formatted(Formatting.GRAY));
+			tooltip.add(Text.translatable(Hookshot.MOD_ID + ".modifier.quick").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasRangeUpgrade(stack))
-			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.range").formatted(Formatting.GRAY));
+			tooltip.add(Text.translatable(Hookshot.MOD_ID + ".modifier.range").formatted(Formatting.GRAY));
 		if(UpgradesHelper.hasBleedUpgrade(stack))
-			tooltip.add(new TranslatableText(Hookshot.MOD_ID + ".modifier.bleed").formatted(Formatting.GRAY));
+			tooltip.add(Text.translatable(Hookshot.MOD_ID + ".modifier.bleed").formatted(Formatting.GRAY));
 	}
 
 	@Override

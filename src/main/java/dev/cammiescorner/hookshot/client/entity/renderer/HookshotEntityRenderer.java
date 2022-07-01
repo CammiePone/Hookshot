@@ -39,7 +39,7 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 	{
 		if(hookshot.getOwner() instanceof PlayerEntity player)
 		{
-			Arm mainArm = MinecraftClient.getInstance().options.mainArm;
+			Arm mainArm = MinecraftClient.getInstance().options.getMainArm().getValue();
 			Hand activeHand = player.getActiveHand();
 
 			model.setAngles(hookshot, 0F, 0F, hookshot.age, hookshot.getYaw(), hookshot.getPitch());
