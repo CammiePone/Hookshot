@@ -1,5 +1,8 @@
 package dev.cammiescorner.hookshot.client.entity.renderer;
 
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.client.HookshotClient;
 import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
@@ -17,9 +20,7 @@ import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix3f;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 {
@@ -66,14 +67,14 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 
 	public void renderChain(float x, float y, float z, float tickDelta, int age, MatrixStack stack, VertexConsumerProvider provider, int light)
 	{
-		float lengthXY = MathHelper.sqrt(x * x + z * z);
+			float lengthXY = MathHelper.sqrt(x * x + z * z);
 		float squaredLength = x * x + y * y + z * z;
 		float length = MathHelper.sqrt(squaredLength);
 
 		stack.push();
-		stack.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion((float) (-Math.atan2(z, x)) - 1.5707964F));
-		stack.multiply(Vec3f.POSITIVE_X.getRadialQuaternion((float) (-Math.atan2(lengthXY, y)) - 1.5707964F));
-		stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(25));
+		stack.multiply(RotationAxis.POSITIVE_Y.rotation((float) (-Math.atan2(z, x)) - 1.5707964F));
+		stack.multiply(RotationAxis.POSITIVE_X.rotation((float) (-Math.atan2(lengthXY, y)) - 1.5707964F));
+		stack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(25));
 		stack.push();
 		stack.translate(0.015, -0.2, 0);
 
@@ -96,7 +97,7 @@ public class HookshotEntityRenderer extends EntityRenderer<HookshotEntity>
 		vertexConsumer.vertex(matrix4f, vertX2, vertY2, 0F).color(0, 0, 0, 255).texture(maxU, minV).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
 
 		stack.pop();
-		stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90));
+		stack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90));
 		stack.translate(-0.015, -0.2, 0);
 
 		entry = stack.peek();

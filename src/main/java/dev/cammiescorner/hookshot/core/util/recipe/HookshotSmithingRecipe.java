@@ -12,9 +12,9 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SmithingRecipe;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import net.minecraft.util.registry.Registry;
 
 public class HookshotSmithingRecipe extends SmithingRecipe
 {
@@ -42,7 +42,7 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 	{
 		String string = JsonHelper.getString(json, "item");
 
-		Item item = Registry.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() ->
+		Item item = Registries.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() ->
 				new JsonSyntaxException("Unknown item '" + string + "'"));
 
 		if(json.has("data"))
