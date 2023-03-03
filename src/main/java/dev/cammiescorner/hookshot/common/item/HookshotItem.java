@@ -6,17 +6,18 @@ import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.util.Dyeable;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import dev.cammiescorner.hookshot.core.util.UpgradesHelper;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -25,7 +26,8 @@ public class HookshotItem extends Item implements Dyeable {
 	private final DyeColor colour;
 
 	public HookshotItem(DyeColor colour) {
-		super(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1).maxDamage(Hookshot.config.defaultMaxDurability));
+		super(new Item.Settings().maxCount(1).maxDamage(Hookshot.config.defaultMaxDurability));
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.add(this));
 		this.colour = colour;
 	}
 
@@ -80,7 +82,7 @@ public class HookshotItem extends Item implements Dyeable {
 
 	@Override
 	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-		return ingredient.getItem() == Registry.ITEM.get(new Identifier(Hookshot.config.hookshotRepairItem));
+		return ingredient.getItem() == Registries.ITEM.get(new Identifier(Hookshot.config.hookshotRepairItem));
 	}
 
 	@Override

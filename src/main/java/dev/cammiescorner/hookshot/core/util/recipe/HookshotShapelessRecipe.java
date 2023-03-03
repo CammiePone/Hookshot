@@ -12,15 +12,16 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.recipe.ShapelessRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 
 public class HookshotShapelessRecipe extends ShapelessRecipe
 {
-	public HookshotShapelessRecipe(Identifier id, String group, ItemStack output, DefaultedList<Ingredient> input)
+	public HookshotShapelessRecipe(Identifier id, String group, CraftingRecipeCategory category, ItemStack output, DefaultedList<Ingredient> input)
 	{
-		super(id, group, output, input);
+		super(id, group, category, output, input);
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class HookshotShapelessRecipe extends ShapelessRecipe
 			else
 			{
 				ItemStack itemStack = ShapedRecipe.outputFromJson(JsonHelper.getObject(jsonObject, "result"));
-				return new HookshotShapelessRecipe(identifier, string, itemStack, defaultedList);
+				return new HookshotShapelessRecipe(identifier, string, CraftingRecipeCategory.MISC, itemStack, defaultedList);
 			}
 		}
 
@@ -93,7 +94,7 @@ public class HookshotShapelessRecipe extends ShapelessRecipe
 
 			ItemStack itemStack = packetByteBuf.readItemStack();
 
-			return new HookshotShapelessRecipe(identifier, string, itemStack, defaultedList);
+			return new HookshotShapelessRecipe(identifier, string, CraftingRecipeCategory.MISC, itemStack, defaultedList);
 		}
 
 		@Override
