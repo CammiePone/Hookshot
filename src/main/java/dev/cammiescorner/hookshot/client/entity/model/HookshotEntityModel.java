@@ -7,8 +7,8 @@ import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-public class HookshotEntityModel extends EntityModel<HookshotEntity>
-{
+
+public class HookshotEntityModel extends EntityModel<HookshotEntity> {
 	private final ModelPart hookshotBase;
 	private final ModelPart hookBase;
 	private final ModelPart hook1;
@@ -16,8 +16,7 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity>
 	private final ModelPart hook3;
 	private final ModelPart hook4;
 
-	public HookshotEntityModel(ModelPart root)
-	{
+	public HookshotEntityModel(ModelPart root) {
 		this.hookshotBase = root.getChild("hookshotBase");
 		this.hookBase = this.hookshotBase.getChild("hookBase");
 		this.hook1 = this.hookBase.getChild("hook1");
@@ -26,8 +25,7 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity>
 		this.hook2 = this.hookBase.getChild("hook2");
 	}
 
-	public static TexturedModelData getTexturedModelData()
-	{
+	public static TexturedModelData getTexturedModelData() {
 		ModelData modelData = new ModelData();
 		ModelPartData modelPartData = modelData.getRoot();
 		ModelPartData modelPartData1 = modelPartData.addChild("hookshotBase", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
@@ -41,15 +39,12 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity>
 	}
 
 	@Override
-	public void setAngles (HookshotEntity entity,float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch)
-	{
-		hookshotBase.pitch = (float) Math.toRadians(-headPitch);
-		hookshotBase.yaw = (float) Math.toRadians(-headYaw);
+	public void setAngles(HookshotEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
+
 	}
 
 	@Override
-	public void render (MatrixStack matrices, VertexConsumer vertices,int light, int overlay, float red, float green, float blue, float alpha)
-	{
+	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
 		hookshotBase.render(matrices, vertices, light, overlay);
 	}
 }

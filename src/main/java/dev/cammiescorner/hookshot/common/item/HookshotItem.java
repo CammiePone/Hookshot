@@ -2,6 +2,7 @@ package dev.cammiescorner.hookshot.common.item;
 
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
+import dev.cammiescorner.hookshot.core.integration.HookshotConfig;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.util.Dyeable;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
@@ -13,11 +14,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
-import net.minecraft.registry.Registries;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class HookshotItem extends Item implements Dyeable {
 	private final DyeColor colour;
 
 	public HookshotItem(DyeColor colour) {
-		super(new Item.Settings().maxCount(1).maxDamage(Hookshot.config.defaultMaxDurability));
+		super(new Item.Settings().maxCount(1).maxDamage(HookshotConfig.defaultMaxDurability));
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.add(this));
 		this.colour = colour;
 	}
@@ -37,16 +38,15 @@ public class HookshotItem extends Item implements Dyeable {
 
 		if(!world.isClient) {
 			if(!((PlayerProperties) user).hasHook()) {
-				double maxRange = Hookshot.config.defaultMaxRange * (UpgradesHelper.hasRangeUpgrade(stack) ? Hookshot.config.rangeMultiplier : 1);
-				double maxSpeed = Hookshot.config.defaultMaxSpeed * (UpgradesHelper.hasQuickUpgrade(stack) ? Hookshot.config.quickMultiplier : 1);
+				double maxRange = HookshotConfig.defaultMaxRange * (UpgradesHelper.hasRangeUpgrade(stack) ? HookshotConfig.rangeMultiplier : 1);
+				double maxSpeed = HookshotConfig.defaultMaxSpeed * (UpgradesHelper.hasQuickUpgrade(stack) ? HookshotConfig.quickMultiplier : 1);
 
 				HookshotEntity hookshot = new HookshotEntity(ModEntities.HOOKSHOT_ENTITY, user, world);
 				hookshot.setProperties(stack, maxRange, maxSpeed, user.getPitch(), user.getYaw(), 0f, 1.5f * (float) (maxSpeed / 10));
-				hookshot.getDataTracker().set(HookshotEntity.FORCED_YAW, user.getYaw());
 				world.spawnEntity(hookshot);
 			}
 
-			if(!Hookshot.config.useClassicHookshotLogic) {
+			if(!HookshotConfig.useClassicHookshotLogic) {
 				user.setCurrentHand(hand);
 				((PlayerProperties) user).setHasHook(true);
 			}
@@ -63,7 +63,7 @@ public class HookshotItem extends Item implements Dyeable {
 
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		if(!Hookshot.config.useClassicHookshotLogic)
+		if(!HookshotConfig.useClassicHookshotLogic)
 			((PlayerProperties) user).setHasHook(false);
 
 		return super.finishUsing(stack, world, user);
@@ -71,7 +71,7 @@ public class HookshotItem extends Item implements Dyeable {
 
 	@Override
 	public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-		if(!Hookshot.config.useClassicHookshotLogic)
+		if(!HookshotConfig.useClassicHookshotLogic)
 			((PlayerProperties) user).setHasHook(false);
 	}
 
@@ -82,7 +82,7 @@ public class HookshotItem extends Item implements Dyeable {
 
 	@Override
 	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-		return ingredient.getItem() == Registries.ITEM.get(new Identifier(Hookshot.config.hookshotRepairItem));
+		return ingredient.getItem() == Registries.ITEM.get(new Identifier(HookshotConfig.hookshotRepairItem));
 	}
 
 	@Override

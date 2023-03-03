@@ -10,8 +10,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.LinkedHashMap;
 
-public class ModItems
-{
+public class ModItems {
 	//----Item Map----//
 	public static final LinkedHashMap<Item, Identifier> ITEMS = new LinkedHashMap<>();
 
@@ -34,13 +33,11 @@ public class ModItems
 	public static final Item BLACK_HOOKSHOT = create("black_hookshot", new HookshotItem(DyeColor.BLACK));
 
 	//-----Registry-----//
-	public static void register()
-	{
+	public static void register() {
 		ITEMS.keySet().forEach(item -> Registry.register(Registries.ITEM, ITEMS.get(item), item));
 	}
 
-	private static <T extends Item> T create(String name, T item)
-	{
+	private static <T extends Item> T create(String name, T item) {
 		ITEMS.put(item, new Identifier(Hookshot.MOD_ID, name));
 		return item;
 	}

@@ -6,8 +6,7 @@ import dev.cammiescorner.hookshot.core.registry.ModItems;
 import dev.cammiescorner.hookshot.core.registry.ModSoundEvents;
 import dev.cammiescorner.hookshot.core.util.recipe.HookshotShapelessRecipe;
 import dev.cammiescorner.hookshot.core.util.recipe.HookshotSmithingRecipe;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -19,14 +18,12 @@ import net.minecraft.util.Identifier;
 
 public class Hookshot implements ModInitializer {
 	public static final String MOD_ID = "hookshot";
-	public static HookshotConfig config;
 
 	@Override
 	public void onInitialize() {
 		DataTrackers.HOOK_TRACKER.getId();
 		// Config
-		AutoConfig.register(HookshotConfig.class, JanksonConfigSerializer::new);
-		config = AutoConfig.getConfigHolder(HookshotConfig.class).getConfig();
+		MidnightConfig.init(Hookshot.MOD_ID, HookshotConfig.class);
 
 		// Objects
 		ModItems.register();

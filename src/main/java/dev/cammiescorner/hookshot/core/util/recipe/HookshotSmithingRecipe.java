@@ -16,10 +16,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 
-public class HookshotSmithingRecipe extends SmithingRecipe
-{
-	public HookshotSmithingRecipe(Identifier id, Ingredient base, Ingredient addition, ItemStack result)
-	{
+public class HookshotSmithingRecipe extends SmithingRecipe {
+	public HookshotSmithingRecipe(Identifier id, Ingredient base, Ingredient addition, ItemStack result) {
 		super(id, base, addition, result);
 	}
 
@@ -27,8 +25,7 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 	// have to wonder why, but for whatever reason this stupid
 	// NBT data won't add new tags unless we do this terribleness.
 	@Override
-	public ItemStack craft(Inventory inv)
-	{
+	public ItemStack craft(Inventory inv) {
 		ItemStack stack = ((SmithingRecipeAccessor) this).getResult().copy();
 		NbtCompound tag = inv.getStack(0).getNbt();
 
@@ -38,19 +35,15 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 		return stack;
 	}
 
-	public static ItemStack getItemStack(JsonObject json)
-	{
+	public static ItemStack getItemStack(JsonObject json) {
 		String string = JsonHelper.getString(json, "item");
 
-		Item item = Registries.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() ->
-				new JsonSyntaxException("Unknown item '" + string + "'"));
+		Item item = Registries.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + string + "'"));
 
-		if(json.has("data"))
-		{
+		if(json.has("data")) {
 			throw new JsonParseException("Disallowed data tag found");
 		}
-		else
-		{
+		else {
 			int count = JsonHelper.getInt(json, "count", 1);
 			String nbt = JsonHelper.getString(json, "nbt");
 			ItemStack stack = new ItemStack(item, count);
@@ -61,11 +54,9 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 		}
 	}
 
-	public static class Serializer implements RecipeSerializer<HookshotSmithingRecipe>
-	{
+	public static class Serializer implements RecipeSerializer<HookshotSmithingRecipe> {
 		@Override
-		public HookshotSmithingRecipe read(Identifier identifier, JsonObject jsonObject)
-		{
+		public HookshotSmithingRecipe read(Identifier identifier, JsonObject jsonObject) {
 			Ingredient base = Ingredient.fromJson(JsonHelper.getObject(jsonObject, "base"));
 			Ingredient addition = Ingredient.fromJson(JsonHelper.getObject(jsonObject, "addition"));
 			ItemStack result = HookshotSmithingRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
@@ -74,8 +65,7 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 		}
 
 		@Override
-		public HookshotSmithingRecipe read(Identifier identifier, PacketByteBuf packetByteBuf)
-		{
+		public HookshotSmithingRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
 			Ingredient base = Ingredient.fromPacket(packetByteBuf);
 			Ingredient addition = Ingredient.fromPacket(packetByteBuf);
 			ItemStack result = packetByteBuf.readItemStack();
@@ -84,8 +74,7 @@ public class HookshotSmithingRecipe extends SmithingRecipe
 		}
 
 		@Override
-		public void write(PacketByteBuf packetByteBuf, HookshotSmithingRecipe smithingRecipe)
-		{
+		public void write(PacketByteBuf packetByteBuf, HookshotSmithingRecipe smithingRecipe) {
 			((SmithingRecipeAccessor) smithingRecipe).getBase().write(packetByteBuf);
 			((SmithingRecipeAccessor) smithingRecipe).getAddition().write(packetByteBuf);
 			packetByteBuf.writeItemStack(((SmithingRecipeAccessor) smithingRecipe).getResult());

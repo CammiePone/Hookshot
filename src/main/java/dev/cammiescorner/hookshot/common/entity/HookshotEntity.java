@@ -2,6 +2,7 @@ package dev.cammiescorner.hookshot.common.entity;
 
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.common.item.HookshotItem;
+import dev.cammiescorner.hookshot.core.integration.HookshotConfig;
 import dev.cammiescorner.hookshot.core.registry.ModDamageSource;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.registry.ModSoundEvents;
@@ -32,7 +33,6 @@ import net.minecraft.world.World;
 public class HookshotEntity extends PersistentProjectileEntity {
 	private static final TagKey<Block> UNHOOKABLE = TagKey.of(RegistryKeys.BLOCK, new Identifier(Hookshot.MOD_ID, "unhookable"));
 	private static final TrackedData<Integer> HOOKED_ENTITY_ID = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.INTEGER);
-	public static final TrackedData<Float> FORCED_YAW = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
 	private double maxRange = 0D;
 	private double maxSpeed = 0D;
@@ -62,7 +62,6 @@ public class HookshotEntity extends PersistentProjectileEntity {
 	protected void initDataTracker() {
 		super.initDataTracker();
 		this.getDataTracker().startTracking(HOOKED_ENTITY_ID, 0);
-		this.getDataTracker().startTracking(FORCED_YAW, 0f);
 	}
 
 	@Override
@@ -70,8 +69,6 @@ public class HookshotEntity extends PersistentProjectileEntity {
 		super.tick();
 
 		if(getOwner() instanceof PlayerEntity owner) {
-			setYaw(dataTracker.get(FORCED_YAW));
-
 			if(isPulling && age % 2 == 0)
 				world.playSound(null, getOwner().getBlockPos(), ModSoundEvents.HOOKSHOT_REEL, SoundCategory.PLAYERS, 1F, 1F);
 
@@ -102,8 +99,8 @@ public class HookshotEntity extends PersistentProjectileEntity {
 							origin = owner;
 						}
 
-						double brakeZone = (6D * ((Hookshot.config.quickModAffectsPullSpeed ? maxSpeed : Hookshot.config.defaultMaxSpeed) / Hookshot.config.defaultMaxSpeed));
-						double pullSpeed = (Hookshot.config.quickModAffectsPullSpeed ? maxSpeed : Hookshot.config.defaultMaxSpeed) / 6D;
+						double brakeZone = (6D * ((HookshotConfig.quickModAffectsPullSpeed ? maxSpeed : HookshotConfig.defaultMaxSpeed) / HookshotConfig.defaultMaxSpeed));
+						double pullSpeed = (HookshotConfig.quickModAffectsPullSpeed ? maxSpeed : HookshotConfig.defaultMaxSpeed) / 6D;
 						Vec3d distance = origin.getPos().subtract(target.getPos().add(0, target.getHeight() / 2, 0));
 						Vec3d motion = distance.normalize().multiply(distance.length() < brakeZone && !UpgradesHelper.hasAutomaticUpgrade(stack) ? (pullSpeed * distance.length()) / brakeZone : pullSpeed);
 
@@ -112,7 +109,7 @@ public class HookshotEntity extends PersistentProjectileEntity {
 						if(new Vec3d(distance.x, 0, distance.z).length() < new Vec3d(target.getWidth() / 2, 0, target.getWidth() / 2).length() / 1.4)
 							motion = new Vec3d(0, motion.y, 0);
 
-						if(Hookshot.config.hookshotCancelsFallDamage)
+						if(HookshotConfig.hookshotCancelsFallDamage)
 							target.fallDistance = 0;
 
 						target.setVelocity(motion);
@@ -180,7 +177,7 @@ public class HookshotEntity extends PersistentProjectileEntity {
 		if(!world.isClient && getOwner() instanceof PlayerEntity owner && hookedEntity == null) {
 			owner.setNoGravity(true);
 
-			if(Hookshot.config.unhookableBlacklist) {
+			if(HookshotConfig.unhookableBlacklist) {
 				if(world.getBlockState(blockHitResult.getBlockPos()).isIn(UNHOOKABLE)) {
 					((PlayerProperties) owner).setHasHook(false);
 					isPulling = false;
@@ -240,7 +237,6 @@ public class HookshotEntity extends PersistentProjectileEntity {
 	@Override
 	public void readCustomDataFromNbt(NbtCompound tag) {
 		super.readCustomDataFromNbt(tag);
-		dataTracker.set(FORCED_YAW, tag.getFloat("ForcedYaw"));
 
 		maxRange = tag.getDouble("maxRange");
 		maxSpeed = tag.getDouble("maxSpeed");
@@ -254,7 +250,6 @@ public class HookshotEntity extends PersistentProjectileEntity {
 	@Override
 	public void writeCustomDataToNbt(NbtCompound tag) {
 		super.writeCustomDataToNbt(tag);
-		tag.putFloat("ForcedYaw", dataTracker.get(FORCED_YAW));
 		tag.putDouble("maxRange", maxRange);
 		tag.putDouble("maxSpeed", maxSpeed);
 		tag.putBoolean("isPulling", isPulling);

@@ -21,27 +21,21 @@ import net.minecraft.util.Identifier;
 import static dev.cammiescorner.hookshot.core.registry.ModItems.*;
 
 @Environment(EnvType.CLIENT)
-public class HookshotClient implements ClientModInitializer
-{
+public class HookshotClient implements ClientModInitializer {
 	public static final EntityModelLayer HOOKSHOT = new EntityModelLayer(new Identifier(Hookshot.MOD_ID, "hookshot"), "hookshot");
+
 	@Override
-	public void onInitializeClient()
-	{
+	public void onInitializeClient() {
 		// Entity Renderer Registry
 		EntityRendererRegistry.register(ModEntities.HOOKSHOT_ENTITY, HookshotEntityRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(HOOKSHOT, HookshotEntityModel::getTexturedModelData);
 
 		// Colour Registry
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ColourHelper.dyeableToDecimal((Dyeable) stack.getItem()),
-				WHITE_HOOKSHOT, ORANGE_HOOKSHOT, MAGENTA_HOOKSHOT, LIGHT_BLUE_HOOKSHOT, YELLOW_HOOKSHOT,
-				LIME_HOOKSHOT, PINK_HOOKSHOT, GREY_HOOKSHOT, LIGHT_GREY_HOOKSHOT, CYAN_HOOKSHOT,
-				PURPLE_HOOKSHOT, BLUE_HOOKSHOT, BROWN_HOOKSHOT, GREEN_HOOKSHOT, RED_HOOKSHOT, BLACK_HOOKSHOT);
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ColourHelper.dyeableToDecimal((Dyeable) stack.getItem()), WHITE_HOOKSHOT, ORANGE_HOOKSHOT, MAGENTA_HOOKSHOT, LIGHT_BLUE_HOOKSHOT, YELLOW_HOOKSHOT, LIME_HOOKSHOT, PINK_HOOKSHOT, GREY_HOOKSHOT, LIGHT_GREY_HOOKSHOT, CYAN_HOOKSHOT, PURPLE_HOOKSHOT, BLUE_HOOKSHOT, BROWN_HOOKSHOT, GREEN_HOOKSHOT, RED_HOOKSHOT, BLACK_HOOKSHOT);
 
 		// Predicate Registry
-		ModelPredicateProviderRegistry.register(new Identifier(Hookshot.MOD_ID, "has_hook"), (stack, world, entity, seed) ->
-		{
-			if(entity instanceof PlayerEntity)
-			{
+		ModelPredicateProviderRegistry.register(new Identifier(Hookshot.MOD_ID, "has_hook"), (stack, world, entity, seed) -> {
+			if(entity instanceof PlayerEntity) {
 				if(((PlayerProperties) entity).hasHook())
 					return 1;
 				else

@@ -17,21 +17,17 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 
-public class HookshotShapelessRecipe extends ShapelessRecipe
-{
-	public HookshotShapelessRecipe(Identifier id, String group, CraftingRecipeCategory category, ItemStack output, DefaultedList<Ingredient> input)
-	{
+public class HookshotShapelessRecipe extends ShapelessRecipe {
+	public HookshotShapelessRecipe(Identifier id, String group, CraftingRecipeCategory category, ItemStack output, DefaultedList<Ingredient> input) {
 		super(id, group, category, output, input);
 	}
 
 	@Override
-	public ItemStack craft(CraftingInventory inv)
-	{
+	public ItemStack craft(CraftingInventory inv) {
 		ItemStack stack = this.getOutput().copy();
 		NbtCompound tag = null;
 
-		for(int i = 0; i < inv.size(); ++i)
-		{
+		for(int i = 0; i < inv.size(); ++i) {
 			ItemStack stacks = inv.getStack(i);
 
 			if(stacks.getItem() instanceof HookshotItem)
@@ -44,14 +40,11 @@ public class HookshotShapelessRecipe extends ShapelessRecipe
 		return stack;
 	}
 
-	public static class Serializer implements RecipeSerializer<HookshotShapelessRecipe>
-	{
-		private static DefaultedList<Ingredient> getIngredients(JsonArray json)
-		{
+	public static class Serializer implements RecipeSerializer<HookshotShapelessRecipe> {
+		private static DefaultedList<Ingredient> getIngredients(JsonArray json) {
 			DefaultedList<Ingredient> defaultedList = DefaultedList.of();
 
-			for(int i = 0; i < json.size(); ++i)
-			{
+			for(int i = 0; i < json.size(); ++i) {
 				Ingredient ingredient = Ingredient.fromJson(json.get(i));
 
 				if(!ingredient.isEmpty())
@@ -62,29 +55,24 @@ public class HookshotShapelessRecipe extends ShapelessRecipe
 		}
 
 		@Override
-		public HookshotShapelessRecipe read(Identifier identifier, JsonObject jsonObject)
-		{
+		public HookshotShapelessRecipe read(Identifier identifier, JsonObject jsonObject) {
 			String string = JsonHelper.getString(jsonObject, "group", "");
 			DefaultedList<Ingredient> defaultedList = getIngredients(JsonHelper.getArray(jsonObject, "ingredients"));
 
-			if(defaultedList.isEmpty())
-			{
+			if(defaultedList.isEmpty()) {
 				throw new JsonParseException("No ingredients for shapeless recipe");
 			}
-			else if (defaultedList.size() > 9)
-			{
+			else if(defaultedList.size() > 9) {
 				throw new JsonParseException("Too many ingredients for shapeless recipe");
 			}
-			else
-			{
+			else {
 				ItemStack itemStack = ShapedRecipe.outputFromJson(JsonHelper.getObject(jsonObject, "result"));
 				return new HookshotShapelessRecipe(identifier, string, CraftingRecipeCategory.MISC, itemStack, defaultedList);
 			}
 		}
 
 		@Override
-		public HookshotShapelessRecipe read(Identifier identifier, PacketByteBuf packetByteBuf)
-		{
+		public HookshotShapelessRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
 			String string = packetByteBuf.readString(32767);
 			int i = packetByteBuf.readVarInt();
 			DefaultedList<Ingredient> defaultedList = DefaultedList.ofSize(i, Ingredient.EMPTY);
@@ -98,8 +86,7 @@ public class HookshotShapelessRecipe extends ShapelessRecipe
 		}
 
 		@Override
-		public void write(PacketByteBuf packetByteBuf, HookshotShapelessRecipe shapelessRecipe)
-		{
+		public void write(PacketByteBuf packetByteBuf, HookshotShapelessRecipe shapelessRecipe) {
 			packetByteBuf.writeString(shapelessRecipe.getGroup());
 			packetByteBuf.writeVarInt(shapelessRecipe.getIngredients().size());
 
