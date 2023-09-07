@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import dev.cammiescorner.hookshot.common.item.HookshotItem;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
@@ -13,6 +14,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
@@ -23,8 +25,8 @@ public class HookshotShapelessRecipe extends ShapelessRecipe {
 	}
 
 	@Override
-	public ItemStack craft(CraftingInventory inv) {
-		ItemStack stack = this.getOutput().copy();
+	public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager dynamicRegistryManager){
+		ItemStack stack = this.getOutput(dynamicRegistryManager).copy();
 		NbtCompound tag = null;
 
 		for(int i = 0; i < inv.size(); ++i) {
@@ -93,7 +95,7 @@ public class HookshotShapelessRecipe extends ShapelessRecipe {
 			for(Ingredient ingredient : shapelessRecipe.getIngredients())
 				ingredient.write(packetByteBuf);
 
-			packetByteBuf.writeItemStack(shapelessRecipe.getOutput());
+			packetByteBuf.writeItemStack(shapelessRecipe.getOutput(null));
 		}
 	}
 }

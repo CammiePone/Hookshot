@@ -3,17 +3,20 @@ package dev.cammiescorner.hookshot.core.mixin;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.SmithingRecipe;
+import net.minecraft.recipe.SmithingTransformRecipe;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(SmithingRecipe.class)
+@Mixin(SmithingTransformRecipe.class)
 public interface SmithingRecipeAccessor {
+	
 	@Accessor("base")
-	Ingredient getBase();
+	Ingredient testBase();
 
 	@Accessor("addition")
-	Ingredient getAddition();
+	Ingredient testAddition();
 
 	@Accessor("result")
-	ItemStack getResult();
+	ItemStack getOutput();
 }

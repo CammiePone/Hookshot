@@ -3,7 +3,7 @@ package dev.cammiescorner.hookshot.common.entity;
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.common.item.HookshotItem;
 import dev.cammiescorner.hookshot.core.integration.HookshotConfig;
-import dev.cammiescorner.hookshot.core.registry.ModDamageSource;
+//import dev.cammiescorner.hookshot.core.registry.ModDamageSource;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.registry.ModSoundEvents;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
@@ -40,6 +40,7 @@ public class HookshotEntity extends PersistentProjectileEntity {
 	private Entity hookedEntity;
 	private ItemStack stack;
 
+	World world = this.getWorld();
 	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, PlayerEntity owner, World world) {
 		super(type, owner, world);
 		this.setNoGravity(true);
@@ -82,8 +83,8 @@ public class HookshotEntity extends PersistentProjectileEntity {
 						onRemoved();
 					}
 					else {
-						if(UpgradesHelper.hasBleedUpgrade(stack) && age % 20 == 0)
-							hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
+						//if(UpgradesHelper.hasBleedUpgrade(stack) && age % 20 == 0)
+						//	hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
 
 						this.updatePosition(this.hookedEntity.getX(), this.hookedEntity.getBodyY(0.8D), this.hookedEntity.getZ());
 					}
@@ -221,8 +222,8 @@ public class HookshotEntity extends PersistentProjectileEntity {
 				isPulling = true;
 			}
 
-			if(hookedEntity != null && UpgradesHelper.hasBleedUpgrade(stack))
-				hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
+			//if(hookedEntity != null && UpgradesHelper.hasBleedUpgrade(stack))
+			//	hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
 
 			if(UpgradesHelper.hasEndericUpgrade(stack)) {
 				owner.requestTeleport(getX(), getY(), getZ());
