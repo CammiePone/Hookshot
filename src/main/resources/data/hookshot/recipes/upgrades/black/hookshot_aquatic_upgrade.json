@@ -1,5 +1,9 @@
 {
   "type": "hookshot:smithing",
+  "template":
+  {
+    "item": "minecraft:iron_ingot"
+  },
   "base":
   {
     "item": "hookshot:black_hookshot"
