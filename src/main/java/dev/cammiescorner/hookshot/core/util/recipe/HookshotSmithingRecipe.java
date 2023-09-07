@@ -28,11 +28,12 @@ public class HookshotSmithingRecipe extends SmithingTransformRecipe {
 	@Override
 	public ItemStack craft(Inventory inv, DynamicRegistryManager registryManager) {
 		ItemStack stack = ((SmithingRecipeAccessor) this).getOutput().copy();
-		NbtCompound tag = inv.getStack(0).getNbt();
+		NbtCompound tag = inv.getStack(1).getNbt();
 
 		if(tag != null)
-			stack.getOrCreateNbt().copyFrom(tag);
-
+		{
+			stack.getOrCreateNbt().copyFrom(tag).copy();
+		}
 		return stack;
 	}
 
