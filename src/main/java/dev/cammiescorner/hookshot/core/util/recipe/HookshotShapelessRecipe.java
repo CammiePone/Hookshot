@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import dev.cammiescorner.hookshot.common.item.HookshotItem;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -37,8 +36,8 @@ public class HookshotShapelessRecipe extends ShapelessRecipe {
 		}
 
 		if(tag != null && stack.hasNbt())
-			tag.copyFrom(tag);
-
+			stack.getOrCreateNbt().copyFrom(tag);
+			
 		return stack;
 	}
 
@@ -60,7 +59,6 @@ public class HookshotShapelessRecipe extends ShapelessRecipe {
 		public HookshotShapelessRecipe read(Identifier identifier, JsonObject jsonObject) {
 			String string = JsonHelper.getString(jsonObject, "group", "");
 			DefaultedList<Ingredient> defaultedList = getIngredients(JsonHelper.getArray(jsonObject, "ingredients"));
-
 			if(defaultedList.isEmpty()) {
 				throw new JsonParseException("No ingredients for shapeless recipe");
 			}

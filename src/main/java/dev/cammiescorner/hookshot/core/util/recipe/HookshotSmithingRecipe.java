@@ -18,8 +18,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 
 public class HookshotSmithingRecipe extends SmithingTransformRecipe {
-	public HookshotSmithingRecipe(Identifier id, Ingredient template, Ingredient base, Ingredient addition, ItemStack result) {
-		super(id,template,base,addition,result);
+	public HookshotSmithingRecipe(Identifier id,Ingredient template, Ingredient base, Ingredient addition, ItemStack result) {
+		super(id,template, base, addition, result);
 	}
 
 	// I don't know why, I don't want to know why, I shouldn't
@@ -58,26 +58,27 @@ public class HookshotSmithingRecipe extends SmithingTransformRecipe {
 	public static class Serializer implements RecipeSerializer<HookshotSmithingRecipe> {
 		@Override
 		public HookshotSmithingRecipe read(Identifier identifier, JsonObject jsonObject) {
-			Ingredient base = Ingredient.fromJson(JsonHelper.getObject(jsonObject, "base"));
 			Ingredient template = Ingredient.fromJson(JsonHelper.getObject(jsonObject, "template"));
+			Ingredient base = Ingredient.fromJson(JsonHelper.getObject(jsonObject, "base"));
 			Ingredient addition = Ingredient.fromJson(JsonHelper.getObject(jsonObject, "addition"));
 			ItemStack result = HookshotSmithingRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
 
-			return new HookshotSmithingRecipe(identifier,template,base,addition,result);
+			return new HookshotSmithingRecipe(identifier,template, base, addition, result);
 		}
 
 		@Override
 		public HookshotSmithingRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
-			Ingredient base = Ingredient.fromPacket(packetByteBuf);
 			Ingredient template = Ingredient.fromPacket(packetByteBuf);
+			Ingredient base = Ingredient.fromPacket(packetByteBuf);
 			Ingredient addition = Ingredient.fromPacket(packetByteBuf);
 			ItemStack result = packetByteBuf.readItemStack();
 
-			return new HookshotSmithingRecipe(identifier,template,base,addition,result);
+			return new HookshotSmithingRecipe(identifier,template, base, addition, result);
 		}
 
 		@Override
 		public void write(PacketByteBuf packetByteBuf, HookshotSmithingRecipe smithingRecipe) {
+			((SmithingRecipeAccessor) smithingRecipe).testTemplate().write(packetByteBuf);
 			((SmithingRecipeAccessor) smithingRecipe).testBase().write(packetByteBuf);
 			((SmithingRecipeAccessor) smithingRecipe).testAddition().write(packetByteBuf);
 			packetByteBuf.writeItemStack(((SmithingRecipeAccessor) smithingRecipe).getOutput());
