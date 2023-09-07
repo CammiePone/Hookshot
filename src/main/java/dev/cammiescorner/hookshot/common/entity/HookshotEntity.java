@@ -3,6 +3,7 @@ package dev.cammiescorner.hookshot.common.entity;
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.common.item.HookshotItem;
 import dev.cammiescorner.hookshot.core.integration.HookshotConfig;
+import dev.cammiescorner.hookshot.core.registry.ModDamageTypes;
 //import dev.cammiescorner.hookshot.core.registry.ModDamageSource;
 import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.registry.ModSoundEvents;
@@ -13,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonPart;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -83,8 +85,9 @@ public class HookshotEntity extends PersistentProjectileEntity {
 						onRemoved();
 					}
 					else {
-						//if(UpgradesHelper.hasBleedUpgrade(stack) && age % 20 == 0)
-						//	hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
+						if(UpgradesHelper.hasBleedUpgrade(stack) && age % 20 == 0)
+							hookedEntity.damage(ModDamageTypes.of(world, ModDamageTypes.HOOKBLEEDING), 1.0f);
+							//hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
 
 						this.updatePosition(this.hookedEntity.getX(), this.hookedEntity.getBodyY(0.8D), this.hookedEntity.getZ());
 					}
@@ -222,7 +225,8 @@ public class HookshotEntity extends PersistentProjectileEntity {
 				isPulling = true;
 			}
 
-			//if(hookedEntity != null && UpgradesHelper.hasBleedUpgrade(stack))
+			if(hookedEntity != null && UpgradesHelper.hasBleedUpgrade(stack))
+				hookedEntity.damage(ModDamageTypes.of(world, ModDamageTypes.HOOKBLEEDING), 1.0f);
 			//	hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
 
 			if(UpgradesHelper.hasEndericUpgrade(stack)) {
