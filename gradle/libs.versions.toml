@@ -4,24 +4,32 @@ fabric_loom = "1.9.2"
 minecraft = "1.20.1"
 fabric_loader = "0.16.10"
 
+# https://parchmentmc.org/docs/getting-started
 parchment_minecraft = "1.20.1"
 parchment_mappings = "2023.09.03"
 
-fabric_api = "0.75.1+1.19.3"
+jetbrains_annotations = "26.0.1"
 
-emi = "1.0.29+1.20.1"
+fabric_api = "0.92.2+1.20.1"
+
+emi = "1.1.18+1.20.1"
 modmenu = "7.2.2"
-midnightlib = "YXz8kIQl" # 1.4.1-fabric
+resourceful_config = "2.1.2"
+sparkweave = "0.6.0"
+datasync = "0.9.0"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
+jetbrains_annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains_annotations" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
 
+datasync_fabric = { module = "dev.upcraft.datasync:datasync-minecraft-1.20.1-fabric", version.ref = "datasync" }
 emi = { module = "dev.emi:emi-fabric", version.ref = "emi" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
-midnightlib = { module = "maven.modrinth:midnightlib", version.ref = "midnightlib" }
+resourceful_config = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-1.20.1", version.ref = "resourceful_config" }
+sparkweave = { module = "dev.upcraft.sparkweave:Sparkweave-Fabric", version.ref = "sparkweave" }
 
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }

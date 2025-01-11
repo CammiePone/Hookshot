@@ -23,6 +23,7 @@ repositories {
     mavenCentral()
     maven { url = 'https://maven.terraformersmc.com' }
     maven { url = 'https://maven.uuid.gg/releases' }
+    maven { url = "https://nexus.resourcefulbees.com/repository/maven-public" }
     maven {
         name = 'ParchmentMC'
         url = 'https://maven.parchmentmc.org'
@@ -32,13 +33,20 @@ repositories {
     }
     exclusiveContent {
         forRepository {
-            maven { url "https://api.modrinth.com/maven" }
+            maven { url = "https://api.modrinth.com/maven" }
         }
         filter {
             includeGroup("maven.modrinth")
         }
     }
-
+    exclusiveContent {
+        forRepository {
+            maven { url = "https://cursemaven.com" }
+        }
+        filter {
+            includeGroup("curse.maven")
+        }
+    }
 }
 
 dependencies {
@@ -48,13 +56,53 @@ dependencies {
         it.parchment("org.parchmentmc.data:parchment-${libs.versions.parchment.minecraft.get()}:${libs.versions.parchment.mappings.get()}@zip")
     })
 
+    compileOnly libs.jetbrains.annotations
+
     modImplementation libs.fabric.loader
     modImplementation libs.fabric.api
+
+    modImplementation libs.sparkweave
 
     modCompileOnly libs.modmenu
     modLocalRuntime libs.modmenu
 
+    modImplementation libs.resourceful.config
+
+    modImplementation libs.datasync.fabric
+    include libs.datasync.fabric
+
+    modCompileOnly variantOf(libs.emi) { classifier 'api' }
     modLocalRuntime libs.emi
+}
+
+loom {
+    mods {
+        "${mod_id}" {
+            // Tell Loom about each source set used by your mod here. This ensures that your mod's classes are properly transformed by Loader.
+            sourceSet("main")
+        }
+    }
+
+//    accessWidenerPath.set(project.file("src/main/resources/${mod_id}.accesswidener"))
+
+    runs {
+        client {
+            ideConfigGenerated(true)
+            runDir("run")
+
+            if (project.hasProperty('mc_uuid')) {
+                programArg("--uuid=${project.findProperty('mc_uuid')}")
+            }
+
+            if (project.hasProperty('mc_username')) {
+                programArg("--username=${project.findProperty('mc_username')}")
+            }
+
+            if (project.hasProperty('mc_java_agent_path')) {
+                vmArg("-javaagent:${project.findProperty('mc_java_agent_path')}")
+            }
+        }
+    }
 }
 
 processResources {
