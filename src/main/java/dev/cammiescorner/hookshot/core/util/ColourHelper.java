@@ -1,6 +1,6 @@
 package dev.cammiescorner.hookshot.core.util;
 
-import net.minecraft.util.DyeColor;
+import net.minecraft.world.item.DyeColor;
 
 public class ColourHelper {
 	public static int rgbToDecimal(float[] rgb) {
@@ -8,13 +8,13 @@ public class ColourHelper {
 	}
 
 	public static int dyeToDecimal(DyeColor colour) {
-		float[] rgb = colour.getColorComponents();
+		float[] rgb = colour.getTextureDiffuseColors();
 
 		return (((int) (rgb[0] * 255F) << 16) | ((int) (rgb[1] * 255F) << 8) | (int) (rgb[2] * 255F));
 	}
 
 	public static int dyeableToDecimal(Dyeable dyeable) {
-		float[] rgb = dyeable.getColour().getColorComponents();
+		float[] rgb = dyeable.getColour().getTextureDiffuseColors();
 
 		return (((int) (rgb[0] * 255F) << 16) | ((int) (rgb[1] * 255F) << 8) | (int) (rgb[2] * 255F));
 	}

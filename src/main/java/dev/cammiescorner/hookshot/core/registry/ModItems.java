@@ -2,17 +2,16 @@ package dev.cammiescorner.hookshot.core.registry;
 
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.common.item.HookshotItem;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
-
 import java.util.LinkedHashMap;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 
 public class ModItems {
 	//----Item Map----//
-	public static final LinkedHashMap<Item, Identifier> ITEMS = new LinkedHashMap<>();
+	public static final LinkedHashMap<Item, ResourceLocation> ITEMS = new LinkedHashMap<>();
 
 	//-----Items-----//
 	public static final Item WHITE_HOOKSHOT = create("white_hookshot", new HookshotItem(DyeColor.WHITE));
@@ -34,11 +33,11 @@ public class ModItems {
 
 	//-----Registry-----//
 	public static void register() {
-		ITEMS.keySet().forEach(item -> Registry.register(Registries.ITEM, ITEMS.get(item), item));
+		ITEMS.keySet().forEach(item -> Registry.register(BuiltInRegistries.ITEM, ITEMS.get(item), item));
 	}
 
 	private static <T extends Item> T create(String name, T item) {
-		ITEMS.put(item, new Identifier(Hookshot.MOD_ID, name));
+		ITEMS.put(item, new ResourceLocation(Hookshot.MOD_ID, name));
 		return item;
 	}
 }

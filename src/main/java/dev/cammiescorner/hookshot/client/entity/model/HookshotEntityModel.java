@@ -2,11 +2,16 @@
 // Generate all required imports
 package dev.cammiescorner.hookshot.client.entity.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class HookshotEntityModel extends EntityModel<HookshotEntity> {
 	private final ModelPart hookshotBase;
@@ -25,17 +30,17 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity> {
 		this.hook2 = this.hookBase.getChild("hook2");
 	}
 
-	public static TexturedModelData getTexturedModelData() {
-		ModelData modelData = new ModelData();
-		ModelPartData modelPartData = modelData.getRoot();
-		ModelPartData modelPartData1 = modelPartData.addChild("hookshotBase", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-		ModelPartData modelPartData2 = modelPartData1.addChild("hookBase", ModelPartBuilder.create().uv(14, 0).cuboid(-2.0F, 5.0F, -6.0F, 2.0F, 2.0F, 2.0F), ModelTransform.pivot(1.0F, -6.0F, 5.0F));
-		modelPartData2.addChild("hook2", ModelPartBuilder.create().uv(0, 22).cuboid(-0.5F, -1.0F, -2.9142F, 1.0F, 2.0F, 4.0F), ModelTransform.of(-1.0F, 4.5F, -6.0F, -0.3927F, 0.0F, 0.0F));
-		modelPartData2.addChild("hook3", ModelPartBuilder.create().uv(8, 19).cuboid(-0.5F, 0.0F, -3.9142F, 1.0F, 2.0F, 4.0F), ModelTransform.of(-1.0F, 6.5F, -5.0F, 0.3927F, 0.0F, 0.0F));
-		modelPartData2.addChild("hook4", ModelPartBuilder.create().uv(18, 0).cuboid(0.0F, -0.5F, -3.0F, 2.0F, 1.0F, 4.0F), ModelTransform.of(-0.5F, 6.0F, -6.0F, 0.0F, -0.3927F, 0.0F));
-		modelPartData2.addChild("hook1", ModelPartBuilder.create().uv(0, 17).cuboid(-2.0F, -0.5F, -3.0F, 2.0F, 1.0F, 4.0F), ModelTransform.of(-1.5F, 6.0F, -6.0F, 0.0F, 0.3927F, 0.0F));
+	public static LayerDefinition getTexturedModelData() {
+		MeshDefinition modelData = new MeshDefinition();
+		PartDefinition modelPartData = modelData.getRoot();
+		PartDefinition modelPartData1 = modelPartData.addOrReplaceChild("hookshotBase", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+		PartDefinition modelPartData2 = modelPartData1.addOrReplaceChild("hookBase", CubeListBuilder.create().texOffs(14, 0).addBox(-2.0F, 5.0F, -6.0F, 2.0F, 2.0F, 2.0F), PartPose.offset(1.0F, -6.0F, 5.0F));
+		modelPartData2.addOrReplaceChild("hook2", CubeListBuilder.create().texOffs(0, 22).addBox(-0.5F, -1.0F, -2.9142F, 1.0F, 2.0F, 4.0F), PartPose.offsetAndRotation(-1.0F, 4.5F, -6.0F, -0.3927F, 0.0F, 0.0F));
+		modelPartData2.addOrReplaceChild("hook3", CubeListBuilder.create().texOffs(8, 19).addBox(-0.5F, 0.0F, -3.9142F, 1.0F, 2.0F, 4.0F), PartPose.offsetAndRotation(-1.0F, 6.5F, -5.0F, 0.3927F, 0.0F, 0.0F));
+		modelPartData2.addOrReplaceChild("hook4", CubeListBuilder.create().texOffs(18, 0).addBox(0.0F, -0.5F, -3.0F, 2.0F, 1.0F, 4.0F), PartPose.offsetAndRotation(-0.5F, 6.0F, -6.0F, 0.0F, -0.3927F, 0.0F));
+		modelPartData2.addOrReplaceChild("hook1", CubeListBuilder.create().texOffs(0, 17).addBox(-2.0F, -0.5F, -3.0F, 2.0F, 1.0F, 4.0F), PartPose.offsetAndRotation(-1.5F, 6.0F, -6.0F, 0.0F, 0.3927F, 0.0F));
 
-		return TexturedModelData.of(modelData, 32, 32);
+		return LayerDefinition.create(modelData, 32, 32);
 	}
 
 	@Override
@@ -44,7 +49,7 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity> {
 	}
 
 	@Override
-	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
 		hookshotBase.render(matrices, vertices, light, overlay);
 	}
 }

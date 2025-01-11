@@ -4,20 +4,20 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import dev.cammiescorner.hookshot.core.mixin.SmithingRecipeAccessor;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SmithingRecipe;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.UpgradeRecipe;
 
-public class HookshotSmithingRecipe extends SmithingRecipe {
-	public HookshotSmithingRecipe(Identifier id, Ingredient base, Ingredient addition, ItemStack result) {
+public class HookshotSmithingRecipe extends UpgradeRecipe {
+	public HookshotSmithingRecipe(ResourceLocation id, Ingredient base, Ingredient addition, ItemStack result) {
 		super(id, base, addition, result);
 	}
 
@@ -25,30 +25,30 @@ public class HookshotSmithingRecipe extends SmithingRecipe {
 	// have to wonder why, but for whatever reason this stupid
 	// NBT data won't add new tags unless we do this terribleness.
 	@Override
-	public ItemStack craft(Inventory inv) {
+	public ItemStack assemble(Container inv) {
 		ItemStack stack = ((SmithingRecipeAccessor) this).getResult().copy();
-		NbtCompound tag = inv.getStack(0).getNbt();
+		CompoundTag tag = inv.getItem(0).getTag();
 
 		if(tag != null)
-			stack.getOrCreateNbt().copyFrom(tag);
+			stack.getOrCreateTag().merge(tag);
 
 		return stack;
 	}
 
 	public static ItemStack getItemStack(JsonObject json) {
-		String string = JsonHelper.getString(json, "item");
+		String string = GsonHelper.getAsString(json, "item");
 
-		Item item = Registries.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + string + "'"));
+		Item item = BuiltInRegistries.ITEM.getOptional(new ResourceLocation(string)).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + string + "'"));
 
 		if(json.has("data")) {
 			throw new JsonParseException("Disallowed data tag found");
 		}
 		else {
-			int count = JsonHelper.getInt(json, "count", 1);
-			String nbt = JsonHelper.getString(json, "nbt");
+			int count = GsonHelper.getAsInt(json, "count", 1);
+			String nbt = GsonHelper.getAsString(json, "nbt");
 			ItemStack stack = new ItemStack(item, count);
 
-			stack.getOrCreateNbt().putBoolean(nbt, true);
+			stack.getOrCreateTag().putBoolean(nbt, true);
 
 			return stack;
 		}
@@ -56,28 +56,28 @@ public class HookshotSmithingRecipe extends SmithingRecipe {
 
 	public static class Serializer implements RecipeSerializer<HookshotSmithingRecipe> {
 		@Override
-		public HookshotSmithingRecipe read(Identifier identifier, JsonObject jsonObject) {
-			Ingredient base = Ingredient.fromJson(JsonHelper.getObject(jsonObject, "base"));
-			Ingredient addition = Ingredient.fromJson(JsonHelper.getObject(jsonObject, "addition"));
-			ItemStack result = HookshotSmithingRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
+		public HookshotSmithingRecipe fromJson(ResourceLocation identifier, JsonObject jsonObject) {
+			Ingredient base = Ingredient.fromJson(GsonHelper.getAsJsonObject(jsonObject, "base"));
+			Ingredient addition = Ingredient.fromJson(GsonHelper.getAsJsonObject(jsonObject, "addition"));
+			ItemStack result = HookshotSmithingRecipe.getItemStack(GsonHelper.getAsJsonObject(jsonObject, "result"));
 
 			return new HookshotSmithingRecipe(identifier, base, addition, result);
 		}
 
 		@Override
-		public HookshotSmithingRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
-			Ingredient base = Ingredient.fromPacket(packetByteBuf);
-			Ingredient addition = Ingredient.fromPacket(packetByteBuf);
-			ItemStack result = packetByteBuf.readItemStack();
+		public HookshotSmithingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf packetByteBuf) {
+			Ingredient base = Ingredient.fromNetwork(packetByteBuf);
+			Ingredient addition = Ingredient.fromNetwork(packetByteBuf);
+			ItemStack result = packetByteBuf.readItem();
 
 			return new HookshotSmithingRecipe(identifier, base, addition, result);
 		}
 
 		@Override
-		public void write(PacketByteBuf packetByteBuf, HookshotSmithingRecipe smithingRecipe) {
-			((SmithingRecipeAccessor) smithingRecipe).getBase().write(packetByteBuf);
-			((SmithingRecipeAccessor) smithingRecipe).getAddition().write(packetByteBuf);
-			packetByteBuf.writeItemStack(((SmithingRecipeAccessor) smithingRecipe).getResult());
+		public void write(FriendlyByteBuf packetByteBuf, HookshotSmithingRecipe smithingRecipe) {
+			((SmithingRecipeAccessor) smithingRecipe).getBase().toNetwork(packetByteBuf);
+			((SmithingRecipeAccessor) smithingRecipe).getAddition().toNetwork(packetByteBuf);
+			packetByteBuf.writeItem(((SmithingRecipeAccessor) smithingRecipe).getResult());
 		}
 	}
 }

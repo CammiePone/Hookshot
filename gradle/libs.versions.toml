@@ -1,0 +1,27 @@
+[versions]
+fabric_loom = "1.9.2"
+
+minecraft = "1.20.1"
+fabric_loader = "0.16.10"
+
+parchment_minecraft = "1.20.1"
+parchment_mappings = "2023.09.03"
+
+fabric_api = "0.75.1+1.19.3"
+
+emi = "1.0.29+1.20.1"
+modmenu = "7.2.2"
+midnightlib = "YXz8kIQl" # 1.4.1-fabric
+
+[libraries]
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
+
+fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
+
+emi = { module = "dev.emi:emi-fabric", version.ref = "emi" }
+modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
+midnightlib = { module = "maven.modrinth:midnightlib", version.ref = "midnightlib" }
+
+[plugins]
+fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }

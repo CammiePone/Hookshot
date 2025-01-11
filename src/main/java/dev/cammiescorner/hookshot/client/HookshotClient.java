@@ -13,16 +13,16 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.item.ModelPredicateProviderRegistry;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 
 import static dev.cammiescorner.hookshot.core.registry.ModItems.*;
 
 @Environment(EnvType.CLIENT)
 public class HookshotClient implements ClientModInitializer {
-	public static final EntityModelLayer HOOKSHOT = new EntityModelLayer(new Identifier(Hookshot.MOD_ID, "hookshot"), "hookshot");
+	public static final ModelLayerLocation HOOKSHOT = new ModelLayerLocation(new ResourceLocation(Hookshot.MOD_ID, "hookshot"), "hookshot");
 
 	@Override
 	public void onInitializeClient() {
@@ -34,8 +34,8 @@ public class HookshotClient implements ClientModInitializer {
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ColourHelper.dyeableToDecimal((Dyeable) stack.getItem()), WHITE_HOOKSHOT, ORANGE_HOOKSHOT, MAGENTA_HOOKSHOT, LIGHT_BLUE_HOOKSHOT, YELLOW_HOOKSHOT, LIME_HOOKSHOT, PINK_HOOKSHOT, GREY_HOOKSHOT, LIGHT_GREY_HOOKSHOT, CYAN_HOOKSHOT, PURPLE_HOOKSHOT, BLUE_HOOKSHOT, BROWN_HOOKSHOT, GREEN_HOOKSHOT, RED_HOOKSHOT, BLACK_HOOKSHOT);
 
 		// Predicate Registry
-		ModelPredicateProviderRegistry.register(new Identifier(Hookshot.MOD_ID, "has_hook"), (stack, world, entity, seed) -> {
-			if(entity instanceof PlayerEntity) {
+		ItemProperties.registerGeneric(new ResourceLocation(Hookshot.MOD_ID, "has_hook"), (stack, world, entity, seed) -> {
+			if(entity instanceof Player) {
 				if(((PlayerProperties) entity).hasHook())
 					return 1;
 				else

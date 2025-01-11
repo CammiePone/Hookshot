@@ -8,31 +8,31 @@ import dev.cammiescorner.hookshot.core.registry.ModEntities;
 import dev.cammiescorner.hookshot.core.registry.ModSoundEvents;
 import dev.cammiescorner.hookshot.core.util.PlayerProperties;
 import dev.cammiescorner.hookshot.core.util.UpgradesHelper;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonPart;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.EnderDragonPart;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 
-public class HookshotEntity extends PersistentProjectileEntity {
-	private static final TagKey<Block> UNHOOKABLE = TagKey.of(RegistryKeys.BLOCK, new Identifier(Hookshot.MOD_ID, "unhookable"));
-	private static final TrackedData<Integer> HOOKED_ENTITY_ID = DataTracker.registerData(HookshotEntity.class, TrackedDataHandlerRegistry.INTEGER);
+public class HookshotEntity extends AbstractArrow {
+	private static final TagKey<Block> UNHOOKABLE = TagKey.create(Registries.BLOCK, new ResourceLocation(Hookshot.MOD_ID, "unhookable"));
+	private static final EntityDataAccessor<Integer> HOOKED_ENTITY_ID = SynchedEntityData.defineId(HookshotEntity.class, EntityDataSerializers.INT);
 
 	private double maxRange = 0D;
 	private double maxSpeed = 0D;
@@ -40,86 +40,86 @@ public class HookshotEntity extends PersistentProjectileEntity {
 	private Entity hookedEntity;
 	private ItemStack stack;
 
-	public HookshotEntity(EntityType<? extends PersistentProjectileEntity> type, PlayerEntity owner, World world) {
+	public HookshotEntity(EntityType<? extends AbstractArrow> type, Player owner, Level world) {
 		super(type, owner, world);
 		this.setNoGravity(true);
-		this.setDamage(0);
+		this.setBaseDamage(0);
 	}
 
-	public HookshotEntity(World world, double x, double y, double z) {
+	public HookshotEntity(Level world, double x, double y, double z) {
 		super(ModEntities.HOOKSHOT_ENTITY, x, y, z, world);
 		this.setNoGravity(true);
-		this.setDamage(0);
+		this.setBaseDamage(0);
 	}
 
-	public HookshotEntity(World world) {
+	public HookshotEntity(Level world) {
 		super(ModEntities.HOOKSHOT_ENTITY, world);
 		this.setNoGravity(true);
-		this.setDamage(0);
+		this.setBaseDamage(0);
 	}
 
 	@Override
-	protected void initDataTracker() {
-		super.initDataTracker();
-		this.getDataTracker().startTracking(HOOKED_ENTITY_ID, 0);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.getEntityData().define(HOOKED_ENTITY_ID, 0);
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		if(getOwner() instanceof PlayerEntity owner) {
-			if(isPulling && age % 2 == 0)
-				world.playSound(null, getOwner().getBlockPos(), ModSoundEvents.HOOKSHOT_REEL, SoundCategory.PLAYERS, 1F, 1F);
+		if(getOwner() instanceof Player owner) {
+			if(isPulling && tickCount % 2 == 0)
+				level.playSound(null, getOwner().blockPosition(), ModSoundEvents.HOOKSHOT_REEL, SoundSource.PLAYERS, 1F, 1F);
 
-			if(!world.isClient) {
-				if(owner.isDead() || !((PlayerProperties) owner).hasHook() || !((PlayerProperties) owner).hasHook() || owner.distanceTo(this) > maxRange || !(owner.getMainHandStack().getItem() instanceof HookshotItem || owner.getOffHandStack().getItem() instanceof HookshotItem) || !((PlayerProperties) owner).hasHook())
+			if(!level.isClientSide) {
+				if(owner.isDeadOrDying() || !((PlayerProperties) owner).hasHook() || !((PlayerProperties) owner).hasHook() || owner.distanceTo(this) > maxRange || !(owner.getMainHandItem().getItem() instanceof HookshotItem || owner.getOffhandItem().getItem() instanceof HookshotItem) || !((PlayerProperties) owner).hasHook())
 					kill();
 
 				if(this.hookedEntity != null) {
 					if(this.hookedEntity.isRemoved()) {
 						this.hookedEntity = null;
-						onRemoved();
+						onClientRemoval();
 					}
 					else {
-						if(UpgradesHelper.hasBleedUpgrade(stack) && age % 20 == 0)
-							hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
+						if(UpgradesHelper.hasBleedUpgrade(stack) && tickCount % 20 == 0)
+							hookedEntity.hurt(ModDamageSource.bleed(this, owner), 1);
 
-						this.updatePosition(this.hookedEntity.getX(), this.hookedEntity.getBodyY(0.8D), this.hookedEntity.getZ());
+						this.absMoveTo(this.hookedEntity.getX(), this.hookedEntity.getY(0.8D), this.hookedEntity.getZ());
 					}
 				}
 
-				if(owner.getMainHandStack() == stack || owner.getOffHandStack() == stack) {
+				if(owner.getMainHandItem() == stack || owner.getOffhandItem() == stack) {
 					if(isPulling) {
 						Entity target = owner;
 						Entity origin = this;
 
-						if(owner.isSneaking() && hookedEntity != null) {
+						if(owner.isShiftKeyDown() && hookedEntity != null) {
 							target = hookedEntity;
 							origin = owner;
 						}
 
 						double brakeZone = (6D * ((HookshotConfig.quickModAffectsPullSpeed ? maxSpeed : HookshotConfig.defaultMaxSpeed) / HookshotConfig.defaultMaxSpeed));
 						double pullSpeed = (HookshotConfig.quickModAffectsPullSpeed ? maxSpeed : HookshotConfig.defaultMaxSpeed) / 6D;
-						Vec3d distance = origin.getPos().subtract(target.getPos().add(0, target.getHeight() / 2, 0));
-						Vec3d motion = distance.normalize().multiply(distance.length() < brakeZone && !UpgradesHelper.hasAutomaticUpgrade(stack) ? (pullSpeed * distance.length()) / brakeZone : pullSpeed);
+						Vec3 distance = origin.position().subtract(target.position().add(0, target.getBbHeight() / 2, 0));
+						Vec3 motion = distance.normalize().scale(distance.length() < brakeZone && !UpgradesHelper.hasAutomaticUpgrade(stack) ? (pullSpeed * distance.length()) / brakeZone : pullSpeed);
 
 						if(Math.abs(distance.y) < 0.1D)
-							motion = new Vec3d(motion.x, 0, motion.z);
-						if(new Vec3d(distance.x, 0, distance.z).length() < new Vec3d(target.getWidth() / 2, 0, target.getWidth() / 2).length() / 1.4)
-							motion = new Vec3d(0, motion.y, 0);
+							motion = new Vec3(motion.x, 0, motion.z);
+						if(new Vec3(distance.x, 0, distance.z).length() < new Vec3(target.getBbWidth() / 2, 0, target.getBbWidth() / 2).length() / 1.4)
+							motion = new Vec3(0, motion.y, 0);
 
 						if(HookshotConfig.hookshotCancelsFallDamage)
 							target.fallDistance = 0;
 
-						target.setVelocity(motion);
-						target.velocityModified = true;
+						target.setDeltaMovement(motion);
+						target.hurtMarked = true;
 
 						if(UpgradesHelper.hasAutomaticUpgrade(stack) && owner.distanceTo(this) <= 3D)
 							kill();
 
-						if(stack.getMaxDamage() > 0 && age % 20 == 0)
-							stack.damage(1, owner, (entity) -> entity.sendToolBreakStatus(owner.getActiveHand()));
+						if(stack.getMaxDamage() > 0 && tickCount % 20 == 0)
+							stack.hurtAndBreak(1, owner, (entity) -> entity.broadcastBreakEvent(owner.getUsedItemHand()));
 					}
 				}
 				else {
@@ -134,7 +134,7 @@ public class HookshotEntity extends PersistentProjectileEntity {
 
 	@Override
 	public void kill() {
-		if(!world.isClient && getOwner() instanceof PlayerEntity owner) {
+		if(!level.isClientSide && getOwner() instanceof Player owner) {
 			((PlayerProperties) owner).setHasHook(false);
 			owner.setNoGravity(false);
 		}
@@ -143,69 +143,69 @@ public class HookshotEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
-	public boolean shouldRender(double distance) {
+	public boolean shouldRenderAtSqrDistance(double distance) {
 		return true;
 	}
 
 	@Override
-	protected float getDragInWater() {
-		if(!world.isClient) {
+	protected float getWaterInertia() {
+		if(!level.isClientSide) {
 			if(UpgradesHelper.hasAquaticUpgrade(stack))
 				return 0.99F;
 			else
-				return super.getDragInWater();
+				return super.getWaterInertia();
 		}
 		else
-			return super.getDragInWater();
+			return super.getWaterInertia();
 	}
 
 	@Override
-	public boolean canUsePortals() {
+	public boolean canChangeDimensions() {
 		return false;
 	}
 
 	@Override
-	protected ItemStack asItemStack() {
+	protected ItemStack getPickupItem() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	protected void onBlockHit(BlockHitResult blockHitResult) {
-		super.onBlockHit(blockHitResult);
+	protected void onHitBlock(BlockHitResult blockHitResult) {
+		super.onHitBlock(blockHitResult);
 		isPulling = true;
 
-		if(!world.isClient && getOwner() instanceof PlayerEntity owner && hookedEntity == null) {
+		if(!level.isClientSide && getOwner() instanceof Player owner && hookedEntity == null) {
 			owner.setNoGravity(true);
 
 			if(HookshotConfig.unhookableBlacklist) {
-				if(world.getBlockState(blockHitResult.getBlockPos()).isIn(UNHOOKABLE)) {
+				if(level.getBlockState(blockHitResult.getBlockPos()).is(UNHOOKABLE)) {
 					((PlayerProperties) owner).setHasHook(false);
 					isPulling = false;
-					onRemoved();
+					onClientRemoval();
 				}
 				else {
 					if(UpgradesHelper.hasEndericUpgrade(stack)) {
-						owner.requestTeleport(getX(), getY(), getZ());
+						owner.teleportTo(getX(), getY(), getZ());
 						((PlayerProperties) owner).setHasHook(false);
 						owner.fallDistance = 0.0F;
 						isPulling = false;
-						onRemoved();
+						onClientRemoval();
 					}
 				}
 			}
 			else {
-				if(!world.getBlockState(blockHitResult.getBlockPos()).isIn(UNHOOKABLE)) {
+				if(!level.getBlockState(blockHitResult.getBlockPos()).is(UNHOOKABLE)) {
 					((PlayerProperties) owner).setHasHook(false);
 					isPulling = false;
-					onRemoved();
+					onClientRemoval();
 				}
 				else {
 					if(UpgradesHelper.hasEndericUpgrade(stack)) {
-						owner.requestTeleport(getX(), getY(), getZ());
+						owner.teleportTo(getX(), getY(), getZ());
 						((PlayerProperties) owner).setHasHook(false);
 						owner.fallDistance = 0.0F;
 						isPulling = false;
-						onRemoved();
+						onClientRemoval();
 					}
 				}
 			}
@@ -213,58 +213,58 @@ public class HookshotEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
-	protected void onEntityHit(EntityHitResult entityHitResult) {
-		if(!world.isClient && getOwner() instanceof PlayerEntity owner && entityHitResult.getEntity() != owner) {
+	protected void onHitEntity(EntityHitResult entityHitResult) {
+		if(!level.isClientSide && getOwner() instanceof Player owner && entityHitResult.getEntity() != owner) {
 			if((entityHitResult.getEntity() instanceof LivingEntity || entityHitResult.getEntity() instanceof EnderDragonPart) && hookedEntity == null) {
 				hookedEntity = entityHitResult.getEntity();
-				dataTracker.set(HOOKED_ENTITY_ID, hookedEntity.getId() + 1);
+				entityData.set(HOOKED_ENTITY_ID, hookedEntity.getId() + 1);
 				isPulling = true;
 			}
 
 			if(hookedEntity != null && UpgradesHelper.hasBleedUpgrade(stack))
-				hookedEntity.damage(ModDamageSource.bleed(this, owner), 1);
+				hookedEntity.hurt(ModDamageSource.bleed(this, owner), 1);
 
 			if(UpgradesHelper.hasEndericUpgrade(stack)) {
-				owner.requestTeleport(getX(), getY(), getZ());
+				owner.teleportTo(getX(), getY(), getZ());
 				owner.fallDistance = 0.0F;
 				((PlayerProperties) owner).setHasHook(false);
 				isPulling = false;
-				onRemoved();
+				onClientRemoval();
 			}
 		}
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound tag) {
-		super.readCustomDataFromNbt(tag);
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
 
 		maxRange = tag.getDouble("maxRange");
 		maxSpeed = tag.getDouble("maxSpeed");
 		isPulling = tag.getBoolean("isPulling");
-		stack = ItemStack.fromNbt(tag.getCompound("hookshotItem"));
+		stack = ItemStack.of(tag.getCompound("hookshotItem"));
 
-		if(world.getEntityById(tag.getInt("owner")) instanceof PlayerEntity owner)
+		if(level.getEntity(tag.getInt("owner")) instanceof Player owner)
 			setOwner(owner);
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound tag) {
-		super.writeCustomDataToNbt(tag);
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
 		tag.putDouble("maxRange", maxRange);
 		tag.putDouble("maxSpeed", maxSpeed);
 		tag.putBoolean("isPulling", isPulling);
-		tag.put("hookshotItem", stack.writeNbt(new NbtCompound()));
+		tag.put("hookshotItem", stack.save(new CompoundTag()));
 
-		if(getOwner() instanceof PlayerEntity owner)
+		if(getOwner() instanceof Player owner)
 			tag.putInt("owner", owner.getId());
 	}
 
 	public void setProperties(ItemStack stack, double maxRange, double maxVelocity, float pitch, float yaw, float roll, float modifierZ) {
 		float f = 0.017453292F;
-		float x = -MathHelper.sin(yaw * f) * MathHelper.cos(pitch * f);
-		float y = -MathHelper.sin((pitch + roll) * f);
-		float z = MathHelper.cos(yaw * f) * MathHelper.cos(pitch * f);
-		this.setVelocity(x, y, z, modifierZ, 0);
+		float x = -Mth.sin(yaw * f) * Mth.cos(pitch * f);
+		float y = -Mth.sin((pitch + roll) * f);
+		float z = Mth.cos(yaw * f) * Mth.cos(pitch * f);
+		this.shoot(x, y, z, modifierZ, 0);
 
 		this.stack = stack;
 		this.maxRange = maxRange;
