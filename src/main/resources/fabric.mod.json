@@ -1,50 +1,66 @@
 {
   "schemaVersion": 1,
-  "id": "hookshot",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "Hookshot",
-  "description": "Just a simple mod that adds a Hookshot into the game.",
-  "authors":
-  [
+  "name": "${mod_display_name}",
+  "description": "${mod_description}",
+  "authors": [
     "Cammie"
   ],
-  "contact":
-  {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/hookshot",
-    "sources": "https://github.com/CammiePone/Hookshot",
-    "issues": "https://github.com/CammiePone/Hookshot/issues"
+  "contributors": [
+    "MoriyaShiine"
+  ],
+  "contact": {
+    "homepage": "${homepage_url}",
+    "sources": "${sources_url}",
+    "issues": "${issues_url}"
   },
-  "license": "Custom License",
-  "icon": "assets/hookshot/icon.png",
+  "license": "${license_url}",
+  "icon": "icon.png",
   "environment": "*",
-  "entrypoints":
-  {
-    "main":
-    [
+  "custom": {
+    "mc-publish": {
+      "curseforge": "396512",
+      "modrinth": "Llu0xJGi",
+      "dependencies": [
+        "fabric-api(required){curseforge:306612}{modrinth:P7dR8mSH}",
+        "resourcefulconfig(required){modrinth:M1953qlQ}{curseforge:714059}",
+        "sparkweave(required){modrinth:nf68xfAw}{curseforge:911456}"
+      ],
+      "loaders": [
+        "fabric",
+        "quilt"
+      ],
+      "java": [
+        "${java_version}"
+      ]
+    },
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "${discord_url}"
+      }
+    }
+  },
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "=${minecraft_version}",
+    "java": ">=${java_version}",
+    "fabric-api": "*",
+    "resourcefulconfig": "*",
+    "sparkweave": ">=0.5.0 <0.100.0"
+  },
+  "entrypoints": {
+    "main": [
       "dev.cammiescorner.hookshot.Hookshot"
     ],
-    "client":
-    [
+    "client": [
       "dev.cammiescorner.hookshot.client.HookshotClient"
     ],
-    "modmenu":
-    [
+    "modmenu": [
       "dev.cammiescorner.hookshot.core.integration.HookshotModMenu"
     ]
   },
-  "mixins":
-  [
-    "hookshot.mixins.json"
-  ],
-  "depends":
-  {
-    "fabricloader": ">=0.14.14",
-    "fabric": "*",
-    "minecraft": "1.19.3",
-    "midnightlib": ">=1.1.0"
-  },
-  "suggests":
-  {
-    "flamingo": "*"
-  }
+  "mixins": [
+    "${mod_id}.mixins.json"
+  ]
 }

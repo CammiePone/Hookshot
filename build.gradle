@@ -9,7 +9,7 @@ def buildTime = ENV.BUILD_TIME ?: new Date().format("yyyyMMddHHmmss")
 
 def javaVersion = 17
 
-group = project.maven_group
+group = project.maven_group_id
 
 boolean isPreviewBuild = !ENV.TAG || ENV.TAG.matches(".+-.+")
 def buildNumber = !ENV.TAG ? ("${ENV.BUILD_NUMBER ? "build.${ENV.BUILD_NUMBER}" : buildTime}-${libs.versions.minecraft.get()}") : ""
@@ -58,13 +58,29 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", project.version
-
     filteringCharset = "UTF-8"
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
+    def expandProps = [
+            "version"             : version,
+            "maven_group_id"      : maven_group_id,
+            "mod_id"              : mod_id,
+            "mod_display_name"    : mod_display_name,
+            "mod_description"     : mod_description,
+            "sources_url"         : sources_url,
+            "issues_url"          : issues_url,
+            "license_url"         : license_url,
+            "discord_url"         : discord_url,
+            "homepage_url"        : homepage_url,
+
+            "minecraft_version"   : libs.versions.minecraft.get(),
+            "fabric_loader_version": libs.versions.fabric.loader.get(),
+            "java_version": "${javaVersion}",
+    ]
+
+    filesMatching(['pack.mcmeta', '*.mod.json', '*.mixins.json']) {
+        expand expandProps
     }
+    inputs.properties(expandProps)
 }
 
 tasks.withType(JavaCompile) {
