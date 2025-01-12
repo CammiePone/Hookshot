@@ -81,23 +81,18 @@ public class HookshotItem extends Item implements Dyeable {
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity user) {
 		if(!HookshotConfig.useClassicHookshotLogic) {
 			HookshotComponents.HOOK_OWNER.maybeGet(user).ifPresent(hookOwner -> hookOwner.setHasHook(false));
-			if(user instanceof Player player && HookshotConfig.hookshotCooldown > 0) {
-				addHookCooldown(player, HookshotConfig.hookshotCooldown);
-			}
 		}
 
 		return super.finishUsingItem(stack, level, user);
-	}
-
-	public static void addHookCooldown(Player player, int cooldown) {
-		var cooldowns = player.getCooldowns();
-		BuiltInRegistries.ITEM.getTagOrEmpty(HookshotItemTags.HOOKSHOTS).forEach(holder -> cooldowns.addCooldown(holder.value(), cooldown));
 	}
 
 	@Override
 	public void releaseUsing(ItemStack stack, Level world, LivingEntity user, int remainingUseTicks) {
 		if(!HookshotConfig.useClassicHookshotLogic) {
 			HookshotComponents.HOOK_OWNER.maybeGet(user).ifPresent(hookOwner -> hookOwner.setHasHook(false));
+			if(user instanceof Player player && HookshotConfig.hookshotCooldown > 0) {
+				addHookCooldown(player, HookshotConfig.hookshotCooldown);
+			}
 		}
 	}
 
@@ -144,5 +139,10 @@ public class HookshotItem extends Item implements Dyeable {
 		}
 
 		return null;
+	}
+
+	public static void addHookCooldown(Player player, int cooldown) {
+		var cooldowns = player.getCooldowns();
+		BuiltInRegistries.ITEM.getTagOrEmpty(HookshotItemTags.HOOKSHOTS).forEach(holder -> cooldowns.addCooldown(holder.value(), cooldown));
 	}
 }
