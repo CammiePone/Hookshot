@@ -37,6 +37,7 @@
   "item.hookshot.white_hookshot": "White Hookshot",
   "item.hookshot.yellow_hookshot": "Yellow Hookshot",
   "subtitles.hookshot.hookshot_reel": "Hookshot Reel",
+  "tag.block.hookshot.unhookable": "Unable to attach hookshot",
   "tag.item.hookshot.hookshot_repair_items": "Hookshot Repair Items",
   "tag.item.hookshot.hookshots": "Hookshots"
 }

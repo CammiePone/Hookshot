@@ -1,5 +1,6 @@
 package dev.cammiescorner.hookshot.datagen.client;
 
+import dev.cammiescorner.hookshot.data.HookshotBlockTags;
 import dev.cammiescorner.hookshot.data.HookshotDamageTypes;
 import dev.cammiescorner.hookshot.data.HookshotItemTags;
 import dev.cammiescorner.hookshot.registry.HookshotEntities;
@@ -51,6 +52,8 @@ public class HookshotEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(HookshotItems.GREEN_HOOKSHOT.get(), "Green Hookshot");
         translationBuilder.add(HookshotItems.RED_HOOKSHOT.get(), "Red Hookshot");
         translationBuilder.add(HookshotItems.BLACK_HOOKSHOT.get(), "Black Hookshot");
+
+        tag(translationBuilder, HookshotBlockTags.UNHOOKABLE, "Unable to attach hookshot");
 
         tag(translationBuilder, HookshotItemTags.HOOKSHOTS, "Hookshots");
         tag(translationBuilder, HookshotItemTags.HOOKSHOT_REPAIR_ITEMS, "Hookshot Repair Items");
