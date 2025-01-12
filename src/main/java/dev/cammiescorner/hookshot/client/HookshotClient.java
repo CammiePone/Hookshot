@@ -4,6 +4,8 @@ import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
 import dev.cammiescorner.hookshot.client.entity.renderer.HookshotEntityRenderer;
 import dev.cammiescorner.hookshot.component.HookOwnerComponent;
+import dev.cammiescorner.hookshot.data.HookshotItemTags;
+import dev.cammiescorner.hookshot.item.HookshotItem;
 import dev.cammiescorner.hookshot.registry.HookshotComponents;
 import dev.cammiescorner.hookshot.registry.HookshotEntities;
 import dev.cammiescorner.hookshot.registry.HookshotItems;
@@ -37,13 +39,20 @@ public class HookshotClient implements ClientModInitializer {
             }
         });
 
-        ItemProperties.registerGeneric(Hookshot.id("has_hook"), (stack, world, entity, seed) -> {
-            HookOwnerComponent hook = HookshotComponents.HOOK_OWNER.getNullable(entity);
-            if (hook != null && !hook.hasHook()) {
-                return 0.0F;
+        ItemProperties.registerGeneric(HookshotItem.USING_HOOK_MODEL_PROPERTY_ID, (stack, world, entity, seed) -> {
+            if(entity != null) {
+                HookOwnerComponent hook = HookshotComponents.HOOK_OWNER.getNullable(entity);
+                if (hook != null && hook.hasHook()) {
+                    var mainHandStack = entity.getMainHandItem();
+
+                    // only remove hook from item that is held AND currently active
+                    if(stack == mainHandStack || (!mainHandStack.is(HookshotItemTags.HOOKSHOTS) && stack == entity.getOffhandItem())) {
+                        return 1.0F;
+                    }
+                }
             }
 
-            return 1.0F;
+            return 0.0F;
         });
     }
 }

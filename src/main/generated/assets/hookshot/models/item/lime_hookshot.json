@@ -1,3 +1,11 @@
 {
-  "parent": "hookshot:item/hookshot"
+  "parent": "hookshot:item/hookshot",
+  "overrides": [
+    {
+      "model": "hookshot:item/hookshot_hookless",
+      "predicate": {
+        "hookshot:using_hook": 1.0
+      }
+    }
+  ]
 }

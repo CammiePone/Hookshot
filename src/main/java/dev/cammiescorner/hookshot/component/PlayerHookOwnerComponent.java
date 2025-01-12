@@ -41,6 +41,7 @@ public class PlayerHookOwnerComponent implements HookOwnerComponent, PlayerCompo
     @Override
     public void setHasHook(boolean hasHook) {
         this.hasHook = hasHook;
+        player.syncComponent(HookshotComponents.HOOK_OWNER);
     }
 
     @Override
@@ -50,10 +51,6 @@ public class PlayerHookOwnerComponent implements HookOwnerComponent, PlayerCompo
         }
         this.isFloating = shouldFloat;
         player.setNoGravity(shouldFloat || hadNoGravity);
-    }
-
-    @Override
-    public void sync() {
         player.syncComponent(HookshotComponents.HOOK_OWNER);
     }
 

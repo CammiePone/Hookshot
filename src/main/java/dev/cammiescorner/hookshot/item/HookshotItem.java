@@ -1,6 +1,7 @@
 package dev.cammiescorner.hookshot.item;
 
 import com.mojang.datafixers.util.Pair;
+import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.HookshotConfig;
 import dev.cammiescorner.hookshot.component.HookOwnerComponent;
 import dev.cammiescorner.hookshot.data.HookshotItemTags;
@@ -12,6 +13,7 @@ import dev.cammiescorner.hookshot.util.UpgradesHelper;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -26,9 +28,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class HookshotItem extends Item implements Dyeable {
-	private final DyeColor color;
 
 	public static final Ingredient REPAIR_INGREDIENT = Ingredient.of(HookshotItemTags.HOOKSHOT_REPAIR_ITEMS);
+	public static final ResourceLocation USING_HOOK_MODEL_PROPERTY_ID = Hookshot.id("using_hook");
+
+
+	private final DyeColor color;
 
 	public HookshotItem(DyeColor color) {
 		super(new Item.Properties().stacksTo(1).durability(HookshotConfig.defaultMaxDurability));

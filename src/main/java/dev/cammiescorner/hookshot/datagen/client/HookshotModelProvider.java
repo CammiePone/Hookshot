@@ -1,6 +1,9 @@
 package dev.cammiescorner.hookshot.datagen.client;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import dev.cammiescorner.hookshot.Hookshot;
+import dev.cammiescorner.hookshot.item.HookshotItem;
 import dev.cammiescorner.hookshot.registry.HookshotItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
@@ -48,6 +51,20 @@ public class HookshotModelProvider extends FabricModelProvider {
     }
 
     private void hookshot(ItemModelGenerators generator, Supplier<? extends ItemLike> item) {
-        HOOKSHOT_BASE.create(ModelLocationUtils.getModelLocation(item.get().asItem()), new TextureMapping(), generator.output);
+        HOOKSHOT_BASE.create(ModelLocationUtils.getModelLocation(item.get().asItem()), new TextureMapping(), generator.output, (modelLocation, textureMap) -> {
+            var json = HOOKSHOT_BASE.createBaseTemplate(modelLocation, textureMap);
+
+            var overrides = new JsonArray();
+            var override = new JsonObject();
+            var predicate = new JsonObject();
+            predicate.addProperty(HookshotItem.USING_HOOK_MODEL_PROPERTY_ID.toString(), 1.0F);
+            override.add("predicate", predicate);
+
+            override.addProperty("model", Hookshot.id("item/hookshot_hookless").toString());
+
+            overrides.add(override);
+            json.add("overrides", overrides);
+            return json;
+        });
     }
 }

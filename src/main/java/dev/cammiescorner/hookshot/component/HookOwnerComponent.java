@@ -11,7 +11,5 @@ public interface HookOwnerComponent extends Component {
 
     void setTempNoGravity(boolean floating);
 
-    void sync();
-
     Entity getEntity();
 }

@@ -166,7 +166,6 @@ public class HookshotEntity extends AbstractArrow {
             HookshotComponents.HOOK_OWNER.maybeGet(getOwner()).ifPresent(hookOwner -> {
                 hookOwner.setTempNoGravity(false);
                 hookOwner.setHasHook(false);
-                hookOwner.sync();
             });
         }
         super.remove(reason);
