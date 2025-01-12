@@ -1,0 +1,16 @@
+{
+  "type": "hookshot:dye_crafting_shapeless",
+  "category": "equipment",
+  "group": "hookshot:blue_hookshot",
+  "hookshot": {
+    "tag": "hookshot:hookshots"
+  },
+  "ingredients": [
+    {
+      "tag": "c:blue_dyes"
+    }
+  ],
+  "result": {
+    "item": "hookshot:blue_hookshot"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "hookshot:dye_crafting_shapeless",
+  "category": "equipment",
+  "group": "hookshot:gray_hookshot",
+  "hookshot": {
+    "tag": "hookshot:hookshots"
+  },
+  "ingredients": [
+    {
+      "tag": "c:gray_dyes"
+    }
+  ],
+  "result": {
+    "item": "hookshot:gray_hookshot"
+  }
+}

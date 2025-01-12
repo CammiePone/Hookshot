@@ -1,41 +1,34 @@
 package dev.cammiescorner.hookshot;
 
-import dev.cammiescorner.hookshot.core.integration.HookshotConfig;
-import dev.cammiescorner.hookshot.core.registry.ModEntities;
-import dev.cammiescorner.hookshot.core.registry.ModItems;
-import dev.cammiescorner.hookshot.core.registry.ModSoundEvents;
-import dev.cammiescorner.hookshot.core.util.recipe.HookshotShapelessRecipe;
-import dev.cammiescorner.hookshot.core.util.recipe.HookshotSmithingRecipe;
-import eu.midnightdust.lib.config.MidnightConfig;
+import com.teamresourceful.resourcefulconfig.common.config.Configurator;
+import dev.cammiescorner.hookshot.registry.*;
+import dev.upcraft.sparkweave.api.registry.RegistryService;
+import dev.upcraft.sparkweave.api.util.logging.SparkweaveLoggerFactory;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
+import org.apache.logging.log4j.Logger;
 
 public class Hookshot implements ModInitializer {
-	public static final String MOD_ID = "hookshot";
 
-	@Override
-	public void onInitialize() {
-		DataTrackers.HOOK_TRACKER.getId();
-		// Config
-		MidnightConfig.init(Hookshot.MOD_ID, HookshotConfig.class);
+    public static final String MOD_ID = "hookshot";
+    public static final Logger LOGGER = SparkweaveLoggerFactory.getLogger();
+    public static final Configurator configurator = new Configurator();
 
-		// Objects
-		ModItems.register();
-		ModEntities.register();
-		ModSoundEvents.register();
+    @Override
+    public void onInitialize() {
+        configurator.registerConfig(HookshotConfig.class);
 
-		// Recipes
-		Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, new ResourceLocation(MOD_ID, "smithing"), new HookshotSmithingRecipe.Serializer());
-		Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, new ResourceLocation(MOD_ID, "crafting_shapeless"), new HookshotShapelessRecipe.Serializer());
-	}
+        // FIXME use CCA instead
 
-	public static class DataTrackers {
-		public static final EntityDataAccessor<Boolean> HOOK_TRACKER = SynchedEntityData.defineId(Player.class, EntityDataSerializers.BOOLEAN);
-	}
+        var registryService = RegistryService.get();
+        HookshotEntities.ENTITY_TYPES.accept(registryService);
+        HookshotItems.ITEMS.accept(registryService);
+        HookshotRecipeSerializers.RECIPE_SERIALIZERS.accept(registryService);
+        HookshotSoundEvents.SOUND_EVENTS.accept(registryService);
+        HookshotUpgrades.UPGRADES.accept(registryService);
+    }
+
+    public static ResourceLocation id(String path) {
+        return new ResourceLocation(MOD_ID, path);
+    }
 }

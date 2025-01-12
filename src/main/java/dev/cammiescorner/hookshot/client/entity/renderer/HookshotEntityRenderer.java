@@ -6,7 +6,7 @@ import com.mojang.math.Axis;
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.client.HookshotClient;
 import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
-import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
+import dev.cammiescorner.hookshot.entity.HookshotEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -23,8 +23,8 @@ import org.joml.Matrix4f;
 
 public class HookshotEntityRenderer extends ArrowRenderer<HookshotEntity> {
 	private static HookshotEntityModel model;
-	private static final ResourceLocation TEXTURE = new ResourceLocation(Hookshot.MOD_ID, "textures/entity/hookshot.png");
-	private static final ResourceLocation CHAIN_TEXTURE = new ResourceLocation(Hookshot.MOD_ID, "textures/entity/chain.png");
+	private static final ResourceLocation TEXTURE = Hookshot.id("textures/entity/hookshot.png");
+	private static final ResourceLocation CHAIN_TEXTURE = Hookshot.id("textures/entity/chain.png");
 	private static final RenderType CHAIN_LAYER = RenderType.entitySmoothCutout(CHAIN_TEXTURE);
 
 	public HookshotEntityRenderer(EntityRendererProvider.Context context) {
@@ -41,7 +41,7 @@ public class HookshotEntityRenderer extends ArrowRenderer<HookshotEntity> {
 			matrices.pushPose();
 			matrices.mulPose(Axis.YP.rotationDegrees(Mth.lerp(tickDelta, entity.yRotO, entity.getYRot()) - 180));
 			matrices.mulPose(Axis.XP.rotationDegrees(Mth.lerp(tickDelta, entity.xRotO, entity.getXRot())));
-			VertexConsumer vertexConsumer = provider.getBuffer(model.renderType(this.getTexture(entity)));
+			VertexConsumer vertexConsumer = provider.getBuffer(model.renderType(this.getTextureLocation(entity)));
 			model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			matrices.popPose();
 
@@ -108,7 +108,7 @@ public class HookshotEntityRenderer extends ArrowRenderer<HookshotEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTexture(HookshotEntity entity) {
+	public ResourceLocation getTextureLocation(HookshotEntity entity) {
 		return TEXTURE;
 	}
 }

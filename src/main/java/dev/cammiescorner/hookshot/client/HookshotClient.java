@@ -3,10 +3,13 @@ package dev.cammiescorner.hookshot.client;
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
 import dev.cammiescorner.hookshot.client.entity.renderer.HookshotEntityRenderer;
-import dev.cammiescorner.hookshot.core.registry.ModEntities;
-import dev.cammiescorner.hookshot.core.util.ColourHelper;
-import dev.cammiescorner.hookshot.core.util.Dyeable;
-import dev.cammiescorner.hookshot.core.util.PlayerProperties;
+import dev.cammiescorner.hookshot.component.HookOwnerComponent;
+import dev.cammiescorner.hookshot.registry.HookshotComponents;
+import dev.cammiescorner.hookshot.registry.HookshotEntities;
+import dev.cammiescorner.hookshot.registry.HookshotItems;
+import dev.cammiescorner.hookshot.util.ColorHelper;
+import dev.cammiescorner.hookshot.util.Dyeable;
+import dev.upcraft.sparkweave.api.registry.RegistrySupplier;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,34 +18,32 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-
-import static dev.cammiescorner.hookshot.core.registry.ModItems.*;
 
 @Environment(EnvType.CLIENT)
 public class HookshotClient implements ClientModInitializer {
-	public static final ModelLayerLocation HOOKSHOT = new ModelLayerLocation(new ResourceLocation(Hookshot.MOD_ID, "hookshot"), "hookshot");
+    public static final ModelLayerLocation HOOKSHOT = new ModelLayerLocation(Hookshot.id("hookshot"), "hookshot");
 
-	@Override
-	public void onInitializeClient() {
-		// Entity Renderer Registry
-		EntityRendererRegistry.register(ModEntities.HOOKSHOT_ENTITY, HookshotEntityRenderer::new);
-		EntityModelLayerRegistry.registerModelLayer(HOOKSHOT, HookshotEntityModel::getTexturedModelData);
+    @Override
+    public void onInitializeClient() {
+        EntityModelLayerRegistry.registerModelLayer(HOOKSHOT, HookshotEntityModel::getTexturedModelData);
 
-		// Colour Registry
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ColourHelper.dyeableToDecimal((Dyeable) stack.getItem()), WHITE_HOOKSHOT, ORANGE_HOOKSHOT, MAGENTA_HOOKSHOT, LIGHT_BLUE_HOOKSHOT, YELLOW_HOOKSHOT, LIME_HOOKSHOT, PINK_HOOKSHOT, GREY_HOOKSHOT, LIGHT_GREY_HOOKSHOT, CYAN_HOOKSHOT, PURPLE_HOOKSHOT, BLUE_HOOKSHOT, BROWN_HOOKSHOT, GREEN_HOOKSHOT, RED_HOOKSHOT, BLACK_HOOKSHOT);
+        EntityRendererRegistry.register(HookshotEntities.HOOKSHOT.get(), HookshotEntityRenderer::new);
 
-		// Predicate Registry
-		ItemProperties.registerGeneric(new ResourceLocation(Hookshot.MOD_ID, "has_hook"), (stack, world, entity, seed) -> {
-			if(entity instanceof Player) {
-				if(((PlayerProperties) entity).hasHook())
-					return 1;
-				else
-					return 0;
-			}
+        // TODO make items items use individual textures, get rid of color provider
+        HookshotItems.ITEMS.stream().map(RegistrySupplier::get).forEach(item -> {
+            if (item instanceof Dyeable dyeable) {
+                var color = ColorHelper.dyeToDecimal(dyeable.getColor());
+                ColorProviderRegistry.ITEM.register((itemStack, tintIndex) -> tintIndex == 0 ? color : 0xFFFFFFFF, item);
+            }
+        });
 
-			return 0;
-		});
-	}
+        ItemProperties.registerGeneric(Hookshot.id("has_hook"), (stack, world, entity, seed) -> {
+            HookOwnerComponent hook = HookshotComponents.HOOK_OWNER.getNullable(entity);
+            if (hook != null && !hook.hasHook()) {
+                return 0.0F;
+            }
+
+            return 1.0F;
+        });
+    }
 }

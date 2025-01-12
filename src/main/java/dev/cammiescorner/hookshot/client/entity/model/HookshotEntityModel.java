@@ -4,7 +4,7 @@ package dev.cammiescorner.hookshot.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
+import dev.cammiescorner.hookshot.entity.HookshotEntity;
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -44,12 +44,12 @@ public class HookshotEntityModel extends EntityModel<HookshotEntity> {
 	}
 
 	@Override
-	public void setAngles(HookshotEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
+	public void setupAnim(HookshotEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
-		hookshotBase.render(matrices, vertices, light, overlay);
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		hookshotBase.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 }

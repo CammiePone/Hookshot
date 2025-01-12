@@ -1,0 +1,16 @@
+{
+  "type": "hookshot:dye_crafting_shapeless",
+  "category": "equipment",
+  "group": "hookshot:yellow_hookshot",
+  "hookshot": {
+    "tag": "hookshot:hookshots"
+  },
+  "ingredients": [
+    {
+      "tag": "c:yellow_dyes"
+    }
+  ],
+  "result": {
+    "item": "hookshot:yellow_hookshot"
+  }
+}

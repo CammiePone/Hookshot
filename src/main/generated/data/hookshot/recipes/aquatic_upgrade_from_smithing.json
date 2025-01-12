@@ -1,0 +1,11 @@
+{
+  "type": "hookshot:upgrade_smithing",
+  "addition": {
+    "item": "minecraft:prismarine_shard"
+  },
+  "apply_upgrade": "hookshot:aquatic",
+  "base": {
+    "tag": "hookshot:hookshots"
+  },
+  "template": []
+}

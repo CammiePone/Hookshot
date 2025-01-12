@@ -12,6 +12,7 @@ jetbrains_annotations = "26.0.1"
 
 fabric_api = "0.92.2+1.20.1"
 
+cca = "5.2.3"
 emi = "1.1.18+1.20.1"
 modmenu = "7.2.2"
 resourceful_config = "2.1.2"
@@ -25,11 +26,16 @@ jetbrains_annotations = { module = "org.jetbrains:annotations", version.ref = "j
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
 
+cca_base = { module = "dev.onyxstudios.cardinal-components-api:cardinal-components-base", version.ref = "cca" }
+cca_entity = { module = "dev.onyxstudios.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
 datasync_fabric = { module = "dev.upcraft.datasync:datasync-minecraft-1.20.1-fabric", version.ref = "datasync" }
 emi = { module = "dev.emi:emi-fabric", version.ref = "emi" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 resourceful_config = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-1.20.1", version.ref = "resourceful_config" }
 sparkweave = { module = "dev.upcraft.sparkweave:Sparkweave-Fabric", version.ref = "sparkweave" }
+
+[bundles]
+cca = ["cca_base", "cca_entity"]
 
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }

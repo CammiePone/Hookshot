@@ -23,6 +23,7 @@ repositories {
     mavenCentral()
     maven { url = 'https://maven.terraformersmc.com' }
     maven { url = 'https://maven.uuid.gg/releases' }
+    maven { url = 'https://maven.ladysnake.org/releases' }
     maven { url = "https://nexus.resourcefulbees.com/repository/maven-public" }
     maven {
         name = 'ParchmentMC'
@@ -63,6 +64,8 @@ dependencies {
 
     modImplementation libs.sparkweave
 
+    modImplementation libs.bundles.cca
+
     modCompileOnly libs.modmenu
     modLocalRuntime libs.modmenu
 
@@ -75,6 +78,10 @@ dependencies {
     modLocalRuntime libs.emi
 }
 
+fabricApi {
+    configureDataGeneration()
+}
+
 loom {
     mods {
         "${mod_id}" {
@@ -83,7 +90,7 @@ loom {
         }
     }
 
-//    accessWidenerPath.set(project.file("src/main/resources/${mod_id}.accesswidener"))
+    accessWidenerPath.set(project.file("src/main/resources/${mod_id}.accesswidener"))
 
     runs {
         client {

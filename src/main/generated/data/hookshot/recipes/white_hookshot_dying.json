@@ -1,0 +1,16 @@
+{
+  "type": "hookshot:dye_crafting_shapeless",
+  "category": "equipment",
+  "group": "hookshot:white_hookshot",
+  "hookshot": {
+    "tag": "hookshot:hookshots"
+  },
+  "ingredients": [
+    {
+      "tag": "c:white_dyes"
+    }
+  ],
+  "result": {
+    "item": "hookshot:white_hookshot"
+  }
+}

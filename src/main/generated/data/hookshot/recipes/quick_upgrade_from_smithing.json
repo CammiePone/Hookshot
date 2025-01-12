@@ -1,0 +1,11 @@
+{
+  "type": "hookshot:upgrade_smithing",
+  "addition": {
+    "item": "minecraft:piston"
+  },
+  "apply_upgrade": "hookshot:quick",
+  "base": {
+    "tag": "hookshot:hookshots"
+  },
+  "template": []
+}

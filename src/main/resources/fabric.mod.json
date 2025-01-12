@@ -25,7 +25,9 @@
       "dependencies": [
         "fabric-api(required){curseforge:306612}{modrinth:P7dR8mSH}",
         "resourcefulconfig(required){modrinth:M1953qlQ}{curseforge:714059}",
-        "sparkweave(required){modrinth:nf68xfAw}{curseforge:911456}"
+        "sparkweave(required){modrinth:nf68xfAw}{curseforge:911456}",
+        "cardinal-components-base(required){modrinth:K01OU20C}{curseforge:318449}",
+        "cardinal-components-entity#(ignore:true)"
       ],
       "loaders": [
         "fabric",
@@ -39,6 +41,17 @@
       "links": {
         "modmenu.discord": "${discord_url}"
       }
+    },
+    "cardinal-components": [
+      "${mod_id}:hook_owner"
+    ],
+    "loom:injected_interfaces": {
+      "net/minecraft/class_161\u0024class_162": [
+        "dev/cammiescorner/hookshot/util/datagen/AdvancementBuilderExt"
+      ],
+      "net/minecraft/class_7877": [
+        "dev/cammiescorner/hookshot/util/datagen/RegistrySetBuilderExt"
+      ]
     }
   },
   "depends": {
@@ -47,7 +60,9 @@
     "java": ">=${java_version}",
     "fabric-api": "*",
     "resourcefulconfig": "*",
-    "sparkweave": ">=0.5.0 <0.100.0"
+    "sparkweave": ">=0.5.0 <0.100.0",
+    "cardinal-components-base": "*",
+    "cardinal-components-entity": "*"
   },
   "entrypoints": {
     "main": [
@@ -56,11 +71,18 @@
     "client": [
       "dev.cammiescorner.hookshot.client.HookshotClient"
     ],
+    "fabric-datagen": [
+      "dev.cammiescorner.hookshot.datagen.HookshotDatagenerator"
+    ],
+    "cardinal-components": [
+      "dev.cammiescorner.hookshot.registry.HookshotComponents"
+    ],
     "modmenu": [
-      "dev.cammiescorner.hookshot.core.integration.HookshotModMenu"
+      "dev.cammiescorner.hookshot.compat.ModmenuCompat"
     ]
   },
   "mixins": [
     "${mod_id}.mixins.json"
-  ]
+  ],
+  "accessWidener": "${mod_id}.accesswidener"
 }

@@ -2,8 +2,7 @@
 	"hookshot_reel": {
 		"subtitle": "subtitles.hookshot.hookshot_reel",
 		"sounds": [
-			"hookshot:reel"
+			"hookshot:hookshot_reel"
 		]
 	}
 }
-
