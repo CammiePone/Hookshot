@@ -32,4 +32,7 @@ public final class HookshotConfig {
 
 	@ConfigEntry(id = "defaultMaxDurability", type = EntryType.INTEGER, translation = "config.hookshot.defaultMaxDurability")
 	public static int defaultMaxDurability = 512;
+
+	@ConfigEntry(id = "hookshotCooldown", type = EntryType.INTEGER, translation = "config.hookshot.hookshotCooldown")
+	public static int hookshotCooldown = 0;
 }
