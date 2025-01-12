@@ -3,6 +3,7 @@ package dev.cammiescorner.hookshot.entity;
 import dev.cammiescorner.hookshot.HookshotConfig;
 import dev.cammiescorner.hookshot.data.HookshotBlockTags;
 import dev.cammiescorner.hookshot.data.HookshotDamageTypes;
+import dev.cammiescorner.hookshot.data.HookshotItemTags;
 import dev.cammiescorner.hookshot.item.HookshotItem;
 import dev.cammiescorner.hookshot.registry.HookshotComponents;
 import dev.cammiescorner.hookshot.registry.HookshotEntities;
@@ -225,7 +226,11 @@ public class HookshotEntity extends AbstractArrow {
 
     @Override
     public void onClientRemoval() {
-        HookshotComponents.HOOK_OWNER.maybeGet(getOwner()).ifPresent(hookOwner -> hookOwner.setHasHook(false));
+        var owner = getOwner();
+        HookshotComponents.HOOK_OWNER.maybeGet(owner).ifPresent(hookOwner -> hookOwner.setHasHook(false));
+        if(owner instanceof LivingEntity living && living.getUseItem().is(HookshotItemTags.HOOKSHOTS)) {
+            living.stopUsingItem();
+        }
     }
 
     @Override
