@@ -20,6 +20,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.world.item.Item;
 
 @Environment(EnvType.CLIENT)
 public class HookshotClient implements ClientModInitializer {
@@ -31,15 +32,19 @@ public class HookshotClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(HookshotEntities.HOOKSHOT.get(), HookshotEntityRenderer::new);
 
-        // TODO make items items use individual textures, get rid of color provider
         HookshotItems.ITEMS.stream().map(RegistrySupplier::get).forEach(item -> {
+            // TODO make items items use individual textures, get rid of color provider
             if (item instanceof Dyeable dyeable) {
                 var color = ColorHelper.dyeToDecimal(dyeable.getColor());
                 ColorProviderRegistry.ITEM.register((itemStack, tintIndex) -> tintIndex == 0 ? color : 0xFFFFFFFF, item);
             }
-        });
 
-        ItemProperties.registerGeneric(HookshotItem.USING_HOOK_MODEL_PROPERTY_ID, (stack, world, entity, seed) -> {
+            registerHookModelOverride(item);
+        });
+    }
+
+    private static void registerHookModelOverride(Item item) {
+        ItemProperties.register(item, HookshotItem.USING_HOOK_MODEL_PROPERTY_ID, (stack, world, entity, seed) -> {
             if(entity != null) {
                 HookOwnerComponent hook = HookshotComponents.HOOK_OWNER.getNullable(entity);
                 if (hook != null && hook.hasHook()) {
