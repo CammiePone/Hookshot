@@ -3,6 +3,7 @@
   "config.hookshot.defaultMaxRange": "Unmodified Max Hookshot Range",
   "config.hookshot.defaultMaxSpeed": "Unmodified Max Hookshot Speed",
   "config.hookshot.durabilityMultiplier": "Durability Upgrade Multiplier",
+  "config.hookshot.hookshotAffectsVehicle": "Hookshot affects Player's vehicle",
   "config.hookshot.hookshotCancelsFallDamage": "Hookshot Cancels Fall Damage",
   "config.hookshot.hookshotCooldown": "Cooldown after using Hookshot",
   "config.hookshot.quickMultiplier": "Quick Upgrade Multiplier",

@@ -105,7 +105,7 @@ public class HookshotEntity extends AbstractArrow {
             }
 
             if (isPulling) {
-                Entity target = owner;
+                Entity target = HookshotConfig.hooksAffectVehicles ? owner.getRootVehicle() : owner;
                 Entity origin = this;
 
                 if (owner.isShiftKeyDown() && hookedEntity != null) {

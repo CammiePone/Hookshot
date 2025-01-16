@@ -83,6 +83,7 @@ public class HookshotEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("config.hookshot.durabilityMultiplier", "Durability Upgrade Multiplier");
         translationBuilder.add("config.hookshot.defaultMaxDurability", "Hookshot Durability");
         translationBuilder.add("config.hookshot.hookshotCooldown", "Cooldown after using Hookshot");
+        translationBuilder.add("config.hookshot.hookshotAffectsVehicle", "Hookshot affects Player's vehicle");
     }
 
     private void sound(TranslationBuilder translationBuilder, Supplier<? extends SoundEvent> sound, String translation) {

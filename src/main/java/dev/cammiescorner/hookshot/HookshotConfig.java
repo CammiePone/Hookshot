@@ -35,4 +35,7 @@ public final class HookshotConfig {
 
 	@ConfigEntry(id = "hookshotCooldown", type = EntryType.INTEGER, translation = "config.hookshot.hookshotCooldown")
 	public static int hookshotCooldown = 0;
+
+	@ConfigEntry(id = "hookshotAffectsVehicle", type = EntryType.BOOLEAN, translation = "config.hookshot.hookshotAffectsVehicle")
+	public static boolean hooksAffectVehicles;
 }
