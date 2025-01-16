@@ -37,5 +37,5 @@ public final class HookshotConfig {
 	public static int hookshotCooldown = 0;
 
 	@ConfigEntry(id = "hookshotAffectsVehicle", type = EntryType.BOOLEAN, translation = "config.hookshot.hookshotAffectsVehicle")
-	public static boolean hooksAffectVehicles;
+	public static boolean hooksAffectVehicles = false;
 }
