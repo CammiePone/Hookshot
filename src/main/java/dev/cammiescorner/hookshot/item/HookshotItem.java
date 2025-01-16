@@ -45,6 +45,14 @@ public class HookshotItem extends Item implements Dyeable {
 	public InteractionResultHolder<ItemStack> use(Level level, Player user, InteractionHand hand) {
 		ItemStack stack = user.getItemInHand(hand);
 
+		if(user.isUsingItem()) {
+			return InteractionResultHolder.consume(stack);
+		}
+
+		if(!HookshotConfig.useClassicHookshotLogic) {
+			user.startUsingItem(hand);
+		}
+
 		HookOwnerComponent hookOwner = user.getComponent(HookshotComponents.HOOK_OWNER);
 		if(!level.isClientSide()) {
 			if(!hookOwner.hasHook()) {
@@ -54,41 +62,18 @@ public class HookshotItem extends Item implements Dyeable {
 				HookshotEntity hookshot = new HookshotEntity(user, level);
 				hookshot.setProperties(stack.copy(), maxRange, maxSpeed, user.getXRot(), user.getYRot(), 0f, 1.5f * (float) (maxSpeed / 10));
 				level.addFreshEntity(hookshot);
-			}
-
-			if(!HookshotConfig.useClassicHookshotLogic) {
-				user.startUsingItem(hand);
+				level.playSound(user, user.blockPosition(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1F, 1F);
 				hookOwner.setHasHook(true);
 			}
-			else {
-				if(hookOwner.hasHook()) {
-					hookOwner.setHasHook(false);
-					if(HookshotConfig.hookshotCooldown > 0) {
-						addHookCooldown(user, HookshotConfig.hookshotCooldown);
-					}
+			else if(HookshotConfig.useClassicHookshotLogic) {
+				hookOwner.setHasHook(false);
+				if(HookshotConfig.hookshotCooldown > 0) {
+					addHookCooldown(user, HookshotConfig.hookshotCooldown);
 				}
-				else {
-					hookOwner.setHasHook(true);
-				}
-			}
-
-			if(!hookOwner.hasHook()) {
-				level.playSound(user, user.blockPosition(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1F, 1F);
 			}
 		}
-
-
 
 		return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
-	}
-
-	@Override
-	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity user) {
-		if(!HookshotConfig.useClassicHookshotLogic) {
-			HookshotComponents.HOOK_OWNER.maybeGet(user).ifPresent(hookOwner -> hookOwner.setHasHook(false));
-		}
-
-		return super.finishUsingItem(stack, level, user);
 	}
 
 	@Override
