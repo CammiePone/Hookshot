@@ -67,8 +67,8 @@ public class HookshotEnglishLanguageProvider extends FabricLanguageProvider {
         upgrade(translationBuilder, HookshotUpgrades.BLEED, "Bleed");
         upgrade(translationBuilder, HookshotUpgrades.DURABILITY, "Durability");
         upgrade(translationBuilder, HookshotUpgrades.ENDERIC, "Enderic");
-        upgrade(translationBuilder, HookshotUpgrades.QUICK, "Quick");
         upgrade(translationBuilder, HookshotUpgrades.RANGE, "Range");
+        upgrade(translationBuilder, HookshotUpgrades.SPEED, "Speed");
 
         sound(translationBuilder, HookshotSoundEvents.HOOKSHOT_REEL, "Hookshot Reel");
 

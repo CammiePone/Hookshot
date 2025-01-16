@@ -57,7 +57,7 @@ public class HookshotItem extends Item implements Dyeable {
 		if(!level.isClientSide()) {
 			if(!hookOwner.hasHook()) {
 				double maxRange = HookshotConfig.defaultRange * (UpgradesHelper.hasUpgrade(stack, HookshotUpgrades.RANGE.get()) ? HookshotConfig.rangeUpgradeMultiplier : 1.0D);
-				double maxSpeed = HookshotConfig.defaultSpeed * (UpgradesHelper.hasUpgrade(stack, HookshotUpgrades.QUICK.get()) ? HookshotConfig.speedUpgradeMultiplier : 1.0D);
+				double maxSpeed = HookshotConfig.defaultSpeed * (UpgradesHelper.hasUpgrade(stack, HookshotUpgrades.SPEED.get()) ? HookshotConfig.speedUpgradeMultiplier : 1.0D);
 
 				HookshotEntity hookshot = new HookshotEntity(user, level);
 				hookshot.setProperties(stack.copy(), maxRange, maxSpeed, user.getXRot(), user.getYRot(), 0f, 1.5f * (float) (maxSpeed / 10));

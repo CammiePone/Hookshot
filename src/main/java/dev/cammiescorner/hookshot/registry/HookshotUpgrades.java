@@ -14,7 +14,7 @@ public class HookshotUpgrades {
     public static final RegistrySupplier<HookshotUpgrade> BLEED = UPGRADES.register("bleed", HookshotUpgrade::new);
     public static final RegistrySupplier<HookshotUpgrade> DURABILITY = UPGRADES.register("durability", HookshotUpgrade::new);
     public static final RegistrySupplier<HookshotUpgrade> ENDERIC = UPGRADES.register("enderic", HookshotUpgrade::new);
-    public static final RegistrySupplier<HookshotUpgrade> QUICK = UPGRADES.register("quick", HookshotUpgrade::new);
     public static final RegistrySupplier<HookshotUpgrade> RANGE = UPGRADES.register("range", HookshotUpgrade::new);
+    public static final RegistrySupplier<HookshotUpgrade> SPEED = UPGRADES.register("speed", HookshotUpgrade::new);
 //    public static final RegistrySupplier<HookshotUpgrade> SWINGING = UPGRADES.register("swinging", HookshotUpgrade::new);
 }

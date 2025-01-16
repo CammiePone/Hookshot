@@ -69,7 +69,7 @@ public class HookshotRecipeProvider extends FabricRecipeProvider {
         hookshotUpgrade(exporter, ItemTags.ARROWS, HookshotUpgrades.BLEED);
         hookshotUpgrade(exporter, Blocks.OBSIDIAN, HookshotUpgrades.DURABILITY);
         hookshotUpgrade(exporter, Items.ENDER_EYE, HookshotUpgrades.ENDERIC);
-        hookshotUpgrade(exporter, Blocks.PISTON, HookshotUpgrades.QUICK);
+        hookshotUpgrade(exporter, Blocks.PISTON, HookshotUpgrades.SPEED);
         hookshotUpgrade(exporter, Blocks.CHAIN, HookshotUpgrades.RANGE);
     }
 

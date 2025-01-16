@@ -3,7 +3,7 @@
   "addition": {
     "item": "minecraft:piston"
   },
-  "apply_upgrade": "hookshot:quick",
+  "apply_upgrade": "hookshot:speed",
   "base": {
     "tag": "hookshot:hookshots"
   },

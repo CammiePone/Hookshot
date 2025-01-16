@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "hookshot:quick_upgrade_from_smithing"
+        "recipe": "hookshot:speed_upgrade_from_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "hookshot:quick_upgrade_from_smithing"
+      "hookshot:speed_upgrade_from_smithing"
     ]
   },
   "sends_telemetry_event": false
