@@ -114,12 +114,10 @@ public class HookshotEntity extends AbstractArrow {
                 }
 
                 double brakeZone = (6D * ((HookshotConfig.quickUpgradeAffectsPullSpeed ? maxSpeed : HookshotConfig.defaultMaxSpeed) / HookshotConfig.defaultMaxSpeed));
-                double pullSpeed = (HookshotConfig.quickUpgradeAffectsPullSpeed ? maxSpeed : HookshotConfig.defaultMaxSpeed) / 6D;
+                double pullSpeed = (HookshotConfig.quickUpgradeAffectsPullSpeed ? maxSpeed : HookshotConfig.defaultMaxSpeed) / 12D;
                 Vec3 distance = origin.position().subtract(target.position().add(0, target.getBbHeight() / 2, 0));
 
                 // TODO fix this spaghetti code
-
-                // Vec3 motion = distance.normalize().scale(distance.length() < brakeZone && !UpgradesHelper.hasAutomaticUpgrade(stack) ? (pullSpeed * distance.length()) / brakeZone : pullSpeed);
                 Vec3 motion;
                 if(distance.lengthSqr() >= brakeZone * brakeZone && UpgradesHelper.hasUpgrade(stack, HookshotUpgrades.AUTOMATIC.get())) {
                     motion = distance.normalize().scale(pullSpeed);
