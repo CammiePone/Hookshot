@@ -113,8 +113,8 @@ public class HookshotEntity extends AbstractArrow {
                     origin = owner;
                 }
 
-                double brakeZone = (6D * ((HookshotConfig.quickUpgradeAffectsPullSpeed ? maxSpeed : HookshotConfig.defaultMaxSpeed) / HookshotConfig.defaultMaxSpeed));
-                double pullSpeed = (HookshotConfig.quickUpgradeAffectsPullSpeed ? maxSpeed : HookshotConfig.defaultMaxSpeed) / 12D;
+                double brakeZone = (6D * (maxSpeed / HookshotConfig.defaultSpeed));
+                double pullSpeed = maxSpeed / 12D;
                 Vec3 distance = origin.position().subtract(target.position().add(0, target.getBbHeight() / 2, 0));
 
                 // TODO fix this spaghetti code
@@ -282,7 +282,7 @@ public class HookshotEntity extends AbstractArrow {
         tag.put("hookshotItem", stack.save(new CompoundTag()));
     }
 
-    public void setProperties(ItemStack stack, double maxRange, double maxVelocity, float pitch, float yaw, float roll, float modifierZ) {
+    public void setProperties(ItemStack stack, double maxRange, double maxSpeed, float pitch, float yaw, float roll, float modifierZ) {
         float f = 0.017453292F;
         float x = -Mth.sin(yaw * f) * Mth.cos(pitch * f);
         float y = -Mth.sin((pitch + roll) * f);
@@ -291,7 +291,7 @@ public class HookshotEntity extends AbstractArrow {
 
         this.stack = stack;
         this.maxRange = maxRange;
-        this.maxSpeed = maxVelocity;
+        this.maxSpeed = maxSpeed;
     }
 
     private void setHookedEntity(@Nullable Entity hookedEntity) {

@@ -72,18 +72,16 @@ public class HookshotEnglishLanguageProvider extends FabricLanguageProvider {
 
         sound(translationBuilder, HookshotSoundEvents.HOOKSHOT_REEL, "Hookshot Reel");
 
-        translationBuilder.add("config.hookshot.useClassicHookshotLogic", "Use Old Hookshot Fire/Retract Logic");
-        translationBuilder.add("config.hookshot.unhookableBlacklist", "Unhookable Tag Acts Like Blacklist");
-        translationBuilder.add("config.hookshot.hookshotCancelsFallDamage", "Hookshot Cancels Fall Damage");
-        translationBuilder.add("config.hookshot.quickUpgradeAffectsPullSpeed", "Quick Upgrade Affects Hookshot Pull Speed");
-        translationBuilder.add("config.hookshot.defaultMaxRange", "Unmodified Max Hookshot Range");
-        translationBuilder.add("config.hookshot.defaultMaxSpeed", "Unmodified Max Hookshot Speed");
-        translationBuilder.add("config.hookshot.rangeMultiplier", "Range Upgrade Multiplier");
-        translationBuilder.add("config.hookshot.quickMultiplier", "Quick Upgrade Multiplier");
-        translationBuilder.add("config.hookshot.durabilityMultiplier", "Durability Upgrade Multiplier");
-        translationBuilder.add("config.hookshot.defaultMaxDurability", "Hookshot Durability");
-        translationBuilder.add("config.hookshot.hookshotCooldown", "Cooldown after using Hookshot");
-        translationBuilder.add("config.hookshot.hookshotAffectsVehicle", "Hookshot affects Player's vehicle");
+        translationBuilder.add("config.hookshot.use_classic_hookshot_logic", "Use Old Hookshot Fire/Retract Logic");
+        translationBuilder.add("config.hookshot.hookshot_cancels_fall_damage", "Hookshot Cancels Fall Damage");
+        translationBuilder.add("config.hookshot.hookshot_cooldown", "Cooldown after using Hookshot");
+        translationBuilder.add("config.hookshot.hookshot_affects_vehicle", "Hookshot affects Player's vehicle");
+        translationBuilder.add("config.hookshot.default_durability", "Hookshot Durability");
+        translationBuilder.add("config.hookshot.default_range", "Default Hookshot Range");
+        translationBuilder.add("config.hookshot.default_speed", "Default Hookshot Speed");
+        translationBuilder.add("config.hookshot.durability_upgrade_multiplier", "Durability Upgrade Multiplier");
+        translationBuilder.add("config.hookshot.range_upgrade_multiplier", "Range Upgrade Multiplier");
+        translationBuilder.add("config.hookshot.speed_upgrade_multiplier", "Speed Upgrade Multiplier");
     }
 
     private void sound(TranslationBuilder translationBuilder, Supplier<? extends SoundEvent> sound, String translation) {

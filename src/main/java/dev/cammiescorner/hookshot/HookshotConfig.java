@@ -6,36 +6,33 @@ import com.teamresourceful.resourcefulconfig.common.config.EntryType;
 
 @Config(Hookshot.MOD_ID)
 public final class HookshotConfig {
-	@ConfigEntry(id = "useClassicHookshotLogic", type = EntryType.BOOLEAN, translation = "config.hookshot.useClassicHookshotLogic")
-	public static boolean useClassicHookshotLogic = false;
+    @ConfigEntry(id = "use_classic_hookshot_logic", type = EntryType.BOOLEAN, translation = "config.hookshot.use_classic_hookshot_logic")
+    public static boolean useClassicHookshotLogic = false;
 
-	@ConfigEntry(id = "hookshotCancelsFallDamage", type = EntryType.BOOLEAN, translation = "config.hookshot.hookshotCancelsFallDamage")
-	public static boolean hookshotCancelsFallDamage = false;
+    @ConfigEntry(id = "hookshot_cancels_fall_damage", type = EntryType.BOOLEAN, translation = "config.hookshot.hookshot_cancels_fall_damage")
+    public static boolean hookshotCancelsFallDamage = false;
 
-	@ConfigEntry(id = "quickUpgradeAffectsPullSpeed", type = EntryType.BOOLEAN, translation = "config.hookshot.quickUpgradeAffectsPullSpeed")
-	public static boolean quickUpgradeAffectsPullSpeed = false;
+    @ConfigEntry(id = "hookshot_cooldown", type = EntryType.INTEGER, translation = "config.hookshot.hookshot_cooldown")
+    public static int hookshotCooldown = 5;
 
-	@ConfigEntry(id = "defaultMaxRange", type = EntryType.DOUBLE, translation = "config.hookshot.defaultMaxRange")
-	public static double defaultMaxRange = 24D;
+    @ConfigEntry(id = "hookshot_affects_vehicle", type = EntryType.BOOLEAN, translation = "config.hookshot.hookshot_affects_vehicle")
+    public static boolean hooksAffectVehicles = false;
 
-	@ConfigEntry(id = "defaultMaxSpeed", type = EntryType.DOUBLE, translation = "config.hookshot.defaultMaxSpeed")
-	public static double defaultMaxSpeed = 10D;
+    @ConfigEntry(id = "default_durability", type = EntryType.INTEGER, translation = "config.hookshot.default_durability")
+    public static int defaultDurability = 512;
 
-	@ConfigEntry(id = "rangeMultiplier", type = EntryType.DOUBLE, translation = "config.hookshot.rangeMultiplier")
-	public static double rangeMultiplier = 2D;
+    @ConfigEntry(id = "default_range", type = EntryType.DOUBLE, translation = "config.hookshot.default_range")
+    public static double defaultRange = 24D;
 
-	@ConfigEntry(id = "quickMultiplier", type = EntryType.DOUBLE, translation = "config.hookshot.quickMultiplier")
-	public static double quickMultiplier = 1.5D;
+    @ConfigEntry(id = "default_speed", type = EntryType.DOUBLE, translation = "config.hookshot.default_speed")
+    public static double defaultSpeed = 10D;
 
-	@ConfigEntry(id = "durabilityMultiplier", type = EntryType.DOUBLE, translation = "config.hookshot.durabilityMultiplier")
-	public static double durabilityMultiplier = 2D;
+    @ConfigEntry(id = "durability_upgrade_multiplier", type = EntryType.DOUBLE, translation = "config.hookshot.durability_upgrade_multiplier")
+    public static double durabilityUpgradeMultiplier = 2D;
 
-	@ConfigEntry(id = "defaultMaxDurability", type = EntryType.INTEGER, translation = "config.hookshot.defaultMaxDurability")
-	public static int defaultMaxDurability = 512;
+    @ConfigEntry(id = "range_upgrade_multiplier", type = EntryType.DOUBLE, translation = "config.hookshot.range_upgrade_multiplier")
+    public static double rangeUpgradeMultiplier = 2D;
 
-	@ConfigEntry(id = "hookshotCooldown", type = EntryType.INTEGER, translation = "config.hookshot.hookshotCooldown")
-	public static int hookshotCooldown = 0;
-
-	@ConfigEntry(id = "hookshotAffectsVehicle", type = EntryType.BOOLEAN, translation = "config.hookshot.hookshotAffectsVehicle")
-	public static boolean hooksAffectVehicles = false;
+    @ConfigEntry(id = "speed_upgrade_multiplier", type = EntryType.DOUBLE, translation = "config.hookshot.speed_upgrade_multiplier")
+    public static double speedUpgradeMultiplier = 1.5D;
 }

@@ -21,7 +21,7 @@ public abstract class ItemStackMixin {
     @ModifyReturnValue(method = "getMaxDamage", at = @At("RETURN"))
 	public int getMaxDamage(int original) {
 		if(getItem() instanceof HookshotItem && UpgradesHelper.hasUpgrade((ItemStack) (Object) this, HookshotUpgrades.DURABILITY.get())) {
-			return  Math.min(Mth.ceil(original * HookshotConfig.durabilityMultiplier), 0);
+			return  Math.min(Mth.ceil(original * HookshotConfig.durabilityUpgradeMultiplier), 0);
 		}
 
 		return original;

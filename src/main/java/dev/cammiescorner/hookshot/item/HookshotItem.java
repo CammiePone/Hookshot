@@ -36,7 +36,7 @@ public class HookshotItem extends Item implements Dyeable {
 	private final DyeColor color;
 
 	public HookshotItem(DyeColor color) {
-		super(new Item.Properties().stacksTo(1).durability(HookshotConfig.defaultMaxDurability));
+		super(new Item.Properties().stacksTo(1).durability(HookshotConfig.defaultDurability));
 		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> entries.accept(this));
 		this.color = color;
 	}
@@ -56,8 +56,8 @@ public class HookshotItem extends Item implements Dyeable {
 		HookOwnerComponent hookOwner = user.getComponent(HookshotComponents.HOOK_OWNER);
 		if(!level.isClientSide()) {
 			if(!hookOwner.hasHook()) {
-				double maxRange = HookshotConfig.defaultMaxRange * (UpgradesHelper.hasUpgrade(stack, HookshotUpgrades.RANGE.get()) ? HookshotConfig.rangeMultiplier : 1);
-				double maxSpeed = HookshotConfig.defaultMaxSpeed * (UpgradesHelper.hasUpgrade(stack, HookshotUpgrades.QUICK.get()) ? HookshotConfig.quickMultiplier : 1);
+				double maxRange = HookshotConfig.defaultRange * (UpgradesHelper.hasUpgrade(stack, HookshotUpgrades.RANGE.get()) ? HookshotConfig.rangeUpgradeMultiplier : 1.0D);
+				double maxSpeed = HookshotConfig.defaultSpeed * (UpgradesHelper.hasUpgrade(stack, HookshotUpgrades.QUICK.get()) ? HookshotConfig.speedUpgradeMultiplier : 1.0D);
 
 				HookshotEntity hookshot = new HookshotEntity(user, level);
 				hookshot.setProperties(stack.copy(), maxRange, maxSpeed, user.getXRot(), user.getYRot(), 0f, 1.5f * (float) (maxSpeed / 10));
