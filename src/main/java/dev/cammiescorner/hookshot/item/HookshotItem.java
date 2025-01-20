@@ -35,7 +35,7 @@ public class HookshotItem extends Item implements Dyeable {
 	private final DyeColor color;
 
 	public HookshotItem(DyeColor color) {
-		super(new Item.Properties().stacksTo(1).durability(HookshotConfig.defaultDurability));
+		super(new Item.Properties().durability(HookshotConfig.defaultDurability));
 		this.color = color;
 	}
 
@@ -112,6 +112,14 @@ public class HookshotItem extends Item implements Dyeable {
 	@Override
 	public DyeColor getColor() {
 		return color;
+	}
+
+	@Override
+	public boolean canBeDepleted() {
+		// disable combine item to repair crafting recipe + anvil recipe
+		// side effect is this also makes the BREAKABLE enchantment category no longer apply
+		// TODO when porting to multiloader: forge has a custom patch for this, see setNoRepair()
+		return false;
 	}
 
 	@Nullable
