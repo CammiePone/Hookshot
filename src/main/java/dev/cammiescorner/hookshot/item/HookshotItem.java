@@ -10,7 +10,6 @@ import dev.cammiescorner.hookshot.registry.HookshotComponents;
 import dev.cammiescorner.hookshot.registry.HookshotUpgrades;
 import dev.cammiescorner.hookshot.util.Dyeable;
 import dev.cammiescorner.hookshot.util.UpgradesHelper;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +36,6 @@ public class HookshotItem extends Item implements Dyeable {
 
 	public HookshotItem(DyeColor color) {
 		super(new Item.Properties().stacksTo(1).durability(HookshotConfig.defaultDurability));
-		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> entries.accept(this));
 		this.color = color;
 	}
 
