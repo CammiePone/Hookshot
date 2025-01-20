@@ -77,6 +77,9 @@
     "cardinal-components": [
       "dev.cammiescorner.hookshot.registry.HookshotComponents"
     ],
+    "jei_mod_plugin": [
+      "dev.cammiescorner.hookshot.compat.JeiCompat"
+    ],
     "modmenu": [
       "dev.cammiescorner.hookshot.compat.ModmenuCompat"
     ]

@@ -2,12 +2,14 @@ package dev.cammiescorner.hookshot;
 
 import com.teamresourceful.resourcefulconfig.common.config.Configurator;
 import dev.cammiescorner.hookshot.registry.*;
+import dev.cammiescorner.hookshot.util.UpgradesHelper;
 import dev.upcraft.sparkweave.api.registry.RegistryService;
 import dev.upcraft.sparkweave.api.util.logging.SparkweaveLoggerFactory;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.Logger;
 
 public class Hookshot implements ModInitializer {
@@ -29,6 +31,13 @@ public class Hookshot implements ModInitializer {
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
             entries.accept(HookshotItems.WHITE_HOOKSHOT.get());
+
+            HookshotRegistries.HOOKSHOT_UPGRADES_REGISTRY.forEach(upgrade -> {
+                var stack = new ItemStack(HookshotItems.WHITE_HOOKSHOT.get());
+                UpgradesHelper.addUpgrade(stack, upgrade);
+                entries.accept(stack);
+            });
+
             entries.accept(HookshotItems.ORANGE_HOOKSHOT.get());
             entries.accept(HookshotItems.MAGENTA_HOOKSHOT.get());
             entries.accept(HookshotItems.LIGHT_BLUE_HOOKSHOT.get());

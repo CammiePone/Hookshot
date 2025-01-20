@@ -24,7 +24,8 @@ repositories {
     maven { url = 'https://maven.terraformersmc.com' }
     maven { url = 'https://maven.uuid.gg/releases' }
     maven { url = 'https://maven.ladysnake.org/releases' }
-    maven { url = "https://nexus.resourcefulbees.com/repository/maven-public" }
+    maven { url = 'https://nexus.resourcefulbees.com/repository/maven-public' }
+    maven { url = 'https://maven.blamejared.com' }
     maven {
         name = 'ParchmentMC'
         url = 'https://maven.parchmentmc.org'
@@ -76,6 +77,9 @@ dependencies {
 
     modCompileOnly variantOf(libs.emi) { classifier 'api' }
     modLocalRuntime libs.emi
+
+    modCompileOnly libs.jei.api
+    modLocalRuntime libs.jei.full
 }
 
 fabricApi {

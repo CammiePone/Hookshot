@@ -89,6 +89,22 @@ public class HookshotSmithingUpgradeRecipe implements SmithingRecipe {
         return Stream.of(this.template, this.base, this.addition).anyMatch(Ingredient::isEmpty);
     }
 
+    public Ingredient getBase() {
+        return base;
+    }
+
+    public Ingredient getTemplate() {
+        return template;
+    }
+
+    public Ingredient getAddition() {
+        return addition;
+    }
+
+    public HookshotUpgrade getUpgrade() {
+        return upgrade;
+    }
+
     public static class Serializer implements RecipeSerializer<HookshotSmithingUpgradeRecipe> {
 
         @Override
