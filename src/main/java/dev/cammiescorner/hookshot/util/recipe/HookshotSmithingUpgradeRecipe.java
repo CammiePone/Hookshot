@@ -72,7 +72,7 @@ public class HookshotSmithingUpgradeRecipe implements SmithingRecipe {
     }
 
     @Override
-    public final ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return result;
     }
 
