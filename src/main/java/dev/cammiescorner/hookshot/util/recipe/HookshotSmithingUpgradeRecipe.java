@@ -7,6 +7,7 @@ import dev.cammiescorner.hookshot.registry.HookshotRecipeSerializers;
 import dev.cammiescorner.hookshot.registry.HookshotRegistries;
 import dev.cammiescorner.hookshot.upgrade.HookshotUpgrade;
 import dev.cammiescorner.hookshot.util.UpgradesHelper;
+import net.minecraft.Util;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +24,7 @@ import java.util.stream.Stream;
 
 public class HookshotSmithingUpgradeRecipe implements SmithingRecipe {
 
-    private final ItemStack result = new ItemStack(HookshotItems.WHITE_HOOKSHOT.get());
+    private final ItemStack result;
     private final ResourceLocation id;
     private final Ingredient template;
     private final Ingredient base;
@@ -36,6 +37,7 @@ public class HookshotSmithingUpgradeRecipe implements SmithingRecipe {
         this.base = base;
         this.addition = addition;
         this.upgrade = upgrade;
+        this.result = Util.make(new ItemStack(HookshotItems.WHITE_HOOKSHOT.get()), stack -> UpgradesHelper.addUpgrade(stack, upgrade));
     }
 
     @Override
@@ -70,7 +72,7 @@ public class HookshotSmithingUpgradeRecipe implements SmithingRecipe {
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
+    public final ItemStack getResultItem(RegistryAccess registryAccess) {
         return result;
     }
 
