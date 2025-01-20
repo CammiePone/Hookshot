@@ -156,7 +156,8 @@ java {
 
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(javaVersion))
-        vendor = JvmVendorSpec.MICROSOFT
+        // TODO re-enable when switching to java 21
+//        vendor = JvmVendorSpec.MICROSOFT
     }
 }
 
