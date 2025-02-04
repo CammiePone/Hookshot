@@ -17,7 +17,7 @@ emi = "1.1.18+1.20.1"
 jei = "15.20.0.106"
 modmenu = "7.2.2"
 resourceful_config = "2.1.2"
-sparkweave = "0.6.0"
+sparkweave = "0.8.1"
 datasync = "0.9.0"
 
 [libraries]

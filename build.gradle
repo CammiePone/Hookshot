@@ -94,8 +94,6 @@ loom {
         }
     }
 
-    accessWidenerPath.set(project.file("src/main/resources/${mod_id}.accesswidener"))
-
     runs {
         client {
             ideConfigGenerated(true)

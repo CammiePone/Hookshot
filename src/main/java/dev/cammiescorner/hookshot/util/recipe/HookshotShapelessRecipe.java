@@ -24,7 +24,7 @@ public class HookshotShapelessRecipe extends ShapelessRecipe {
 	}
 
 	public static HookshotShapelessRecipe wrap(ShapelessRecipe recipe) {
-		return new HookshotShapelessRecipe(recipe.getId(), recipe.getGroup(), recipe.category(), recipe.result, recipe.getIngredients(), recipe.getIngredients().get(0));
+		return new HookshotShapelessRecipe(recipe.getId(), recipe.getGroup(), recipe.category(), recipe.sparkweave$getResult(), recipe.getIngredients(), recipe.getIngredients().get(0));
 	}
 
 	public static HookshotShapelessRecipe wrap(ShapelessRecipe recipe, Ingredient hookshot) {
@@ -35,7 +35,7 @@ public class HookshotShapelessRecipe extends ShapelessRecipe {
 			ingredients.set(i + 1, recipe.getIngredients().get(i));
 		}
 
-		return new HookshotShapelessRecipe(recipe.getId(), recipe.getGroup(), recipe.category(), recipe.result, ingredients, hookshot);
+		return new HookshotShapelessRecipe(recipe.getId(), recipe.getGroup(), recipe.category(), recipe.sparkweave$getResult(), ingredients, hookshot);
 	}
 
 	@Override

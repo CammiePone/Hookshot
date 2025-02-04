@@ -1,7 +1,7 @@
 package dev.cammiescorner.hookshot.datagen.common;
 
 import dev.cammiescorner.hookshot.data.HookshotDamageTypes;
-import dev.cammiescorner.hookshot.util.datagen.DynamicRegistryEntryProvider;
+import dev.upcraft.sparkweave.api.datagen.DynamicRegistryEntryProvider;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.damagesource.DamageScaling;

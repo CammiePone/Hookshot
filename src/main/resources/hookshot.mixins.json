@@ -5,8 +5,6 @@
   "compatibilityLevel": "JAVA_${java_version}",
   "mixins": [
     "common.ItemStackMixin",
-    "datagen.AdvancementBuilderMixin",
-    "datagen.RegistrySetBuilderMixin",
     "datagen.ShapelessRecipeBuilderMixin",
     "datagen.SmithingTransformRecipeBuilderMixin"
   ],

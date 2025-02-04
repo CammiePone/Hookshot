@@ -8,30 +8,18 @@ import dev.cammiescorner.hookshot.registry.HookshotItems;
 import dev.cammiescorner.hookshot.registry.HookshotSoundEvents;
 import dev.cammiescorner.hookshot.registry.HookshotUpgrades;
 import dev.cammiescorner.hookshot.upgrade.HookshotUpgrade;
+import dev.upcraft.sparkweave.api.datagen.SparkweaveLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.damagesource.DeathMessageType;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-public class HookshotEnglishLanguageProvider extends FabricLanguageProvider {
-
-    private final CompletableFuture<HolderLookup.Provider> registriesFuture;
+public class HookshotEnglishLanguageProvider extends SparkweaveLanguageProvider {
 
     public HookshotEnglishLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(dataOutput, Language.DEFAULT);
-        this.registriesFuture = registriesFuture;
+        super(dataOutput, registriesFuture, Language.DEFAULT);
     }
 
     @Override
@@ -84,33 +72,7 @@ public class HookshotEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("config.hookshot.speed_upgrade_multiplier", "Speed Upgrade Multiplier");
     }
 
-    private void sound(TranslationBuilder translationBuilder, Supplier<? extends SoundEvent> sound, String translation) {
-        translationBuilder.add(Util.makeDescriptionId("subtitles", sound.get().getLocation()), translation);
-    }
-
     private void upgrade(TranslationBuilder translationBuilder, Supplier<? extends HookshotUpgrade> upgrade, String translation) {
         translationBuilder.add(upgrade.get().getTranslationId(), translation);
-    }
-
-    private void tag(TranslationBuilder builder, TagKey<?> tag, String translation) {
-        var registryName = tag.registry().location().toShortLanguageKey().replace('/', '.');
-        var tagName = Util.makeDescriptionId("tag." + registryName, tag.location());
-        builder.add(tagName, translation);
-    }
-
-    private void damageType(TranslationBuilder builder, ResourceKey<DamageType> typeKey, String defaultTranslation, @Nullable String killedByTranslation, @Nullable String killedWithItemTranslation) {
-        registriesFuture.thenAccept(registries -> {
-            var damageTypes = registries.lookupOrThrow(Registries.DAMAGE_TYPE);
-            var type = damageTypes.getOrThrow(typeKey).value();
-
-            if(type.deathMessageType() != DeathMessageType.DEFAULT) {
-                throw new IllegalArgumentException("Death message type not currently supported: " + type.deathMessageType());
-            }
-
-            var translationKey = "death.attack." + type.msgId();
-            builder.add(translationKey, defaultTranslation);
-            builder.add(translationKey + ".player", Objects.requireNonNullElse(killedByTranslation, defaultTranslation));
-            builder.add(translationKey + ".item", Objects.requireNonNullElse(killedWithItemTranslation, defaultTranslation));
-        });
     }
 }
