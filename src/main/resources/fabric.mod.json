@@ -53,7 +53,7 @@
     "java": ">=${java_version}",
     "fabric-api": "*",
     "resourcefulconfig": "*",
-    "sparkweave": ">=0.8.1 <0.100.0",
+    "sparkweave": ">=0.8.4 <0.100.0",
     "cardinal-components-base": "*",
     "cardinal-components-entity": "*"
   },
