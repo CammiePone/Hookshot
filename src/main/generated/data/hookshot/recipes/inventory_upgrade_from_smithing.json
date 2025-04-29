@@ -1,0 +1,11 @@
+{
+  "type": "hookshot:upgrade_smithing",
+  "addition": {
+    "tag": "c:chests"
+  },
+  "apply_upgrade": "hookshot:inventory",
+  "base": {
+    "tag": "hookshot:hookshots"
+  },
+  "template": []
+}

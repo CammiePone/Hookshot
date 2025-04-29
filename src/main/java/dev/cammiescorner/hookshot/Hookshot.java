@@ -1,6 +1,7 @@
 package dev.cammiescorner.hookshot;
 
 import com.teamresourceful.resourcefulconfig.common.config.Configurator;
+import dev.cammiescorner.hookshot.networking.ModMessages;
 import dev.cammiescorner.hookshot.registry.*;
 import dev.cammiescorner.hookshot.util.UpgradesHelper;
 import dev.upcraft.sparkweave.api.registry.RegistryService;
@@ -28,6 +29,8 @@ public class Hookshot implements ModInitializer {
         HookshotRecipeSerializers.RECIPE_SERIALIZERS.accept(registryService);
         HookshotSoundEvents.SOUND_EVENTS.accept(registryService);
         HookshotUpgrades.UPGRADES.accept(registryService);
+
+        ModMessages.registerC2SPackets();
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
             entries.accept(HookshotItems.WHITE_HOOKSHOT.get());
