@@ -10,9 +10,14 @@ import dev.cammiescorner.hookshot.registry.HookshotComponents;
 import dev.cammiescorner.hookshot.registry.HookshotUpgrades;
 import dev.cammiescorner.hookshot.util.Dyeable;
 import dev.cammiescorner.hookshot.util.UpgradesHelper;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -51,6 +56,15 @@ public class HookshotItem extends Item implements Dyeable {
 			user.startUsingItem(hand);
 		}
 
+		HookshotEntity hookshotEntity = createHook(level, user, stack);
+
+		if (hookshotEntity != null)
+			hookshotEntity.shotFromInventory = false;
+
+		return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+	}
+
+	public static HookshotEntity createHook(Level level, Player user, ItemStack stack) {
 		HookOwnerComponent hookOwner = user.getComponent(HookshotComponents.HOOK_OWNER);
 		if(!level.isClientSide()) {
 			if(!hookOwner.hasHook()) {
@@ -62,6 +76,7 @@ public class HookshotItem extends Item implements Dyeable {
 				level.addFreshEntity(hookshot);
 				level.playSound(user, user.blockPosition(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1F, 1F);
 				hookOwner.setHasHook(true);
+				return hookshot;
 			}
 			else if(HookshotConfig.useClassicHookshotLogic) {
 				hookOwner.setHasHook(false);
@@ -70,12 +85,35 @@ public class HookshotItem extends Item implements Dyeable {
 				}
 			}
 		}
+		return null;
+	}
 
-		return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+	public static void recieveCreate(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender) {
+		HookshotEntity hookshotEntity = createHook(player.level(), player, findHookshotInInventory(player));
+		if (hookshotEntity != null)
+			hookshotEntity.shotFromInventory = true;
+	}
+
+	public static void recieveRemove(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender) {
+		removeHook(player);
+	}
+
+	@Nullable
+	private static ItemStack findHookshotInInventory(Player player) {
+		for (ItemStack stack : player.getInventory().items) {
+			if (stack.getItem() instanceof HookshotItem) {
+				return stack;
+			}
+		}
+		return null; // not found
 	}
 
 	@Override
 	public void releaseUsing(ItemStack stack, Level world, LivingEntity user, int remainingUseTicks) {
+		removeHook(user);
+	}
+
+	public static void removeHook(LivingEntity user) {
 		if(!HookshotConfig.useClassicHookshotLogic) {
 			HookshotComponents.HOOK_OWNER.maybeGet(user).ifPresent(hookOwner -> hookOwner.setHasHook(false));
 			if(user instanceof Player player && HookshotConfig.hookshotCooldown > 0) {

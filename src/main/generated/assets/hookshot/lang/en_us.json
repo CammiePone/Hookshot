@@ -8,7 +8,11 @@
   "config.hookshot.hookshot_cooldown": "Cooldown after using Hookshot",
   "config.hookshot.range_upgrade_multiplier": "Range Upgrade Multiplier",
   "config.hookshot.speed_upgrade_multiplier": "Speed Upgrade Multiplier",
+  "config.hookshot.use_swinging_hookshot": "Use Swinging Hookshot",
+  "config.hookshot.use_hookshot_gravity": "Use Hookshot Gravity",
   "config.hookshot.use_classic_hookshot_logic": "Use Old Hookshot Fire/Retract Logic",
+  "config.hookshot.swinging_hook_pull_up_strength": "Swinging Hook Pull Up Strength",
+  "config.hookshot.swinging_hook_pull_sideways_strength": "Swinging Hook Pull Sideways Strength",
   "death.attack.hookshot.bleeding": "%s bled to death",
   "death.attack.hookshot.bleeding.item": "%s bled to death",
   "death.attack.hookshot.bleeding.player": "%s bled to death whilst fighting %s",
@@ -20,6 +24,7 @@
   "hookshot.upgrade.hookshot.enderic": "Enderic",
   "hookshot.upgrade.hookshot.range": "Range",
   "hookshot.upgrade.hookshot.speed": "Speed",
+  "hookshot.upgrade.hookshot.inventory": "Inventory",
   "item.hookshot.black_hookshot": "Black Hookshot",
   "item.hookshot.blue_hookshot": "Blue Hookshot",
   "item.hookshot.brown_hookshot": "Brown Hookshot",
@@ -39,5 +44,7 @@
   "subtitles.hookshot.hookshot_reel": "Hookshot Reel",
   "tag.block.hookshot.unhookable": "Unable to attach hookshot",
   "tag.item.hookshot.hookshot_repair_items": "Hookshot Repair Items",
-  "tag.item.hookshot.hookshots": "Hookshots"
+  "tag.item.hookshot.hookshots": "Hookshots",
+  "key.hookshot.use": "Use Hookshot",
+  "key.categories.hookshot": "Hookshot"
 }

@@ -55,7 +55,8 @@
     "resourcefulconfig": "*",
     "sparkweave": ">=0.8.4 <0.100.0",
     "cardinal-components-base": "*",
-    "cardinal-components-entity": "*"
+    "cardinal-components-entity": "*",
+    "fabric-key-binding-api-v1": "*"
   },
   "entrypoints": {
     "main": [

@@ -35,4 +35,16 @@ public final class HookshotConfig {
 
     @ConfigEntry(id = "speed_upgrade_multiplier", type = EntryType.DOUBLE, translation = "config.hookshot.speed_upgrade_multiplier")
     public static double speedUpgradeMultiplier = 1.5D;
+
+    @ConfigEntry(id = "use_swinging_hookshot", type = EntryType.BOOLEAN, translation = "config.hookshot.use_swinging_hookshot")
+    public static boolean useSwingingHookshot = false;
+
+    @ConfigEntry(id = "use_hookshot_gravity", type = EntryType.BOOLEAN, translation = "config.hookshot.use_hookshot_gravity")
+    public static boolean useHookshotGravity = false;
+
+    @ConfigEntry(id = "swinging_hook_pull_up_strength", type = EntryType.DOUBLE, translation = "config.hookshot.swinging_hook_pull_up_strength")
+    public static double swingingHookPullUpStrength = 1;
+
+    @ConfigEntry(id = "swinging_hook_pull_sideways_strength", type = EntryType.DOUBLE, translation = "config.hookshot.swinging_hook_pull_sideways_strength")
+    public static double swingingHookPullSidewaysStrength = 1;
 }

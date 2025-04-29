@@ -36,16 +36,19 @@ public class HookshotEntity extends AbstractArrow {
     @Nullable
     private Entity hookedEntity;
     private ItemStack stack;
+    public boolean shotFromInventory;
 
     public HookshotEntity(Player owner, Level world) {
         super(HookshotEntities.HOOKSHOT.get(), owner, world);
-        this.setNoGravity(true);
+        if (!HookshotConfig.useHookshotGravity)
+            this.setNoGravity(true);
         this.setBaseDamage(0);
     }
 
     public HookshotEntity(EntityType<? extends HookshotEntity> type, Level world) {
         super(type, world);
-        this.setNoGravity(true);
+        if (!HookshotConfig.useHookshotGravity)
+            this.setNoGravity(true);
         this.setBaseDamage(0);
     }
 
@@ -69,7 +72,7 @@ public class HookshotEntity extends AbstractArrow {
         if(!owner.isAlive() || owner.distanceToSqr(this) > maxRange * maxRange) {
             return true;
         }
-        if(HookshotItem.findHeldHookshot(owner) == null) {
+        if(HookshotItem.findHeldHookshot(owner) == null && !shotFromInventory) {
             return true;
         }
 
@@ -113,26 +116,49 @@ public class HookshotEntity extends AbstractArrow {
                     origin = owner;
                 }
 
-                double brakeZone = (6D * (maxSpeed / HookshotConfig.defaultSpeed));
-                double pullSpeed = maxSpeed / 12D;
-                Vec3 distance = origin.position().subtract(target.position().add(0, target.getBbHeight() / 2, 0));
-
-                // TODO fix this spaghetti code
                 Vec3 motion;
-                if(distance.lengthSqr() >= brakeZone * brakeZone && UpgradesHelper.hasUpgrade(stack, HookshotUpgrades.AUTOMATIC.get())) {
-                    motion = distance.normalize().scale(pullSpeed);
+                if (HookshotConfig.useSwingingHookshot) {
+                    float currentDistance = target.distanceTo(origin);
+                    boolean belowHookshot = target.getY() < origin.getY();
+                    double ySpringStiffness, xzSpringStiffness;
+                    ySpringStiffness = xzSpringStiffness = 0.25D * HookshotConfig.swingingHookPullUpStrength;
+
+                    // Slow down players once close to the hook
+                    if (currentDistance < 2) {
+                        ySpringStiffness = 0;
+                        xzSpringStiffness = 0;
+                    }
+
+                    if (currentDistance < 4) {
+                        ySpringStiffness = 0.09D * HookshotConfig.swingingHookPullUpStrength;
+                        xzSpringStiffness = 0.09D * HookshotConfig.swingingHookPullSidewaysStrength;
+                    }
+                    // increase Y stiffness when descending at large speeds
+                    if (belowHookshot && target.getDeltaMovement().y < -1.5) {
+                        ySpringStiffness = 1.5D * HookshotConfig.swingingHookPullUpStrength;
+                    }
+                    if (belowHookshot && target.getDeltaMovement().y < -2) {
+                        ySpringStiffness = 4.0D * HookshotConfig.swingingHookPullUpStrength;
+                    }
+                    // Copied from lead code, same result as attaching a lead from hookshot to player
+                    double xDis = (origin.getX() - target.getX()) / (double)currentDistance;
+                    double yDis = (origin.getY() - target.getY()) / (double)currentDistance;
+                    double zDis = (origin.getZ() - target.getZ()) / (double)currentDistance;
+                    motion = target.getDeltaMovement().add(Math.copySign(xDis * xDis * xzSpringStiffness, xDis), Math.copySign(yDis * yDis * ySpringStiffness, yDis), Math.copySign(zDis * zDis * xzSpringStiffness, zDis));
                 }
                 else {
-                    motion = distance.scale(pullSpeed / brakeZone);
+                    double brakeZone = (6D * (maxSpeed / HookshotConfig.defaultSpeed));
+                    double pullSpeed = maxSpeed / 12D;
+                    Vec3 distance = origin.position().subtract(target.position().add(0, target.getBbHeight() / 2, 0));
+
+                    if (distance.lengthSqr() >= brakeZone * brakeZone && UpgradesHelper.hasUpgrade(stack, HookshotUpgrades.AUTOMATIC.get())) {
+                        motion = distance.normalize().scale(pullSpeed);
+                    } else {
+                        motion = distance.scale(pullSpeed / brakeZone);
+                    }
                 }
 
-                if (Math.abs(distance.y) < 0.1D) {
-                    motion = new Vec3(motion.x, 0, motion.z);
-                }
-
-                if (new Vec3(distance.x, 0, distance.z).length() < new Vec3(target.getBbWidth() / 2, 0, target.getBbWidth() / 2).length() / 1.4) {
-                    motion = new Vec3(0, motion.y, 0);
-                }
+                target.setDeltaMovement(motion);
 
                 if (HookshotConfig.hookshotCancelsFallDamage) {
                     target.fallDistance = 0;

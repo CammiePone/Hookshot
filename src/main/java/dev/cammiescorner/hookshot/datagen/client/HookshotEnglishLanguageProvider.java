@@ -70,6 +70,12 @@ public class HookshotEnglishLanguageProvider extends SparkweaveLanguageProvider 
         translationBuilder.add("config.hookshot.durability_upgrade_multiplier", "Durability Upgrade Multiplier");
         translationBuilder.add("config.hookshot.range_upgrade_multiplier", "Range Upgrade Multiplier");
         translationBuilder.add("config.hookshot.speed_upgrade_multiplier", "Speed Upgrade Multiplier");
+        translationBuilder.add("config.hookshot.use_swinging_hookshot", "Use Swinging Hookshot");
+        translationBuilder.add("config.hookshot.use_hookshot_gravity", "Use Hookshot Gravity");
+        translationBuilder.add("config.hookshot.swinging_hook_pull_up_strength", "Swinging Hook Pull Up Strength");
+        translationBuilder.add("config.hookshot.swinging_hook_pull_sideways_strength", "Swinging Hook Pull Sideways Strength");
+        translationBuilder.add("key.hookshot.use", "Use Hookshot");
+        translationBuilder.add("key.categories.hookshot", "Hookshot");
     }
 
     private void upgrade(TranslationBuilder translationBuilder, Supplier<? extends HookshotUpgrade> upgrade, String translation) {
