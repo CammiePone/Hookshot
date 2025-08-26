@@ -4,7 +4,7 @@ package dev.cammiescorner.hookshot.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.cammiescorner.hookshot.entity.HookshotEntity;
+import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

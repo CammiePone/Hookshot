@@ -1,6 +1,6 @@
 package dev.cammiescorner.hookshot.datagen.common;
 
-import dev.cammiescorner.hookshot.data.HookshotBlockTags;
+import dev.cammiescorner.hookshot.common.data.HookshotBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;

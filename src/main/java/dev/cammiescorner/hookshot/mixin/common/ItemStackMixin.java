@@ -2,9 +2,9 @@ package dev.cammiescorner.hookshot.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.cammiescorner.hookshot.HookshotConfig;
-import dev.cammiescorner.hookshot.item.HookshotItem;
-import dev.cammiescorner.hookshot.registry.HookshotUpgrades;
-import dev.cammiescorner.hookshot.util.UpgradesHelper;
+import dev.cammiescorner.hookshot.common.item.HookshotItem;
+import dev.cammiescorner.hookshot.common.registry.HookshotUpgrades;
+import dev.cammiescorner.hookshot.common.util.UpgradesHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

@@ -1,13 +1,13 @@
 package dev.cammiescorner.hookshot.datagen.client;
 
-import dev.cammiescorner.hookshot.data.HookshotBlockTags;
-import dev.cammiescorner.hookshot.data.HookshotDamageTypes;
-import dev.cammiescorner.hookshot.data.HookshotItemTags;
-import dev.cammiescorner.hookshot.registry.HookshotEntities;
-import dev.cammiescorner.hookshot.registry.HookshotItems;
-import dev.cammiescorner.hookshot.registry.HookshotSoundEvents;
-import dev.cammiescorner.hookshot.registry.HookshotUpgrades;
-import dev.cammiescorner.hookshot.upgrade.HookshotUpgrade;
+import dev.cammiescorner.hookshot.common.data.HookshotBlockTags;
+import dev.cammiescorner.hookshot.common.data.HookshotDamageTypes;
+import dev.cammiescorner.hookshot.common.data.HookshotItemTags;
+import dev.cammiescorner.hookshot.common.registry.HookshotEntities;
+import dev.cammiescorner.hookshot.common.registry.HookshotItems;
+import dev.cammiescorner.hookshot.common.registry.HookshotSoundEvents;
+import dev.cammiescorner.hookshot.common.registry.HookshotUpgrades;
+import dev.cammiescorner.hookshot.common.upgrade.HookshotUpgrade;
 import dev.upcraft.sparkweave.api.datagen.SparkweaveLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;

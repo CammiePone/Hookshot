@@ -1,6 +1,6 @@
 package dev.cammiescorner.hookshot.mixin.datagen;
 
-import dev.cammiescorner.hookshot.util.datagen.HookshotSmithingUpgradeRecipeBuilder;
+import dev.cammiescorner.hookshot.common.util.datagen.HookshotSmithingUpgradeRecipeBuilder;
 import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

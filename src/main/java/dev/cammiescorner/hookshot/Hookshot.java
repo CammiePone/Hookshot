@@ -1,8 +1,8 @@
 package dev.cammiescorner.hookshot;
 
 import com.teamresourceful.resourcefulconfig.common.config.Configurator;
-import dev.cammiescorner.hookshot.registry.*;
-import dev.cammiescorner.hookshot.util.UpgradesHelper;
+import dev.cammiescorner.hookshot.common.registry.*;
+import dev.cammiescorner.hookshot.common.util.UpgradesHelper;
 import dev.upcraft.sparkweave.api.registry.RegistryService;
 import dev.upcraft.sparkweave.api.util.logging.SparkweaveLoggerFactory;
 import net.fabricmc.api.ModInitializer;
@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.Logger;
 
 public class Hookshot implements ModInitializer {
-
     public static final String MOD_ID = "hookshot";
     public static final Logger LOGGER = SparkweaveLoggerFactory.getLogger();
     public static final Configurator configurator = new Configurator();

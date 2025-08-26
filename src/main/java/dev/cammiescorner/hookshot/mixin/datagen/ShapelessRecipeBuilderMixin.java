@@ -2,7 +2,7 @@ package dev.cammiescorner.hookshot.mixin.datagen;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import dev.cammiescorner.hookshot.util.datagen.HookshotShapelessRecipeBuilder;
+import dev.cammiescorner.hookshot.common.util.datagen.HookshotShapelessRecipeBuilder;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;

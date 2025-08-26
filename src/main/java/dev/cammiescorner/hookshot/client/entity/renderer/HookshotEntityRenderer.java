@@ -6,7 +6,7 @@ import com.mojang.math.Axis;
 import dev.cammiescorner.hookshot.Hookshot;
 import dev.cammiescorner.hookshot.client.HookshotClient;
 import dev.cammiescorner.hookshot.client.entity.model.HookshotEntityModel;
-import dev.cammiescorner.hookshot.entity.HookshotEntity;
+import dev.cammiescorner.hookshot.common.entity.HookshotEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

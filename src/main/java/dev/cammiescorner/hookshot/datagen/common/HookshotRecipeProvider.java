@@ -1,12 +1,12 @@
 package dev.cammiescorner.hookshot.datagen.common;
 
-import dev.cammiescorner.hookshot.data.HookshotItemTags;
-import dev.cammiescorner.hookshot.registry.HookshotItems;
-import dev.cammiescorner.hookshot.registry.HookshotRegistries;
-import dev.cammiescorner.hookshot.registry.HookshotUpgrades;
-import dev.cammiescorner.hookshot.upgrade.HookshotUpgrade;
-import dev.cammiescorner.hookshot.util.datagen.HookshotShapelessRecipeBuilder;
-import dev.cammiescorner.hookshot.util.datagen.HookshotSmithingUpgradeRecipeBuilder;
+import dev.cammiescorner.hookshot.common.data.HookshotItemTags;
+import dev.cammiescorner.hookshot.common.registry.HookshotItems;
+import dev.cammiescorner.hookshot.common.registry.HookshotRegistries;
+import dev.cammiescorner.hookshot.common.registry.HookshotUpgrades;
+import dev.cammiescorner.hookshot.common.upgrade.HookshotUpgrade;
+import dev.cammiescorner.hookshot.common.util.datagen.HookshotShapelessRecipeBuilder;
+import dev.cammiescorner.hookshot.common.util.datagen.HookshotSmithingUpgradeRecipeBuilder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;

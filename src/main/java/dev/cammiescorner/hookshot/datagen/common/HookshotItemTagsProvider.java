@@ -1,7 +1,7 @@
 package dev.cammiescorner.hookshot.datagen.common;
 
-import dev.cammiescorner.hookshot.data.HookshotItemTags;
-import dev.cammiescorner.hookshot.registry.HookshotItems;
+import dev.cammiescorner.hookshot.common.data.HookshotItemTags;
+import dev.cammiescorner.hookshot.common.registry.HookshotItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
