@@ -1,0 +1,11 @@
+{
+  "type": "hookshot:upgrade_smithing",
+  "addition": {
+    "item": "minecraft:chain"
+  },
+  "apply_upgrade": "hookshot:range",
+  "base": {
+    "tag": "hookshot:hookshots"
+  },
+  "template": []
+}

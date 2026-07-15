@@ -1,0 +1,11 @@
+{
+  "type": "hookshot:upgrade_smithing",
+  "addition": {
+    "item": "minecraft:observer"
+  },
+  "apply_upgrade": "hookshot:automatic",
+  "base": {
+    "tag": "hookshot:hookshots"
+  },
+  "template": []
+}

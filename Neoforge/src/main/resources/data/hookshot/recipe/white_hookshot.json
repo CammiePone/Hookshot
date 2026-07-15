@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "hookshot:white_hookshot",
+  "key": {
+    "A": {
+      "tag": "minecraft:arrows"
+    },
+    "C": {
+      "item": "minecraft:chain"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    " A ",
+    "ICI",
+    "RPR"
+  ],
+  "result": {
+    "id": "hookshot:white_hookshot"
+  },
+  "show_notification": true
+}
