@@ -1,0 +1,11 @@
+{
+  "type": "hookshot:upgrade_smithing",
+  "addition": {
+    "tag": "minecraft:arrows"
+  },
+  "apply_upgrade": "hookshot:bleed",
+  "base": {
+    "tag": "hookshot:hookshots"
+  },
+  "template": []
+}

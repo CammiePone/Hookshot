@@ -1,0 +1,27 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "Custom - see https://github.com/CammiesCorner/Hookshot/blob/HEAD/LICENSE"
+issueTrackerURL = "https://github.com/CammiesCorner/Hookshot/issues"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_display_name}"
+description = '''${mod_description}'''
+logoFile = "icon.png"
+authors = "Cammie, Up (original); unofficial NeoForge port"
+displayURL = "https://www.curseforge.com/projects/396512"
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.21.2)"
+ordering = "NONE"
+side = "BOTH"

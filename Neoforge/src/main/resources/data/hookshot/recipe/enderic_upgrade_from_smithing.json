@@ -1,0 +1,11 @@
+{
+  "type": "hookshot:upgrade_smithing",
+  "addition": {
+    "item": "minecraft:ender_eye"
+  },
+  "apply_upgrade": "hookshot:enderic",
+  "base": {
+    "tag": "hookshot:hookshots"
+  },
+  "template": []
+}

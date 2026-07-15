@@ -1,0 +1,11 @@
+{
+  "type": "hookshot:upgrade_smithing",
+  "addition": {
+    "item": "minecraft:obsidian"
+  },
+  "apply_upgrade": "hookshot:durability",
+  "base": {
+    "tag": "hookshot:hookshots"
+  },
+  "template": []
+}

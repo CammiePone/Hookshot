@@ -1,0 +1,8 @@
+{
+	"hookshot_reel": {
+		"subtitle": "subtitles.hookshot.hookshot_reel",
+		"sounds": [
+			"hookshot:hookshot_reel"
+		]
+	}
+}

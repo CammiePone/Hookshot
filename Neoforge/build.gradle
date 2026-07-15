@@ -1,0 +1,58 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.141'
+}
+
+version = project.mod_version
+group = project.maven_group_id
+
+base {
+    archivesName = "${project.mod_id}-neoforge"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+neoForge {
+    version = project.neo_version
+
+    runs {
+        client {
+            client()
+            // allows running the suite in the dev client via /test
+            systemProperty('neoforge.enabledGameTestNamespaces', 'hookshot')
+        }
+        server {
+            server()
+        }
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty('neoforge.enabledGameTestNamespaces', 'hookshot')
+        }
+    }
+
+    mods {
+        hookshot {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+processResources {
+    var replaceProperties = [
+            mod_id          : project.mod_id,
+            mod_version     : project.mod_version,
+            mod_display_name: project.mod_display_name,
+            mod_description : project.mod_description,
+            minecraft_version: project.minecraft_version,
+            neo_version     : project.neo_version,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
+}
